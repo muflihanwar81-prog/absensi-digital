@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\KaryawanController;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/login', function () {
@@ -21,4 +21,20 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
 
+Route::get('/karyawan', function () {
+    return view('data_karyawan');
+});
+
+Route::get('/absensi', function () {
+    return view('absensi');
+});
+
+Route::get('/laporan', function () {
+    return view('laporan');
+});
 Route::get('/contact', [HomeController::class, 'contact']);
+
+
+
+Route::get('/karyawan', [KaryawanController::class, 'index']);
+Route::post('/karyawan', [KaryawanController::class, 'store']);

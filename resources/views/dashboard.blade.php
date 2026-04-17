@@ -30,22 +30,22 @@
     <aside class="w-64 h-screen bg-white shadow-md p-5">
         <ul class="space-y-4">
             <li>
-                <a href="#" class="flex items-center p-2 rounded-lg bg-blue-100 text-blue-600">
+                <a href="dashboard" class="flex items-center p-2 rounded-lg bg-blue-100 text-blue-600">
                     Dashboard
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                <a href="karyawan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
                     Data Karyawan
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                <a href="absensi" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
                     Absensi
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                <a href="laporan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
                     Laporan
                 </a>
             </li>
