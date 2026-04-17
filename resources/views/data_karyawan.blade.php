@@ -126,6 +126,9 @@
 
             <input type="email" name="email" placeholder="Email"
                 class="w-full p-2 border rounded-lg" required>
+            
+            <input type="password" name="password" placeholder="Password"
+    class="w-full p-2 border rounded-lg" required>
 
             <input type="text" name="jabatan" placeholder="Jabatan"
                 class="w-full p-2 border rounded-lg" required>

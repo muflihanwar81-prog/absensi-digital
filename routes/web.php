@@ -32,9 +32,13 @@ Route::get('/absensi', function () {
 Route::get('/laporan', function () {
     return view('laporan');
 });
+
 Route::get('/contact', [HomeController::class, 'contact']);
 
 
 
 Route::get('/karyawan', [KaryawanController::class, 'index']);
 Route::post('/karyawan', [KaryawanController::class, 'store']);
+Route::delete('/karyawan/{id}', [KaryawanController::class, 'destroy']);
+Route::get('/karyawan/{id}', [KaryawanController::class, 'show']);
+Route::get('/index', [KaryawanController::class, 'index']);

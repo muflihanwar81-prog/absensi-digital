@@ -11,6 +11,7 @@ class Karyawan extends Model
         'nama',
         'email',
         'jabatan',
-        'divisi'
+        'divisi',
+        'password'
     ];
 }
