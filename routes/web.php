@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\TAController;
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/tecno_view', [TAController::class, 'tampilkan']);
+
 
 Route::get('/login', function () {
     if (Auth::check()) {
