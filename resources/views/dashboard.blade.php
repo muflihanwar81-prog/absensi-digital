@@ -52,10 +52,8 @@
         </ul>
     </aside>
 
-    <!-- Content -->
     <main class="flex-1 p-6">
 
-        <!-- Title -->
         <h2 class="text-2xl font-semibold mb-6">Dashboard</h2>
 
         <!-- Cards -->

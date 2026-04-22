@@ -2,11 +2,16 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\TAController;
+use App\Http\Controllers\ProdukController;
+
+Route::get('/test', [ProdukController::class, 'test']); 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/tecno_view', [TAController::class, 'tampilkan']);
+
 
 
 Route::get('/login', function () {
