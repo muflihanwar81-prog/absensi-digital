@@ -41,21 +41,30 @@
             <table class="w-full text-sm">
                 <thead class="bg-gray-100 text-left">
                     <tr>
+                        <th class="p-3">NIP</th>
                         <th class="p-3">Nama</th>
                         <th class="p-3">Tanggal</th>
                         <th class="p-3">Status</th>
+                        <th class="p-3">Divisi</th>
+                        <th class="p-3">Jabatan</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="border-b">
+                        <td class="p-3">12345</td>
                         <td class="p-3">Budi</td>
                         <td class="p-3">2026-04-17</td>
                         <td class="p-3 text-green-500">Hadir</td>
+                        <td class="p-3">IT</td>
+                        <td class="p-3">Developer</td>
                     </tr>
                     <tr class="border-b">
+                        <td class="p-3">67890</td>
                         <td class="p-3">Siti</td>
                         <td class="p-3">2026-04-17</td>
                         <td class="p-3 text-yellow-500">Izin</td>
+                        <td class="p-3">HR</td>
+                        <td class="p-3">HR Manager</td>
                     </tr>
                 </tbody>
             </table>

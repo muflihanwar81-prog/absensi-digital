@@ -87,6 +87,7 @@
                             <th class="px-6 py-3">Nama</th>
                             <th class="px-6 py-3">Tanggal</th>
                             <th class="px-6 py-3">Status</th>
+                            <th class="px-6 py-3">Divisi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,11 +95,13 @@
                             <td class="px-6 py-4">Budi</td>
                             <td class="px-6 py-4">2026-04-17</td>
                             <td class="px-6 py-4 text-green-500">Hadir</td>
+                            <td class="px-6 py-4">IT</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-6 py-4">Siti</td>
                             <td class="px-6 py-4">2026-04-17</td>
                             <td class="px-6 py-4 text-yellow-500">Izin</td>
+                            <td class="px-6 py-4">HR</td>
                         </tr>
                     </tbody>
                 </table>
