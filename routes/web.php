@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\TAController;
@@ -40,7 +40,18 @@ Route::get('/absensi', function () {
 Route::get('/laporan', function () {
     return view('laporan');
 });
+Route::get('/dashboard_karyawan', function () {
+    return view('karyawan_absensi');
+})->middleware('auth');
 
+// Route untuk proses absennya (contoh sederhana)
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/karyawan_absen', [AbsensiController::class, 'index']);
+    Route::post('/absen-masuk', [AbsensiController::class, 'masuk']);
+    Route::post('/absen-pulang', [AbsensiController::class, 'pulang']);
+});
 Route::get('/contact', [HomeController::class, 'contact']);
 
 
