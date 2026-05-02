@@ -9,9 +9,13 @@ class Karyawan extends Model
     protected $fillable = [
         'nip',
         'nama',
-        'email',
         'jabatan',
         'divisi',
-        'password'
+        'user_id'
     ];
+
+    public function user()
+{
+    return $this->belongsTo(\App\Models\User::class);
+}
 }
