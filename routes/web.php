@@ -2,49 +2,50 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\TAController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\DashboardController; // tambahkan controller dashboard
 
+// Test & Home
 Route::get('/test', [ProdukController::class, 'test']); 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/tecno_view', [TAController::class, 'tampilkan']);
 
-
-
+// Login & Logout
 Route::get('/login', function () {
     if (Auth::check()) {
         return redirect('/dashboard');
     }
-
     return view('login');
 })->name('login');
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
+// Dashboard pakai controller
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
 
+// Absensi Masuk & Pulang
+Route::post('/absensi/masuk', [DashboardController::class, 'masuk'])->name('absensi.masuk');
+Route::post('/absensi/pulang', [DashboardController::class, 'pulang'])->name('absensi.pulang');
+
+// Halaman statis
 Route::get('/karyawan', function () {
     return view('data_karyawan');
 });
-
 Route::get('/absensi', function () {
     return view('absensi');
 });
-
 Route::get('/laporan', function () {
     return view('laporan');
 });
-
 Route::get('/contact', [HomeController::class, 'contact']);
 
-
-
+// CRUD Karyawan
 Route::get('/karyawan', [KaryawanController::class, 'index']);
 Route::post('/karyawan', [KaryawanController::class, 'store']);
 Route::delete('/karyawan/{id}', [KaryawanController::class, 'destroy']);
