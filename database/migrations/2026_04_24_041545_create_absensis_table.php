@@ -1,19 +1,26 @@
 <?php
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Absensi extends Model
+return new class extends Migration
 {
-    // Tambahkan baris ini agar Laravel merujuk ke tabel yang benar
-    protected $table = 'absensi'; 
+    public function up(): void
+    {
+        Schema::create('absensi', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('karyawan_id')->constrained()->cascadeOnDelete();
+    $table->date('tanggal');
+    $table->time('jam_masuk')->nullable();
+    $table->time('jam_pulang')->nullable();
+    $table->enum('status', ['hadir','izin','sakit','alpha']);
+    $table->timestamps();
+});
+    }
 
-    protected $fillable = [
-        'karyawan_id', // Pastikan nama kolom ini sama dengan yang di phpMyAdmin
-        'tanggal',
-        'jam_masuk',
-        'jam_pulang',
-        'status'
-    ];
-}
+    public function down(): void
+    {
+        Schema::dropIfExists('absensi');
+    }
+};

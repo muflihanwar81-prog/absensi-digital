@@ -12,14 +12,14 @@ return new class extends Migration
    public function up(): void
 {
     Schema::create('karyawans', function (Blueprint $table) {
-        $table->id();
-        $table->string('nip')->unique();
-        $table->string('nama');
-        $table->string('email')->unique();
-        $table->string('jabatan');
-        $table->string('divisi');
-        $table->timestamps();
-    });
+    $table->id();
+    $table->string('nip')->unique();
+    $table->string('nama');
+    $table->string('jabatan');
+    $table->string('divisi');
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->timestamps();
+});
 }
     /**
      * Reverse the migrations.

@@ -18,7 +18,12 @@
     <div id="dropdown" class="hidden bg-white rounded-lg shadow w-40">
         <ul class="py-2 text-sm text-gray-700">
             <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a></li>
-            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Logout</a></li>
+            <form method="POST" action="/logout">
+    @csrf
+    <button class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+        Logout
+    </button>
+</form>
         </ul>
     </div>
 </nav>

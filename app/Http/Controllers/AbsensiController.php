@@ -16,7 +16,7 @@ class AbsensiController extends Controller
             ->whereDate('tanggal', Carbon::today())
             ->first();
 
-        return view('karyawan_absensi', compact('absensiHariIni'));
+        return view('karyawan_absen', compact('absensiHariIni'));
     }
 
     public function masuk(Request $request)
