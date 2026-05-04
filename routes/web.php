@@ -6,11 +6,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
+
 use App\Http\Controllers\TAController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\DashboardController; // tambahkan controller dashboard
 use App\Http\Controllers\KaryawanDashboardController;
 use App\Http\Controllers\IzinController;
+
 use App\Http\Controllers\AdminDataKaryawanController;
 use App\Http\Controllers\AdminDataAbsensiController;
 
@@ -35,6 +37,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [KaryawanDashboardController::class, 'profile']);
 });
 // 🔹 HALAMAN UMUM
+
+use App\Http\Controllers\ProductController;
+
+Route::get('/products', [ProductController::class, 'index']);
+
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/contact', [HomeController::class, 'contact']);
 Route::get('/tecno_view', [TAController::class, 'tampilkan']);
