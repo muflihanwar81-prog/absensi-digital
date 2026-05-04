@@ -8,13 +8,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\TAController;
 use App\Http\Controllers\ProdukController;
-
 use App\Http\Controllers\DashboardController; // tambahkan controller dashboard
-
-// Test & Home
-Route::get('/test', [ProdukController::class, 'test']); 
 use App\Http\Controllers\KaryawanDashboardController;
 use App\Http\Controllers\IzinController;
+use App\Http\Controllers\AdminDataKaryawanController;
+use App\Http\Controllers\AdminDataAbsensiController;
+
+// Gunakan ->name() untuk memberi label pada rute ini
+Route::get('/AdminDataAbsensi', [AdminDataAbsensiController::class, 'index'])->name('admin.absensi.index');
+
+Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
+
 
 Route::middleware(['auth'])->group(function () {
 
@@ -38,6 +42,7 @@ Route::get('/test', [ProdukController::class, 'test']);
 
 // Login & Logout
 // 🔹 LOGIN
+
 Route::get('/login', function () {
     if (Auth::check()) {
         return redirect('/dashboard');
@@ -103,3 +108,5 @@ Route::middleware(['auth'])->group(function () {
     });
 
 });
+
+
