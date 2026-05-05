@@ -13,11 +13,20 @@ use App\Http\Controllers\{
     DashboardController,
     KaryawanDashboardController,
     IzinController,
-    AdminDataKaryawanController,
-    AdminDataAbsensiController,
-    AdminDataPerizinanController,
     ProductController
 };
+use App\Http\Controllers\AdminDataKaryawanController;
+use App\Http\Controllers\AdminDataAbsensiController;
+use App\Http\Controllers\AdminDataPerizinanController;
+
+// Rute untuk Data Karyawan
+Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
+
+// Rute untuk Data Absensi
+Route::get('/admindataabsensi', [AdminDataAbsensiController::class, 'index'])->name('admin.absensi.index');
+
+// Rute untuk Data Perizinan
+Route::get('/admindataperizinan', [AdminDataPerizinanController::class, 'index'])->name('admin.perizinan.index');
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/contact', [HomeController::class, 'contact']);
@@ -53,11 +62,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('karyawan', KaryawanController::class);
 
-    Route::prefix('admin')->group(function () {
-        Route::get('/perizinan', [AdminDataPerizinanController::class, 'index']);
-        Route::get('/absensi', [AdminDataAbsensiController::class, 'index']);
-        Route::get('/karyawan', [AdminDataKaryawanController::class, 'index']);
-    });
 
     Route::view('/laporan', 'laporan');
 
