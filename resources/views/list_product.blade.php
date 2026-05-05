@@ -1,5 +1,6 @@
 @extends('layouts.list')
 
+
 @section('title', 'Ini adalah judul pada meta')
 @section('content')
 
@@ -19,4 +20,9 @@
         @endforeach
     </tbody>
 </table>
+@section('content')
+    <h1>List Product</h1>
+    <p>ID: {{ $id }}</p>
+    <p>Produk: {{ $produk }}</p>
+
 @endsection
