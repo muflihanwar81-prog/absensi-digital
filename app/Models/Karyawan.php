@@ -14,8 +14,15 @@ class Karyawan extends Model
         'user_id'
     ];
 
+    // 🔹 Relasi ke User
     public function user()
-{
-    return $this->belongsTo(\App\Models\User::class);
-}
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
+    // 🔹 Relasi ke Absensi
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class);
+    }
 }

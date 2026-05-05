@@ -7,55 +7,42 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // 🔹 LOGIN
     public function login(Request $request)
     {
-        // ✅ VALIDASI
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6'
         ]);
 
-        // ✅ AMBIL DATA
         $credentials = $request->only('email', 'password');
 
-        // ✅ COBA LOGIN
         if (Auth::attempt($credentials)) {
-
-            // 🔐 regenerate session (biar aman)
             $request->session()->regenerate();
 
             $user = Auth::user();
 
-            // 🔥 DEBUG (kalau mau cek)
-            // dd($user);
-
-            // ✅ REDIRECT BERDASARKAN ROLE
             if ($user->role === 'admin') {
-                return redirect('/dashboard')->with('success', 'Login berhasil sebagai admin');
+                return redirect()->route('dashboard')->with('success', 'Login berhasil');
             }
 
             if ($user->role === 'karyawan') {
-                return redirect('/dashboard_karyawan')->with('success', 'Login berhasil sebagai karyawan');
+                return redirect()->route('karyawan.dashboard')->with('success', 'Login berhasil');
             }
 
-            // ❗ fallback kalau role aneh
-            return redirect('/login')->with('error', 'Role tidak dikenali');
+            Auth::logout();
+            return redirect()->route('login')->with('error', 'Role tidak valid');
         }
 
-        // ❌ LOGIN GAGAL
         return back()->with('error', 'Email atau password salah')->withInput();
     }
 
-    // 🔹 LOGOUT
     public function logout(Request $request)
     {
         Auth::logout();
 
-        // 🔐 hapus session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Berhasil logout');
+        return redirect()->route('login')->with('success', 'Berhasil logout');
     }
 }

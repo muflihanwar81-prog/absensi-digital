@@ -12,28 +12,54 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        return view('dashboard', compact('user'));
+        $absensiHariIni = Absensi::where('karyawan_id', $user->id)
+            ->whereDate('tanggal', now()->toDateString())
+            ->first();
+
+        return view('dashboard', compact('user', 'absensiHariIni'));
     }
 
-    public function masuk(Request $request)
+    public function masuk()
     {
+        $user = Auth::user();
+
+        $cek = Absensi::where('karyawan_id', $user->id)
+            ->whereDate('tanggal', now()->toDateString())
+            ->first();
+
+        if ($cek) {
+            return back()->with('error', 'Sudah absen hari ini');
+        }
+
         Absensi::create([
-            'user_id' => Auth::id(),
-            'status' => 'masuk',
-            'waktu' => now()
+            'karyawan_id' => $user->id,
+            'tanggal' => now(),
+            'jam_masuk' => now(),
         ]);
 
-        return back();
+        return back()->with('success', 'Absen masuk berhasil');
     }
 
-    public function pulang(Request $request)
+    public function pulang()
     {
-        Absensi::create([
-            'user_id' => Auth::id(),
-            'status' => 'pulang',
-            'waktu' => now()
+        $user = Auth::user();
+
+        $absen = Absensi::where('karyawan_id', $user->id)
+            ->whereDate('tanggal', now()->toDateString())
+            ->first();
+
+        if (!$absen) {
+            return back()->with('error', 'Belum absen masuk');
+        }
+
+        if ($absen->jam_pulang) {
+            return back()->with('error', 'Sudah absen pulang');
+        }
+
+        $absen->update([
+            'jam_pulang' => now(),
         ]);
 
-        return back();
+        return back()->with('success', 'Absen pulang berhasil');
     }
 }

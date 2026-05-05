@@ -38,17 +38,17 @@
                 </a>
             </li>
             <li>
-                <a href="/karyawan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                <a href="/admindataKaryawan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
                     Data Karyawan
                 </a>
             </li>
             <li>
-                <a href="/absensi" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                <a href="/admindataAbsensi" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
                     Absensi
                 </a>
             </li>
             <li>
-                <a href="/laporan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                <a href="/admindataperizinan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
                     Laporan
                 </a>
             </li>

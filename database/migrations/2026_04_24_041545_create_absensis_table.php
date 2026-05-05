@@ -9,14 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absensi', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('karyawan_id')->constrained()->cascadeOnDelete();
-    $table->date('tanggal');
-    $table->time('jam_masuk')->nullable();
-    $table->time('jam_pulang')->nullable();
-    $table->enum('status', ['hadir','izin','sakit','alpha']);
-    $table->timestamps();
-});
+            $table->id();
+            $table->foreignId('karyawan_id')->constrained('karyawans')->cascadeOnDelete();
+            $table->date('tanggal');
+            $table->dateTime('jam_masuk')->nullable();
+            $table->dateTime('jam_pulang')->nullable();
+            $table->enum('status', ['hadir','izin','sakit','alpha'])->default('hadir');
+            $table->timestamps();
+        });
     }
 
     public function down(): void

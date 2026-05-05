@@ -3,65 +3,55 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Absensi; // Pastikan kamu sudah punya model Absensi
+use App\Models\Absensi;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AbsensiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Mengambil data absensi hari ini untuk user yang sedang login
-        $absensiHariIni = Absensi::where('karyawan_id', Auth::id())
-            ->whereDate('tanggal', Carbon::today())
-            ->first();
+        $user = Auth::user();
+        $karyawanId = $user->karyawan->id;
 
-        return view('karyawan_absen', compact('absensiHariIni'));
+        $query = Absensi::with('karyawan')->where('karyawan_id', $karyawanId);
+
+        if ($request->dari && $request->sampai) {
+            $query->whereBetween('tanggal', [$request->dari, $request->sampai]);
+        }
+
+        $absensi = $query->orderBy('tanggal', 'desc')->get();
+
+        return view('absensi', compact('absensi'));
     }
 
-    public function masuk(Request $request)
+    public function show($id)
     {
-        $userId = Auth::id();
-        $tanggal = Carbon::today()->toDateString();
-        $jamMasuk = Carbon::now()->toTimeString();
+        $user = Auth::user();
+        $karyawanId = $user->karyawan->id;
 
-        // Cek apakah sudah absen masuk hari ini
-        $cek = Absensi::where('karyawan_id', $userId)->whereDate('tanggal', $tanggal)->first();
+        $data = Absensi::where('id', $id)
+            ->where('karyawan_id', $karyawanId)
+            ->firstOrFail();
 
-        if ($cek) {
-            return redirect()->back()->with('error', 'Anda sudah melakukan absen masuk hari ini.');
-        }
-
-        Absensi::create([
-            'karyawan_id' => $userId,
-            'tanggal' => $tanggal,
-            'jam_masuk' => $jamMasuk,
-            'status' => 'Hadir' // Kamu bisa tambah logika jika jam > 08:00 maka 'Terlambat'
-        ]);
-
-        return redirect()->back()->with('success', 'Berhasil absen masuk pada jam ' . $jamMasuk);
+        return view('absensi_detail', compact('data'));
     }
 
-    public function pulang(Request $request)
+    public function exportPdf(Request $request)
     {
-        $userId = Auth::id();
-        $tanggal = Carbon::today()->toDateString();
-        $jamPulang = Carbon::now()->toTimeString();
+        $user = Auth::user();
+        $karyawanId = $user->karyawan->id;
 
-        $absensi = Absensi::where('karyawan_id', $userId)->whereDate('tanggal', $tanggal)->first();
+        $query = Absensi::with('karyawan')->where('karyawan_id', $karyawanId);
 
-        if (!$absensi) {
-            return redirect()->back()->with('error', 'Anda belum melakukan absen masuk.');
+        if ($request->dari && $request->sampai) {
+            $query->whereBetween('tanggal', [$request->dari, $request->sampai]);
         }
 
-        if ($absensi->jam_pulang) {
-            return redirect()->back()->with('error', 'Anda sudah melakukan absen pulang.');
-        }
+        $absensi = $query->orderBy('tanggal', 'desc')->get();
 
-        $absensi->update([
-            'jam_pulang' => $jamPulang
-        ]);
+        $pdf = Pdf::loadView('absensi_pdf', compact('absensi'));
 
-        return redirect()->back()->with('success', 'Berhasil absen pulang pada jam ' . $jamPulang);
+        return $pdf->download('laporan-absensi.pdf');
     }
 }
