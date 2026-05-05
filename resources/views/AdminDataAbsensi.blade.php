@@ -10,7 +10,7 @@
 <body class="bg-white flex font-sans">
 
 <!-- SIDEBAR -->
-<aside class="w-64 h-screen bg-white border-r border-gray-300 flex flex-col justify-between">
+<aside class="w-64 h-screen bg-blue-500 border-r border-gray-300 flex flex-col justify-between">
     <div>
         <div class="p-6 flex items-center gap-3">
             <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
@@ -25,7 +25,7 @@
                 <li class="bg-gray-300 border-l-4 border-gray-600">
                     <a href="{{ route('admin.absensi.index') }}" class="block px-8 py-3 hover:bg-gray-100">Data Absensi</a>
                 </li>
-                <li><a href="#" class="block px-8 py-3 hover:bg-gray-100">Data Perizinan</a></li>
+                <li><a href="{{ route('admin.perizinan.index') }}" class="block px-8 py-3 hover:bg-gray-100">Data Perizinan</a></li>
                 <li><a href="#" class="block px-8 py-3 hover:bg-gray-100">Laporan</a></li>
             </ul>
         </nav>
@@ -38,16 +38,10 @@
 <!-- MAIN CONTENT -->
 <main class="flex-1 overflow-y-auto">
     <!-- Header bar -->
-    <div class="border-b border-gray-300 p-4 flex items-center gap-4">
-        <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
-        <span class="font-bold text-xl">ADMIN</span>
-    </div>
 
-    <div class="px-8 py-4">
-        <!-- Gray Header Title Box -->
-        <div class="bg-gray-300 p-6 rounded-sm mb-8">
-            <h1 class="text-3xl font-bold">Data Absensi</h1>
-        </div>
+    <div class="bg-blue-500 p-6 rounded-sm mb-8 border-b border-gray-400">
+        <h1 class="text-3xl font-bold text-gray-800">Data Absensi</h1>
+    </div>
 
         <!-- Filter Bar -->
         <div class="flex gap-4 mb-6">

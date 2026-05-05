@@ -15,12 +15,14 @@ use App\Http\Controllers\IzinController;
 
 use App\Http\Controllers\AdminDataKaryawanController;
 use App\Http\Controllers\AdminDataAbsensiController;
+use App\Http\Controllers\AdminDataPerizinanController;
 
-// Gunakan ->name() untuk memberi label pada rute ini
+
+Route::get('/AdminDataPerizinan', [AdminDataPerizinanController::class, 'index'])->name('admin.perizinan.index');
+
 Route::get('/AdminDataAbsensi', [AdminDataAbsensiController::class, 'index'])->name('admin.absensi.index');
 
 Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
-
 
 Route::middleware(['auth'])->group(function () {
 

@@ -10,7 +10,7 @@
 <body class="bg-white flex font-sans">
 
 <!-- SIDEBAR -->
-<aside class="w-64 h-screen bg-white border-r border-gray-300 flex flex-col justify-between">
+<aside class="w-64 h-screen bg-blue-500 border-r border-gray-300 flex flex-col justify-between">
     <div>
         <!-- Logo Area -->
         <div class="p-6">
@@ -25,11 +25,11 @@
             <ul class="text-sm font-semibold">
                 <li><a href="#" class="block px-8 py-3 hover:bg-gray-100">Dashboard</a></li>
                 <li class="bg-gray-300 border-l-4 border-gray-600">
-                    <a href="{{ route('admin.karyawan.index') }}" class="block px-8 py-3">Data Karyawan</a>
+                    <a href="{{ route('admin.karyawan.index') }}" class="block px-8 py-3 hover:bg-gray-100">Data Karyawan</a>
                 </li>
                 <li><a href="#" class="block px-8 py-3 hover:bg-gray-100">Kelola Divisi</a></li>
                 <li><a href="{{ route('admin.absensi.index') }}" class="block px-8 py-3 hover:bg-gray-100">Data Absensi</a></li>
-                <li><a href="#" class="block px-8 py-3 hover:bg-gray-100">Data Perizinan</a></li>
+                <li><a href="{{ route('admin.perizinan.index') }}" class="block px-8 py-3 hover:bg-gray-100">Data Perizinan</a></li>
                 <li><a href="#" class="block px-8 py-3 hover:bg-gray-100">Laporan</a></li>
             </ul>
         </nav>
@@ -45,16 +45,10 @@
 
 <!-- MAIN CONTENT -->
 <main class="flex-1 overflow-y-auto">
-    
-    <!-- Top Header Bar (Blue Outline style from image) -->
-    <div class="border-2 border-blue-400 m-4 p-4 flex items-center gap-4">
-        <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
-        <span class="font-bold text-xl">ADMIN</span>
+
+    <div class="bg-blue-500 p-6 rounded-sm mb-8 border-b border-gray-400">
+        <h1 class="text-3xl font-bold text-gray-800">Data Karyawan</h1>
     </div>
-
-    <div class="px-8 py-4">
-        <h1 class="text-4xl font-bold mb-8">Data Karyawan.</h1>
-
         <!-- CARD STATS (Grey Background Container) -->
         <div class="bg-gray-300 p-10 rounded-lg grid grid-cols-4 gap-4 mb-10 shadow-sm">
             <div class="text-center">
@@ -127,7 +121,7 @@
                     @endforelse
                 </tbody>
             </table>
-        /div>
+        </div>
     </div>
 
 </main>
