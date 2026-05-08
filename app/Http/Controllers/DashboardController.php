@@ -16,7 +16,7 @@ class DashboardController extends Controller
             ->whereDate('tanggal', now()->toDateString())
             ->first();
 
-        return view('dashboard', compact('user', 'absensiHariIni'));
+        return view('admin.dashboard', compact('user', 'absensiHariIni'));
     }
 
     public function masuk()
