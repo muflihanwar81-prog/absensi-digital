@@ -1,14 +1,11 @@
 <?php
 
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-=======
+use App\Http\Controllers\AdminDataKaryawanController;
+use App\Http\Controllers\AdminDataAbsensiController;
+use App\Http\Controllers\AdminDataPerizinanController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+
 
 use App\Http\Controllers\{
     HomeController,
@@ -22,9 +19,10 @@ use App\Http\Controllers\{
     IzinController,
     ProductController
 };
-use App\Http\Controllers\AdminDataKaryawanController;
-use App\Http\Controllers\AdminDataAbsensiController;
-use App\Http\Controllers\AdminDataPerizinanController;
+Route::get('/', function () {
+    return view('welcome');
+});
+
 
 // Rute untuk Data Karyawan
 Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
@@ -74,4 +72,4 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf']);
 });
->>>>>>> 9ec4a894840ead0e23b0906aea80a414521cc4fa
+
