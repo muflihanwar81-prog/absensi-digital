@@ -17,11 +17,20 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+<<<<<<< HEAD
     protected $fillable = [
         'name',
         'email',
         'password',
     ];
+=======
+   protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'role'
+];
+>>>>>>> 9ec4a894840ead0e23b0906aea80a414521cc4fa
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,4 +54,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+<<<<<<< HEAD
+=======
+    public function karyawan()
+{
+    return $this->hasOne(Karyawan::class);
+}
+>>>>>>> 9ec4a894840ead0e23b0906aea80a414521cc4fa
 }
