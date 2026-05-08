@@ -73,3 +73,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf']);
 });
 
+
