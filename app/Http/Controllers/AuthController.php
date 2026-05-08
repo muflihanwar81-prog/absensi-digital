@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -11,29 +13,24 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6'
+            'password' => 'required'
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $user = DB::table('users')
+            ->where('email', $request->email)
+            ->first();
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            $user = Auth::user();
-
-            if ($user->role === 'admin') {
-                return redirect()->route('dashboard')->with('success', 'Login berhasil');
-            }
-
-            if ($user->role === 'karyawan') {
-                return redirect()->route('karyawan.dashboard')->with('success', 'Login berhasil');
-            }
-
-            Auth::logout();
-            return redirect()->route('login')->with('error', 'Role tidak valid');
+        if (!$user) {
+            return back()->with('error', 'Email tidak ditemukan');
         }
 
-        return back()->with('error', 'Email atau password salah')->withInput();
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->with('error', 'Password salah');
+        }
+
+        Auth::loginUsingId($user->id);
+
+        return redirect('/dashboard');
     }
 
     public function logout(Request $request)
@@ -41,8 +38,9 @@ class AuthController extends Controller
         Auth::logout();
 
         $request->session()->invalidate();
+
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Berhasil logout');
+        return redirect('/login');
     }
 }

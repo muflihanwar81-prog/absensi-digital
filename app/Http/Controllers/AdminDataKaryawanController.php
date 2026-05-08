@@ -43,6 +43,7 @@ class AdminDataKaryawanController extends Controller
             'divisi_d' => $karyawans->where('divisi', 'Divisi D')->count(),
         ];
 
-        return view('admin/admindatakaryawan', compact('karyawans', 'stats'));
+
+        return view('admin.admindatakaryawan', compact('karyawans', 'stats'));
     }
 }

@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Absensi extends Model
+class Perizinan extends Model
 {
     protected $fillable = [
         'karyawan_id',
+        'jenis',
+        'keterangan',
         'tanggal',
-        'jam_masuk',
-        'jam_keluar',
-        'status'
+        'bukti'
     ];
 
     public function karyawan()

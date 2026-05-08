@@ -39,6 +39,6 @@ class AdminDataAbsensiController extends Controller
             });
         });
 
-        return view('AdminDataAbsensi', compact('absensi'));
+        return view('admin.AdminDataAbsensi', compact('absensi'));
     }
 }

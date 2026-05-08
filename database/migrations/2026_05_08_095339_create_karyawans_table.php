@@ -9,18 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
-{
-    Schema::create('karyawans', function (Blueprint $table) {
+    public function up(): void
+    {
+        Schema::create('karyawans', function (Blueprint $table) {
     $table->id();
-    $table->string('nip')->unique();
+    $table->string('nip');
     $table->string('nama');
+    $table->foreignId('divisi_id')->constrained('divisis');
     $table->string('jabatan');
-    $table->string('divisi');
-    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->string('email')->nullable();
+    $table->string('password');
     $table->timestamps();
 });
-}
+    }
+
     /**
      * Reverse the migrations.
      */
