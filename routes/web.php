@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminDataKaryawanController;
 use App\Http\Controllers\AdminDataAbsensiController;
 use App\Http\Controllers\AdminDataPerizinanController;
+use App\Http\Controllers\AdminLaporanController;
+
 
 use App\Http\Controllers\{
     HomeController,
@@ -43,6 +45,8 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])
     ->name('admin.karyawan.index');
+
+Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('laporan');
 
 Route::get('/admindataabsensi', [AdminDataAbsensiController::class, 'index'])
     ->name('admin.absensi.index');
@@ -82,6 +86,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf']);
 
     Route::resource('karyawan', KaryawanController::class);
-
-    Route::view('/laporan', 'laporan');
 });

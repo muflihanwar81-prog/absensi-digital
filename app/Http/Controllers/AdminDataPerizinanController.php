@@ -27,6 +27,6 @@ class AdminDataPerizinanController extends Controller
             ],
         ]);
 
-        return view('AdminDataPerizinan', compact('perizinan'));
+        return view('admin.AdminDataPerizinan', compact('perizinan'));
     }
 }

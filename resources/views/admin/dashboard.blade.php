@@ -2,142 +2,185 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-200 font-sans">
 
-<nav class="bg-white border-b shadow-sm px-6 py-3 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-gray-800">Absensi Digital</h1>
-    
-    <button id="dropdownButton" data-dropdown-toggle="dropdown" class="flex items-center gap-2 text-sm bg-gray-200 px-3 py-2 rounded-lg">
-        Admin
-    </button>
+<div class="flex h-screen">
 
-    <div id="dropdown" class="hidden bg-white rounded-lg shadow w-40">
-        <ul class="py-2 text-sm text-gray-700">
-            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a></li>
-            <form method="POST" action="/logout">
-    @csrf
-    <button class="block w-full text-left px-4 py-2 hover:bg-gray-100">
-        Logout
-    </button>
-</form>
-        </ul>
-    </div>
-</nav>
+@include('layouts.partials.sidebar')
 
-<div class="flex">
+    <main class="flex-1 p-5 overflow-y-auto">
 
-    <aside class="w-64 h-screen bg-white shadow-md p-5">
-        <ul class="space-y-4">
-            <li>
-                <a href="/dashboard" class="flex items-center p-2 rounded-lg bg-blue-100 text-blue-600">
-                    Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="/admindataKaryawan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
-                    Data Karyawan
-                </a>
-            </li>
-            <li>
-                <a href="/admindataAbsensi" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
-                    Absensi
-                </a>
-            </li>
-            <li>
-                <a href="/admindataperizinan" class="flex items-center p-2 rounded-lg hover:bg-gray-200">
-                    Laporan
-                </a>
-            </li>
-        </ul>
-    </aside>
+        <div class="bg-gray-300 px-6 py-4 flex justify-between items-center mb-5">
+            <h1 class="text-3xl font-bold">
+                CODIA-SYNC
+            </h1>
 
-    <main class="flex-1 p-6">
-
-        <h2 class="text-2xl font-semibold mb-6">Dashboard</h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-2xl shadow">
-                <h3 class="text-gray-500">Hadir</h3>
-                <p class="text-3xl font-bold text-green-500">20</p>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow">
-                <h3 class="text-gray-500">Izin</h3>
-                <p class="text-3xl font-bold text-yellow-500">5</p>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow">
-                <h3 class="text-gray-500">Alfa</h3>
-                <p class="text-3xl font-bold text-red-500">2</p>
+            <div class="font-semibold">
+                Hallo, Dio Kurniawan
             </div>
         </div>
 
-        <div class="bg-white p-6 rounded-2xl shadow mb-8">
-            <h3 class="text-lg font-semibold mb-4">Statistik Kehadiran Minggu Ini</h3>
-            <div class="h-64">
+        <div class="bg-gray-300 rounded-lg p-6 flex justify-between items-start mb-6">
+
+            <div>
+                <h2 class="text-5xl font-bold leading-tight">
+                    Selamat Datang di Manajemen <br>
+                    Kehadiran Karyawan
+                </h2>
+            </div>
+
+            <div class="text-right">
+                <div class="text-7xl font-bold">
+                    08<span class="mx-2">:</span>57<span class="text-3xl">25</span>
+                </div>
+
+                <div class="mt-6 text-gray-600">
+                    Tanggal 2 Nov 2026
+                </div>
+
+                <button class="mt-3 bg-gray-200 px-4 py-2 rounded-lg font-semibold">
+                    Semua Divisi
+                </button>
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-4 gap-5 mb-6">
+
+            <div class="bg-gray-300 rounded-lg flex flex-col justify-center items-center h-60">
+                <p class="text-xl font-semibold mb-3">Total Divisi</p>
+                <h1 class="text-8xl font-bold">6</h1>
+            </div>
+
+            <div class="col-span-3 grid grid-cols-3 gap-5">
+
+                <div class="bg-gray-300 rounded-lg p-5 text-center">
+                    <p class="font-semibold text-xl">Total Karyawan</p>
+                    <h1 class="text-6xl font-bold mt-2">300</h1>
+                </div>
+
+                <div class="bg-gray-300 rounded-lg p-5 text-center">
+                    <p class="font-semibold text-xl">Total Hadir</p>
+                    <h1 class="text-6xl font-bold mt-2">260</h1>
+                </div>
+
+                <div class="bg-gray-300 rounded-lg p-5 text-center">
+                    <p class="font-semibold text-xl">Total Terlambat</p>
+                    <h1 class="text-6xl font-bold mt-2">10</h1>
+                </div>
+
+                <div class="bg-gray-300 rounded-lg p-5 text-center">
+                    <p class="font-semibold text-xl">Total Alpha</p>
+                    <h1 class="text-6xl font-bold mt-2">20</h1>
+                </div>
+
+                <div class="bg-gray-300 rounded-lg p-5 text-center">
+                    <p class="font-semibold text-xl">Total Izin</p>
+                    <h1 class="text-6xl font-bold mt-2">5</h1>
+                </div>
+
+                <div class="bg-gray-300 rounded-lg p-5 text-center">
+                    <p class="font-semibold text-xl">Total Sakit</p>
+                    <h1 class="text-6xl font-bold mt-2">5</h1>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-4 gap-5">
+
+            <div class="col-span-3 bg-gray-300 rounded-lg p-5 h-96">
+
                 <canvas id="absensiChart"></canvas>
-            </div>
-        </div>
 
-        <div class="bg-white p-6 rounded-2xl shadow">
-            <h3 class="text-lg font-semibold mb-4">Data Absensi Terbaru</h3>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs uppercase bg-gray-100 text-gray-700">
-                        <tr>
-                            <th class="px-6 py-3">Nama</th>
-                            <th class="px-6 py-3">Tanggal</th>
-                            <th class="px-6 py-3">Status</th>
-                            <th class="px-6 py-3">Divisi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="px-6 py-4">Budi</td>
-                            <td class="px-6 py-4">2026-04-17</td>
-                            <td class="px-6 py-4 text-green-500">Hadir</td>
-                            <td class="px-6 py-4">IT</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="px-6 py-4">Siti</td>
-                            <td class="px-6 py-4">2026-04-17</td>
-                            <td class="px-6 py-4 text-yellow-500">Izin</td>
-                            <td class="px-6 py-4">HR</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
+
+            <div class="bg-gray-300 rounded-lg p-5">
+
+                <h2 class="text-2xl font-bold mb-5">
+                    Jalan Pintas:
+                </h2>
+
+                <div class="grid grid-cols-3 gap-4">
+
+                    <div class="bg-gray-100 h-24 rounded-lg"></div>
+                    <div class="bg-gray-100 h-24 rounded-lg"></div>
+                    <div class="bg-gray-100 h-24 rounded-lg"></div>
+
+                    <div class="bg-gray-100 h-24 rounded-lg"></div>
+                    <div class="bg-gray-100 h-24 rounded-lg"></div>
+                    <div class="bg-gray-100 h-24 rounded-lg"></div>
+
+                </div>
+
+            </div>
+
         </div>
 
     </main>
+
 </div>
 
 <script>
-    const ctx = document.getElementById('absensiChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar', // Bisa diganti 'line' atau 'pie'
-        data: {
-            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-            datasets: [{
-                label: 'Jumlah Karyawan Hadir',
-                data: [18, 19, 20, 17, 20, 15],
-                backgroundColor: 'rgba(59, 130, 246, 0.5)', // Warna biru Tailwind
-                borderColor: 'rgb(59, 130, 246)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+const ctx = document.getElementById('absensiChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [
+            'Sen',
+            'Sel',
+            'Rab',
+            'Kam',
+            'Jum',
+            'Sab',
+            'Min'
+        ],
+        datasets: [
+            {
+                label: 'ABSENSI 1',
+                data: [1,3,2,1,2,1,3],
+            },
+            {
+                label: 'ABSENSI 2',
+                data: [1,2,1,2,1,2,1],
+            },
+            {
+                label: 'ABSENSI 3',
+                data: [3,1,2,1,3,2,1],
             }
-        }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+</script>
+<script>
+function toggleSidebar() {
+
+    const sidebar = document.getElementById('sidebar');
+    const texts = document.querySelectorAll('.menu-text');
+    const title = document.getElementById('sidebarTitle');
+
+    sidebar.classList.toggle('w-64');
+    sidebar.classList.toggle('w-24');
+
+    texts.forEach(text => {
+        text.classList.toggle('hidden');
     });
+
+    title.classList.toggle('hidden');
+}
 </script>
 
 </body>
