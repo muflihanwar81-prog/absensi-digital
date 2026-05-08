@@ -52,8 +52,9 @@ class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all d
             </li>
 
             <li>
-                <a href="#"
-                    class="flex items-center gap-3 hover:bg-gray-300 px-4 py-3 rounded-lg">
+                <a href="/keloladivisi"
+    class="flex items-center gap-3 px-4 py-3 rounded-lg
+    {{ request()->is('keloladivisi') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
 
                     <span>🏢</span>
                     <span class="menu-text">Kelola Divisi</span>

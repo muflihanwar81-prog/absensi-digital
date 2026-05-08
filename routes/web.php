@@ -7,6 +7,8 @@ use App\Http\Controllers\AdminDataKaryawanController;
 use App\Http\Controllers\AdminDataAbsensiController;
 use App\Http\Controllers\AdminDataPerizinanController;
 use App\Http\Controllers\AdminLaporanController;
+use App\Http\Controllers\AdminKelolaDivisiController;
+
 
 
 use App\Http\Controllers\{
@@ -16,11 +18,27 @@ use App\Http\Controllers\{
     KaryawanController,
     TAController,
     ProdukController,
-    DashboardController,
+    AdminDashboardController,
     KaryawanDashboardController,
     IzinController,
     ProductController
 };
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+
+    // Data Karyawan
+    Route::resource('karyawan', AdminDataKaryawanController::class);
+
+    // Data Absensi
+    Route::resource('absensi', AdminDataAbsensiController::class);
+
+    // Data Perizinan
+    Route::resource('perizinan', AdminDataPerizinanController::class);
+});
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -48,6 +66,9 @@ Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])
 
 Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('laporan');
 
+Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
+    ->name('keloladivisi');
+
 Route::get('/admindataabsensi', [AdminDataAbsensiController::class, 'index'])
     ->name('admin.absensi.index');
 
@@ -56,7 +77,7 @@ Route::get('/admindataperizinan', [AdminDataPerizinanController::class, 'index']
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
         ->name('dashboard');
 
     Route::get('/dashboard_karyawan', [KaryawanDashboardController::class, 'index']);
@@ -77,9 +98,7 @@ Route::middleware(['auth'])->group(function () {
         return view('absensi');
     });
 
-    Route::post('/absensi/masuk', [DashboardController::class, 'masuk']);
-
-    Route::post('/absensi/pulang', [DashboardController::class, 'pulang']);
+   
 
     Route::get('/karyawan_absen', [AbsensiController::class, 'index']);
 
