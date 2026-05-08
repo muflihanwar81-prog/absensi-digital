@@ -7,10 +7,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-<<<<<<< HEAD
-=======
-        "barryvdh/laravel-dompdf": "^3.1",
->>>>>>> 9ec4a894840ead0e23b0906aea80a414521cc4fa
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
     },
@@ -54,12 +50,13 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
         ]
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "12.x-dev"
-        },
         "laravel": {
             "dont-discover": []
         }
@@ -69,10 +66,9 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "pestphp/pest-plugin": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
