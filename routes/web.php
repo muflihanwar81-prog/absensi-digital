@@ -20,9 +20,11 @@ use App\Http\Controllers\{
 use App\Http\Controllers\AdminDataKaryawanController;
 use App\Http\Controllers\AdminDataAbsensiController;
 use App\Http\Controllers\AdminDataPerizinanController;
+use App\Http\Controllers\DivisiDashboardController;
 
+Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])->name('divisi.dashboard');
 // Rute untuk Data Karyawan
-Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
+Route::get('/admin/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
 
 // Rute untuk Data Absensi
 Route::get('/admindataabsensi', [AdminDataAbsensiController::class, 'index'])->name('admin.absensi.index');
