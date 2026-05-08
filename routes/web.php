@@ -22,15 +22,26 @@ use App\Http\Controllers\AdminDataAbsensiController;
 use App\Http\Controllers\AdminDataPerizinanController;
 use App\Http\Controllers\DivisiDashboardController;
 
-Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])->name('divisi.dashboard');
-// Rute untuk Data Karyawan
-Route::get('/admin/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
+Route::prefix('divisi')->name('divisi.')->group(function () {
+    // URL ini akan menjadi: /divisi/dashboard
+    Route::get('/dashboard', [DivisiDashboardController::class, 'index'])->name('dashboard');
+    // URL ini akan menjadi: /divisi/karyawan
+    Route::get('/karyawan', [DivisiDashboardController::class, 'karyawan'])->name('karyawan');
+    Route::get('/riwayat-absensi', [DivisiDashboardController::class, 'riwayatAbsensi'])->name('riwayat-absensi');
+    Route::get('/data-perizinan', [DivisiDashboardController::class, 'perizinan'])->name('data-perizinan');
+    Route::get('/laporan', [DivisiDashboardController::class, 'laporan'])->name('laporan');
+});
 
-// Rute untuk Data Absensi
-Route::get('/admindataabsensi', [AdminDataAbsensiController::class, 'index'])->name('admin.absensi.index');
-
-// Rute untuk Data Perizinan
-Route::get('/admindataperizinan', [AdminDataPerizinanController::class, 'index'])->name('admin.perizinan.index');
+Route::prefix('admin')->name('admin.')->group(function () {
+    // URL ini akan menjadi: /admin/admindatakaryawan
+    Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
+    
+    // URL ini akan menjadi: /admin/admindataabsensi
+    Route::get('/admindataabsensi', [AdminDataAbsensiController::class, 'index'])->name('admin.absensi.index');
+    
+    // URL ini akan menjadi: /admin/admindataperizinan
+    Route::get('/admindataperizinan', [AdminDataPerizinanController::class, 'index'])->name('admin.perizinan.index');
+});
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/contact', [HomeController::class, 'contact']);

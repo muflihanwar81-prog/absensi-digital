@@ -8,14 +8,14 @@
             <ul class="text-sm font-semibold">
                 <li><a href="#" class="block px-8 py-3 text-white hover:bg-blue-600">Dashboard</a></li>
                 <li class="{{ Route::is('admin.karyawan.*') ? 'bg-white text-blue-500 border-l-4 border-gray-600' : 'text-white hover:bg-blue-600' }}">
-                    <a href="{{ route('admin.karyawan.index') }}" class="block px-8 py-3">Data Karyawan</a>
+                    <a href="{{ route('karyawan.index') }}" class="block px-8 py-3">Data Karyawan</a>
                 </li>
                 <li><a href="#" class="block px-8 py-3 text-white hover:bg-blue-600">Kelola Divisi</a></li>
-                <li class="{{ Route::is('admin.absensi.*') ? 'bg-white text-blue-500 border-l-4 border-gray-600' : 'text-white hover:bg-blue-600' }}">
-                    <a href="{{ route('admin.absensi.index') }}" class="block px-8 py-3">Data Absensi</a>
+                <li class="{{ Route::is('absensi.*') ? 'bg-white text-blue-500 border-l-4 border-gray-600' : 'text-white hover:bg-blue-600' }}">
+                    <a href="{{ route('absensi.index') }}" class="block px-8 py-3">Data Absensi</a>
                 </li>
                 <li class="{{ Route::is('admin.perizinan.*') ? 'bg-white text-blue-500 border-l-4 border-gray-600' : 'text-white hover:bg-blue-600' }}">
-                    <a href="{{ route('admin.perizinan.index') }}" class="block px-8 py-3">Data Perizinan</a>
+                    <a href="{{ route('perizinan.index') }}" class="block px-8 py-3">Data Perizinan</a>
                 </li>
             </ul>
         </nav>
