@@ -14,4 +14,8 @@ export default defineConfig({
             ignored: ['**/storage/framework/views/**'],
         },
     },
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> b4d5780c4ad6e0ca8eb35bbf52c0990781370738

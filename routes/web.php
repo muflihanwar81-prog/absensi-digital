@@ -8,7 +8,7 @@ use App\Http\Controllers\AdminDataAbsensiController;
 use App\Http\Controllers\AdminDataPerizinanController;
 use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\AdminKelolaDivisiController;
-
+use App\Http\Controllers\DivisiDashboardController;
 
 
 use App\Http\Controllers\{
@@ -23,12 +23,18 @@ use App\Http\Controllers\{
     IzinController,
     ProductController
 };
+
 Route::prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
+
+
+Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])->name('divisi.dashboard');
+// Rute untuk Data Karyawan
+Route::get('/admin/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
 
     // Data Karyawan
     Route::resource('karyawan', AdminDataKaryawanController::class);
