@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Karyawan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,22 +11,12 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-      @var list<string>
-
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
     ];
-
-   protected $fillable = [
-    'name',
-    'email',
-    'password',
-    'role'
-];
-
 
     protected $hidden = [
         'password',
@@ -41,16 +31,8 @@ class User extends Authenticatable
         ];
     }
 
-
     public function karyawan(): HasOne
     {
         return $this->hasOne(Karyawan::class);
     }
 }
-
-    public function karyawan()
-{
-    return $this->hasOne(Karyawan::class);
-}
-}
-

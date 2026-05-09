@@ -2,25 +2,37 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Absensi;
+use App\Models\User;
 
 class Karyawan extends Model
 {
-    protected $fillable = [
-        'nip',
-        'nama',
-        'jabatan',
-        'divisi',
-        'user_id'
-    ];
+    use HasFactory;
 
-    // 🔹 Relasi ke User
+    protected $table = 'karyawans';
+
+    // app/Models/Karyawan.php
+
+protected $fillable = [
+    'nip',
+    'nama',
+    'divisi_id',
+    'divisi',
+    'jabatan',
+    'status',
+    'password',
+];
+
+protected $hidden = [
+    'password',
+];
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
-    // 🔹 Relasi ke Absensi
     public function absensi()
     {
         return $this->hasMany(Absensi::class);

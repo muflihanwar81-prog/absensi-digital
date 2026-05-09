@@ -3,14 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-use App\Http\Controllers\AdminDataKaryawanController;
-use App\Http\Controllers\AdminDataAbsensiController;
-use App\Http\Controllers\AdminDataPerizinanController;
-use App\Http\Controllers\AdminLaporanController;
-use App\Http\Controllers\AdminKelolaDivisiController;
-use App\Http\Controllers\DivisiDashboardController;
-
-
 use App\Http\Controllers\{
     HomeController,
     AbsensiController,
@@ -21,39 +13,19 @@ use App\Http\Controllers\{
     AdminDashboardController,
     KaryawanDashboardController,
     IzinController,
-    ProductController
+    ProductController,
+    AdminDataKaryawanController,
+    AdminDataAbsensiController,
+    AdminDataPerizinanController,
+    AdminLaporanController,
+    AdminKelolaDivisiController,
+    DivisiDashboardController
 };
 
-Route::prefix('admin')->name('admin.')->group(function () {
-
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
-
-
-Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])->name('divisi.dashboard');
-// Rute untuk Data Karyawan
-Route::get('/admin/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])->name('admin.karyawan.index');
-
-    // Data Karyawan
-    Route::resource('karyawan', AdminDataKaryawanController::class);
-
-    // Data Absensi
-    Route::resource('absensi', AdminDataAbsensiController::class);
-
-    // Data Perizinan
-    Route::resource('perizinan', AdminDataPerizinanController::class);
-});
-
 Route::get('/', [HomeController::class, 'index']);
-
 Route::get('/contact', [HomeController::class, 'contact']);
-
 Route::get('/products', [ProductController::class, 'index']);
-
 Route::get('/tecno_view', [TAController::class, 'tampilkan']);
-
 Route::get('/test', [ProdukController::class, 'test']);
 
 Route::get('/login', function () {
@@ -67,19 +39,48 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
-Route::get('/admindatakaryawan', [AdminDataKaryawanController::class, 'index'])
-    ->name('admin.karyawan.index');
+Route::prefix('admin')->name('admin.')->group(function () {
 
-Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('laporan');
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
-Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
+    Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])
+        ->name('divisi.dashboard');
+
+    Route::get('/karyawan', [AdminDataKaryawanController::class, 'index'])
+        ->name('karyawan');
+
+    Route::resource('karyawan', AdminDataKaryawanController::class)
+        ->except(['index']);
+
+    Route::resource('absensi', AdminDataAbsensiController::class);
+
+    Route::resource('perizinan', AdminDataPerizinanController::class);
+
+    Route::get('/laporan', [AdminLaporanController::class, 'index'])
+        ->name('laporan');
+
+    Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
     ->name('keloladivisi');
 
-Route::get('/admindataabsensi', [AdminDataAbsensiController::class, 'index'])
-    ->name('admin.absensi.index');
+Route::get('/keloladivisi/{id}/edit', [AdminKelolaDivisiController::class, 'edit'])
+    ->name('keloladivisi.edit');
 
-Route::get('/admindataperizinan', [AdminDataPerizinanController::class, 'index'])
-    ->name('admin.perizinan.index');
+Route::put('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'update'])
+    ->name('keloladivisi.update');
+
+Route::delete('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'destroy'])
+    ->name('keloladivisi.destroy');
+
+    Route::post('/divisi', [AdminKelolaDivisiController::class, 'store'])
+    ->name('divisi.store');
+
+    Route::post('keloladivisi/lokasi', [AdminKelolaDivisiController::class, 'updateLokasi'])
+    ->name('divisi.lokasi');
+    Route::post('/lokasi/store', [AdminKelolaDivisiController::class, 'storeLokasi'])
+    ->name('lokasi.store');
+});
 
 Route::middleware(['auth'])->group(function () {
 
@@ -103,8 +104,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/absensi', function () {
         return view('absensi');
     });
-
-   
 
     Route::get('/karyawan_absen', [AbsensiController::class, 'index']);
 

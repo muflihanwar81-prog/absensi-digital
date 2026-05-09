@@ -31,9 +31,10 @@ class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all d
         <ul class="space-y-2 px-4">
 
             <li>
-                <a <a href="/dashboard"
-    class="flex items-center gap-3 px-4 py-3 rounded-lg
-    {{ request()->is('dashboard') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
+                <a href="/dashboard"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg
+                    {{ request()->is('dashboard') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
+
                     <span>🏠</span>
                     <span class="menu-text">Dashboard</span>
 
@@ -41,9 +42,9 @@ class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all d
             </li>
 
             <li>
-                <a href="/admindatakaryawan"
-    class="flex items-center gap-3 px-4 py-3 rounded-lg
-    {{ request()->is('admindatakaryawan') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
+                <a href="{{ route('admin.karyawan') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg
+                    {{ request()->is('admin/karyawan*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
 
                     <span>👨‍💼</span>
                     <span class="menu-text">Data Karyawan</span>
@@ -52,9 +53,10 @@ class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all d
             </li>
 
             <li>
-                <a href="/keloladivisi"
-    class="flex items-center gap-3 px-4 py-3 rounded-lg
-    {{ request()->is('keloladivisi') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
+
+                <a href="{{ route('admin.keloladivisi') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg
+                    {{ request()->is('admin/keloladivisi*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
 
                     <span>🏢</span>
                     <span class="menu-text">Kelola Divisi</span>
@@ -63,9 +65,10 @@ class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all d
             </li>
 
             <li>
-                <a href="/admindataabsensi"
-    class="flex items-center gap-3 px-4 py-3 rounded-lg
-    {{ request()->is('admindatabsensi') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
+                <a href="{{ route('admin.absensi.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg
+                    {{ request()->is('admin/absensi*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
+
                     <span>📅</span>
                     <span class="menu-text">Data Kehadiran</span>
 
@@ -73,9 +76,9 @@ class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all d
             </li>
 
             <li>
-                <a href="/admindataperizinan"
-    class="flex items-center gap-3 px-4 py-3 rounded-lg
-    {{ request()->is('admindataperizinan') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
+                <a href="{{ route('admin.perizinan.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg
+                    {{ request()->is('admin/perizinan*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
 
                     <span>📄</span>
                     <span class="menu-text">Data Perizinan</span>
