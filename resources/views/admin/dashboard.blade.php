@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,11 +13,11 @@
 
 <body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
 
-    <div class="flex h-screen">
+    <div class="flex min-h-screen">
 
         @include('layouts.sidebar')
 
-        <main class="flex-1 p-5 overflow-y-auto">
+        <main class="flex-1 p-5 overflow-y-auto min-w-0">
 
             <!-- HEADER -->
             @include('components.header_admin')
@@ -56,7 +56,7 @@
             </div>
 
             <!-- STATISTICS -->
-            <div class="grid grid-cols-4 gap-5 mb-6">
+            <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 mb-6 w-full">
 
                 <!-- TOTAL DIVISI -->
                 <div
@@ -70,7 +70,7 @@
                 </div>
 
                 <!-- OTHER CARDS -->
-                <div class="col-span-3 grid grid-cols-3 gap-5">
+                <div class="xl:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-full">
 
                     <div
                         class="bg-white rounded-2xl p-5 text-center shadow-lg border border-blue-100 hover:shadow-xl transition">
@@ -137,11 +137,10 @@
             </div>
 
             <!-- CHART & SHORTCUT -->
-            <div class="grid grid-cols-4 gap-5">
+            <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 w-full">
 
                 <!-- CHART -->
-                <div
-                    class="col-span-3 bg-white rounded-3xl shadow-2xl border border-blue-100 p-6 h-96">
+                <div class="xl:col-span-3 bg-white rounded-3xl shadow-2xl border border-blue-100 p-6 h-96">
 
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-slate-800">
@@ -156,48 +155,29 @@
 
                     <canvas id="absensiChart"></canvas>
 
-                </div>
+</div>
 
-                <!-- SHORTCUT -->
-                <div
-                    class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-5">
+    <!-- SHORTCUT -->
+    <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-5 min-w-0">
 
-                    <h2 class="text-2xl font-bold mb-5 text-slate-800">
-                        Jalan Pintas
-                    </h2>
+        <h2 class="text-2xl font-bold mb-5 text-slate-800">
+            Jalan Pintas
+        </h2>
 
-                    <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-3 gap-4">
 
-                        <div
-                            class="bg-gradient-to-br from-blue-100 to-blue-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition">
-                        </div>
+            <div class="bg-gradient-to-br from-blue-100 to-blue-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
+            <div class="bg-gradient-to-br from-indigo-100 to-indigo-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
+            <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
+            <div class="bg-gradient-to-br from-sky-100 to-sky-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
+            <div class="bg-gradient-to-br from-blue-100 to-indigo-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
+            <div class="bg-gradient-to-br from-indigo-100 to-purple-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
 
-                        <div
-                            class="bg-gradient-to-br from-indigo-100 to-indigo-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition">
-                        </div>
+        </div>
 
-                        <div
-                            class="bg-gradient-to-br from-cyan-100 to-cyan-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition">
-                        </div>
+    </div>
 
-                        <div
-                            class="bg-gradient-to-br from-sky-100 to-sky-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition">
-                        </div>
-
-                        <div
-                            class="bg-gradient-to-br from-blue-100 to-indigo-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition">
-                        </div>
-
-                        <div
-                            class="bg-gradient-to-br from-indigo-100 to-purple-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition">
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+</div>
         </main>
 
     </div>
@@ -263,24 +243,6 @@
                 }
             }
         });
-    </script>
-
-    <!-- SIDEBAR -->
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const texts = document.querySelectorAll('.menu-text');
-            const title = document.getElementById('sidebarTitle');
-
-            sidebar.classList.toggle('w-64');
-            sidebar.classList.toggle('w-24');
-
-            texts.forEach(text => {
-                text.classList.toggle('hidden');
-            });
-
-            title.classList.toggle('hidden');
-        }
     </script>
 
     <!-- CLOCK -->
