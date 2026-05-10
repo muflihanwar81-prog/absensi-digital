@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Divisi;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminDataKaryawanController extends Controller
 {
@@ -64,10 +65,12 @@ class AdminDataKaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip'     => 'required|unique:karyawans,nip',
-            'nama'    => 'required',
-            'divisi'  => 'required',
-            'jabatan' => 'required',
+            'nip'      => 'required|unique:karyawans,nip',
+            'nama'     => 'required',
+            'email'    => 'required|email|unique:karyawans,email',
+            'password' => 'required|min:6',
+            'divisi'   => 'required',
+            'jabatan'  => 'required',
         ]);
 
         $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
@@ -75,6 +78,8 @@ class AdminDataKaryawanController extends Controller
         $karyawan = new Karyawan();
         $karyawan->nip = $request->nip;
         $karyawan->nama = $request->nama;
+        $karyawan->email = $request->email;
+        $karyawan->password = Hash::make($request->password);
         $karyawan->divisi_id = $divisi ? $divisi->id : null;
         $karyawan->divisi = $request->divisi;
         $karyawan->jabatan = $request->jabatan;
@@ -85,7 +90,6 @@ class AdminDataKaryawanController extends Controller
             $karyawan->jam_keluar = $divisi->jam_keluar;
         }
 
-        $karyawan->password = bcrypt('12345678');
         $karyawan->save();
 
         return redirect()
@@ -103,19 +107,21 @@ class AdminDataKaryawanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nip'     => 'required|unique:karyawans,nip,' . $id,
-            'nama'    => 'required',
-            'divisi'  => 'required',
-            'jabatan' => 'required',
-            'status'  => 'nullable',
+            'nip'      => 'required|unique:karyawans,nip,' . $id,
+            'nama'     => 'required',
+            'email'    => 'required|email|unique:karyawans,email,' . $id,
+            'divisi'   => 'required',
+            'jabatan'  => 'required',
+            'status'   => 'nullable',
+            'password' => 'nullable|min:6',
         ]);
 
         $karyawan = Karyawan::findOrFail($id);
-
         $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
 
         $karyawan->nip = $request->nip;
         $karyawan->nama = $request->nama;
+        $karyawan->email = $request->email;
         $karyawan->divisi_id = $divisi ? $divisi->id : null;
         $karyawan->divisi = $request->divisi;
         $karyawan->jabatan = $request->jabatan;
@@ -124,6 +130,10 @@ class AdminDataKaryawanController extends Controller
         if ($divisi) {
             $karyawan->jam_masuk = $divisi->jam_masuk;
             $karyawan->jam_keluar = $divisi->jam_keluar;
+        }
+
+        if ($request->filled('password')) {
+            $karyawan->password = Hash::make($request->password);
         }
 
         $karyawan->save();

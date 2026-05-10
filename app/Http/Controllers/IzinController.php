@@ -37,7 +37,8 @@ class IzinController extends Controller
 
         $request->validate([
             'kategori' => 'required|string|max:255',
-            'file_tambahan' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_tambahan' => 'nullable|file|mimes:pdf,docx,docx,jpg,jpeg,png|max:10240',
+
         ]);
 
         $karyawan = Karyawan::findOrFail($karyawanId);

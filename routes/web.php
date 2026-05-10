@@ -47,80 +47,97 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
-Route::middleware(['auth'])
-    ->name('admin.')
-    ->group(function () {
+Route::middleware(['auth'])->name('admin.')->group(function () {
 
-        Route::get('/dashboard', function () {
-            $totalDivisi = Divisi::count();
-            $totalKaryawan = Karyawan::count();
-            $totalAbsensi = Absensi::count();
-            $totalPerizinan = Perizinan::count();
+    Route::get('/dashboard', function () {
+        $totalDivisi = Divisi::count();
+        $totalKaryawan = Karyawan::count();
+        $totalAbsensi = Absensi::count();
+        $totalPerizinan = Perizinan::count();
 
-            return view('admin.dashboard', compact(
-                'totalDivisi',
-                'totalKaryawan',
-                'totalAbsensi',
-                'totalPerizinan'
-            ));
-        })->name('dashboard');
+        return view('admin.dashboard', compact(
+            'totalDivisi',
+            'totalKaryawan',
+            'totalAbsensi',
+            'totalPerizinan'
+        ));
+    })->name('dashboard');
 
-        Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])
-            ->name('divisi.dashboard');
+    Route::get('/karyawan', [AdminDataKaryawanController::class, 'index'])
+        ->name('karyawan');
 
-        Route::get('/karyawan', [AdminDataKaryawanController::class, 'index'])
-            ->name('karyawan');
+    Route::get('/karyawan/create', [AdminDataKaryawanController::class, 'create'])
+        ->name('karyawan.create');
 
-        Route::get('/karyawan/create', [AdminDataKaryawanController::class, 'create'])
-            ->name('karyawan.create');
+    Route::post('/karyawan', [AdminDataKaryawanController::class, 'store'])
+        ->name('karyawan.store');
 
-        Route::post('/karyawan', [AdminDataKaryawanController::class, 'store'])
-            ->name('karyawan.store');
+    Route::get('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'show'])
+        ->name('karyawan.show');
 
-        Route::get('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'show'])
-            ->name('karyawan.show');
+    Route::get('/karyawan/{karyawan}/edit', [AdminDataKaryawanController::class, 'edit'])
+        ->name('karyawan.edit');
 
-        Route::get('/karyawan/{karyawan}/edit', [AdminDataKaryawanController::class, 'edit'])
-            ->name('karyawan.edit');
+    Route::put('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'update'])
+        ->name('karyawan.update');
 
-        Route::put('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'update'])
-            ->name('karyawan.update');
+    Route::delete('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'destroy'])
+        ->name('karyawan.destroy');
 
-        Route::delete('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'destroy'])
-            ->name('karyawan.destroy');
+    Route::resource('absensi', AdminDataAbsensiController::class)
+        ->names('absensi');
 
-        Route::resource('absensi', AdminDataAbsensiController::class)
-            ->names('absensi');
+    Route::resource('perizinan', AdminDataPerizinanController::class)
+        ->names('perizinan');
 
-        Route::resource('perizinan', AdminDataPerizinanController::class)
-            ->names('perizinan');
+    Route::get('/laporan-admin', [AdminLaporanController::class, 'index'])
+        ->name('laporan');
 
-        Route::get('/laporan', [AdminLaporanController::class, 'index'])
-            ->name('laporan');
+    Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
+        ->name('keloladivisi');
 
-        Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
-            ->name('keloladivisi');
+    Route::post('/divisi', [AdminKelolaDivisiController::class, 'store'])
+        ->name('divisi.store');
 
-        Route::post('/divisi', [AdminKelolaDivisiController::class, 'store'])
-            ->name('divisi.store');
+    Route::get('/keloladivisi/{id}/edit', [AdminKelolaDivisiController::class, 'edit'])
+        ->name('keloladivisi.edit');
 
-        Route::get('/keloladivisi/{id}/edit', [AdminKelolaDivisiController::class, 'edit'])
-            ->name('keloladivisi.edit');
+    Route::put('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'update'])
+        ->name('keloladivisi.update');
 
-        Route::put('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'update'])
-            ->name('keloladivisi.update');
+    Route::delete('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'destroy'])
+        ->name('keloladivisi.destroy');
 
-        Route::delete('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'destroy'])
-            ->name('keloladivisi.destroy');
+    Route::post('/keloladivisi/lokasi', [AdminKelolaDivisiController::class, 'updateLokasi'])
+        ->name('divisi.lokasi');
 
-        Route::post('/keloladivisi/lokasi', [AdminKelolaDivisiController::class, 'updateLokasi'])
-            ->name('divisi.lokasi');
+    Route::post('/lokasi/store', [AdminKelolaDivisiController::class, 'storeLokasi'])
+        ->name('lokasi.store');
+});
 
-        Route::post('/lokasi/store', [AdminKelolaDivisiController::class, 'storeLokasi'])
-            ->name('lokasi.store');
-    });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/divisi-dashboard', [DivisiDashboardController::class, 'index'])
+        ->name('divisi.dashboard');
+
+    Route::get('/data-karyawan', function () {
+        return view('divisi.DataKaryawanDivisi');
+    })->name('divisi.karyawan');
+
+    Route::get('/riwayat-absensi', function () {
+        return view('divisi.RiwayatAbsensiDivisi');
+    })->name('divisi.riwayat-absensi');
+
+    Route::get('/data-perizinan', function () {
+        return view('divisi.DivisiPerizinan');
+    })->name('divisi.data-perizinan');
+
+    Route::get('/laporan', function () {
+        return view('divisi.DivisiLaporan');
+    })->name('divisi.laporan');
+});
 
 Route::middleware(['karyawan.auth'])->group(function () {
+
     Route::get('/dashboard_karyawan', [KaryawanDashboardController::class, 'index'])
         ->name('karyawan.dashboard');
 

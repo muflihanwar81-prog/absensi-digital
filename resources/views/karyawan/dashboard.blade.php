@@ -120,34 +120,43 @@
                                     <th class="border border-black px-4 py-2 text-left">Keterangan</th>
                                 </tr>
                             </thead>
+
                             <tbody>
-                                @forelse($aktivitas ?? [] as $item)
-                                    <tr>
-                                        <td class="border border-black px-4 py-2">
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td class="border border-black px-4 py-2">
-                                            {{ $item->nama ?? session('karyawan_nama') }}
-                                        </td>
-                                        <td class="border border-black px-4 py-2">
-                                            {{ $item->tanggal ?? '-' }}
-                                        </td>
-                                        <td class="border border-black px-4 py-2">
-                                            {{ $item->jam_masuk ?? $item->waktu ?? '-' }}
-                                        </td>
-                                        <td class="border border-black px-4 py-2">
-                                            {{ $item->status ?? '-' }}
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5"
-                                            class="border border-black py-10 text-center text-gray-500">
-                                            Belum ada aktivitas hari ini.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
+    @php
+        $aktivitas = $aktivitas ?? collect();
+    @endphp
+
+    @forelse($aktivitas as $item)
+        <tr>
+            <td class="border border-black px-4 py-2">
+                {{ $loop->iteration }}
+            </td>
+
+            <td class="border border-black px-4 py-2">
+                {{ data_get($item, 'nama', session('karyawan_nama')) }}
+            </td>
+
+            <td class="border border-black px-4 py-2">
+                {{ data_get($item, 'tanggal', '-') }}
+            </td>
+
+            <td class="border border-black px-4 py-2">
+                {{ data_get($item, 'jam_masuk', data_get($item, 'waktu', '-')) }}
+            </td>
+
+            <td class="border border-black px-4 py-2">
+                {{ data_get($item, 'status', '-') }}
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="5"
+                class="border border-black py-10 text-center text-gray-500">
+                Belum ada aktivitas hari ini.
+            </td>
+        </tr>
+    @endforelse
+</tbody>
                         </table>
                     </div>
                 </div>

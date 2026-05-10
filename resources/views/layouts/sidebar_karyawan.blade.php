@@ -9,23 +9,23 @@
         <nav class="p-4 space-y-2">
 
             <a
-                href="{{ route('karyawan.dashboard') }}"
+                href="{{ url('/dashboard_karyawan') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded font-semibold text-gray-800
-                {{ request()->routeIs('karyawan.dashboard') ? 'bg-gray-300' : 'hover:bg-gray-300' }}">
+                {{ request()->is('dashboard_karyawan') ? 'bg-gray-300' : 'hover:bg-gray-300' }}">
                 Dashboard
             </a>
 
             <a
-                href="{{ route('karyawan.kehadiran') }}"
+                href="{{ url('/karyawan_absen') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded font-semibold text-gray-800
-                {{ request()->routeIs('karyawan.kehadiran') ? 'bg-gray-300' : 'hover:bg-gray-300' }}">
+                {{ request()->is('karyawan_absen') ? 'bg-gray-300' : 'hover:bg-gray-300' }}">
                 Data Kehadiran
             </a>
 
             <a
-                href="{{ route('karyawan.perizinan') }}"
+                href="{{ url('/izin') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded font-semibold text-gray-800
-                {{ request()->routeIs('karyawan.perizinan') ? 'bg-gray-300' : 'hover:bg-gray-300' }}">
+                {{ request()->is('izin') ? 'bg-gray-300' : 'hover:bg-gray-300' }}">
                 Pengajuan Izin
             </a>
 
@@ -48,6 +48,14 @@
                 </p>
             </div>
         </div>
+
+        <form action="{{ route('logout') }}" method="POST" class="mt-4">
+            @csrf
+            <button type="submit"
+                class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded font-semibold">
+                Logout
+            </button>
+        </form>
     </div>
 
 </aside>

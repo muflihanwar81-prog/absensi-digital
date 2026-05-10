@@ -213,40 +213,61 @@
                 @csrf
 
                 <div class="space-y-6">
-                    <div class="grid grid-cols-4 items-center gap-4">
-                        <label class="font-bold">NIP</label>
-                        <input type="text" name="nip"
-                            class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none">
-                    </div>
+    <div class="grid grid-cols-4 items-center gap-4">
+        <label class="font-bold">NIP</label>
+        <input type="text"
+               name="nip"
+               class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none"
+               required>
+    </div>
 
-                    <div class="grid grid-cols-4 items-center gap-4">
-                        <label class="font-bold">Nama</label>
-                        <input type="text" name="nama"
-                            class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none">
-                    </div>
+    <div class="grid grid-cols-4 items-center gap-4">
+        <label class="font-bold">Nama</label>
+        <input type="text"
+               name="nama"
+               class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none"
+               required>
+    </div>
 
-                    <div class="grid grid-cols-4 items-center gap-4">
-                        <label class="font-bold">Divisi</label>
+    <div class="grid grid-cols-4 items-center gap-4">
+        <label class="font-bold">Email</label>
+        <input type="email"
+               name="email"
+               class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none"
+               required>
+    </div>
 
-                        <select name="divisi"
-                            class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none"
-                            required>
-                            <option value="">Pilih Divisi</option>
+    <div class="grid grid-cols-4 items-center gap-4">
+        <label class="font-bold">Password</label>
+        <input type="password"
+               name="password"
+               class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none"
+               required>
+    </div>
 
-                            @foreach($daftarDivisi as $divisi)
-                            <option value="{{ $divisi }}">
-                                {{ $divisi }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
+    <div class="grid grid-cols-4 items-center gap-4">
+        <label class="font-bold">Divisi</label>
+        <select name="divisi"
+                class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none"
+                required>
+            <option value="">Pilih Divisi</option>
 
-                    <div class="grid grid-cols-4 items-center gap-4">
-                        <label class="font-bold">Jabatan</label>
-                        <input type="text" name="jabatan"
-                            class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none">
-                    </div>
-                </div>
+            @foreach($daftarDivisi as $divisi)
+                <option value="{{ $divisi }}">
+                    {{ $divisi }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="grid grid-cols-4 items-center gap-4">
+        <label class="font-bold">Jabatan</label>
+        <input type="text"
+               name="jabatan"
+               class="col-span-3 bg-gray-300 rounded px-4 py-3 outline-none"
+               required>
+    </div>
+</div>
 
                 <div class="border-t border-gray-400 mt-10 pt-6 flex gap-4">
                     <button type="submit"

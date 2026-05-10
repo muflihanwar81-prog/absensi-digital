@@ -17,15 +17,25 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        // Login admin
-        $admin = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
-        if ($admin && Hash::check($request->password, $admin->password)) {
-            Auth::login($admin);
-            return redirect('/dashboard');
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            if ($user->role === 'divisi') {
+                return redirect('/divisi-dashboard');
+            }
+
+            if ($user->role === 'admin') {
+                return redirect('/dashboard');
+            }
+
+            Auth::logout();
+
+            return back()->with('error', 'Role tidak dikenali.');
         }
 
-        // Login karyawan
         $karyawan = Karyawan::where('email', $request->email)->first();
 
         if ($karyawan && Hash::check($request->password, $karyawan->password)) {
