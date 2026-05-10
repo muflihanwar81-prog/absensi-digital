@@ -3,85 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan</title>
+    <title>Laporan - CODIA-SYNC</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
 
-<div class="flex">
+<div class="flex min-h-screen">
 
+    {{-- SIDEBAR --}}
     @include('layouts.sidebar')
 
-    <main class="flex-1 p-6">
+    {{-- MAIN CONTENT --}}
+    <main class="flex-1 overflow-y-auto">
 
-        <div class="bg-white shadow rounded-lg overflow-hidden">
+        {{-- HEADER --}}
+        <div class="bg-white border-b border-blue-100 shadow-sm">
+            <div class="flex items-center gap-5 px-6 py-4">
+                <div
+                    class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
+                </div>
 
-            <div class="bg-gray-300 p-5">
-                <h1 class="text-3xl font-bold">
-                    Laporan
-                </h1>
+                <div>
+                    <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold">
+                        Admin Panel
+                    </p>
+
+                    <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight">
+                        CODIA-SYNC
+                    </h1>
+                </div>
             </div>
+        </div>
 
-            <div class="p-5 flex flex-wrap gap-3 items-center">
+        {{-- PAGE TITLE --}}
+        <div class="bg-white border-b border-blue-100 px-6 py-6 shadow-sm">
+            <p class="text-blue-600 font-semibold uppercase tracking-widest text-sm mb-2">
+                Reporting System
+            </p>
 
-                <input type="text"
-                    placeholder="Pencarian.."
-                    class="border px-4 py-2 rounded-lg">
+            <h1 class="text-5xl font-extrabold text-slate-800 tracking-tight">
+                Laporan
+            </h1>
 
-                <input type="date"
-                    class="border px-4 py-2 rounded-lg">
+            <p class="text-slate-500 mt-2 text-lg">
+                Kelola dan ekspor laporan absensi karyawan.
+            </p>
+        </div>
 
-                <span>S/D</span>
+        {{-- CONTENT --}}
+        <div class="p-6">
 
-                <input type="date"
-                    class="border px-4 py-2 rounded-lg">
+            {{-- FILTER CARD --}}
+            <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-6 mb-6">
 
-                <button
-                    class="bg-gray-300 px-5 py-2 rounded-lg hover:bg-gray-400">
+                <div class="flex flex-wrap gap-4 items-center">
 
-                    Filter
-                </button>
+                    {{-- SEARCH --}}
+                    <input
+                        type="text"
+                        placeholder="Pencarian..."
+                        class="bg-slate-50 border border-blue-100 px-5 py-3 rounded-2xl outline-none w-72 text-slate-700 placeholder-slate-400 shadow-sm focus:ring-2 focus:ring-blue-200">
 
-                <div class="ml-auto flex gap-3">
+                    {{-- DATE START --}}
+                    <input
+                        type="date"
+                        class="bg-slate-50 border border-blue-100 px-5 py-3 rounded-2xl outline-none text-slate-700 shadow-sm focus:ring-2 focus:ring-blue-200">
 
+                    {{-- LABEL --}}
+                    <span class="font-semibold text-slate-500 px-2">
+                        S/D
+                    </span>
+
+                    {{-- DATE END --}}
+                    <input
+                        type="date"
+                        class="bg-slate-50 border border-blue-100 px-5 py-3 rounded-2xl outline-none text-slate-700 shadow-sm focus:ring-2 focus:ring-blue-200">
+
+                    {{-- FILTER BUTTON --}}
                     <button
-                        class="bg-gray-300 px-5 py-2 rounded-lg hover:bg-gray-400">
-
-                        Excel
+                        class="bg-white border border-blue-100 shadow-lg px-8 py-3 rounded-2xl text-lg font-bold text-slate-700 hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
+                        Filter
                     </button>
 
-                    <button
-                        class="bg-gray-300 px-5 py-2 rounded-lg hover:bg-gray-400">
+                    {{-- EXPORT BUTTONS --}}
+                    <div class="ml-auto flex gap-4">
 
-                        PDF
-                    </button>
+                        {{-- EXCEL --}}
+                        <button
+                            class="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-2xl shadow-xl font-bold hover:shadow-2xl hover:scale-105 transition duration-300">
+                            Excel
+                        </button>
+
+                        {{-- PDF --}}
+                        <button
+                            class="bg-gradient-to-r from-red-500 to-rose-600 text-white px-6 py-3 rounded-2xl shadow-xl font-bold hover:shadow-2xl hover:scale-105 transition duration-300">
+                            PDF
+                        </button>
+
+                    </div>
 
                 </div>
 
             </div>
 
-            {{-- TABLE --}}
-            <div class="p-5">
+            {{-- TABLE CARD --}}
+            <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-blue-100">
 
-                <div class="overflow-x-auto border rounded-lg">
+                {{-- TABLE HEADER --}}
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+                    <h2 class="text-2xl font-extrabold text-white">
+                        Data Laporan
+                    </h2>
+                </div>
+
+                {{-- TABLE --}}
+                <div class="overflow-x-auto">
 
                     <table class="w-full border-collapse">
 
-                        <thead class="bg-gray-200">
+                        <thead
+                            class="bg-slate-50 border-b border-slate-200 text-slate-700 text-sm uppercase tracking-wider">
 
                             <tr>
-
-                                <th class="border px-4 py-2">No</th>
-                                <th class="border px-4 py-2">NIP</th>
-                                <th class="border px-4 py-2">Nama</th>
-                                <th class="border px-4 py-2">Divisi</th>
-                                <th class="border px-4 py-2">Jabatan</th>
-                                <th class="border px-4 py-2">Jam Masuk</th>
-                                <th class="border px-4 py-2">Jam Keluar</th>
-                                <th class="border px-4 py-2">Tanggal</th>
-
+                                <th class="px-4 py-4 text-left font-bold">No</th>
+                                <th class="px-4 py-4 text-left font-bold">NIP</th>
+                                <th class="px-4 py-4 text-left font-bold">Nama</th>
+                                <th class="px-4 py-4 text-left font-bold">Divisi</th>
+                                <th class="px-4 py-4 text-left font-bold">Jabatan</th>
+                                <th class="px-4 py-4 text-left font-bold">Jam Masuk</th>
+                                <th class="px-4 py-4 text-left font-bold">Jam Keluar</th>
+                                <th class="px-4 py-4 text-left font-bold">Tanggal</th>
                             </tr>
 
                         </thead>
@@ -90,25 +143,33 @@
 
                             @forelse ($data as $item)
 
-                            <tr>
+                            <tr
+                                class="border-b border-slate-100 hover:bg-blue-50 transition duration-200">
 
-                                <td class="border px-4 py-2">
+                                {{-- NOMOR --}}
+                                <td class="px-4 py-4 font-medium text-slate-700">
                                     {{ $loop->iteration }}
                                 </td>
+
+                                {{-- DATA TETAP DIKOSONGKAN AGAR FUNGSI TIDAK BERUBAH --}}
+                                <td class="px-4 py-4 text-slate-600"></td>
+                                <td class="px-4 py-4 text-slate-600"></td>
+                                <td class="px-4 py-4 text-slate-600"></td>
+                                <td class="px-4 py-4 text-slate-600"></td>
+                                <td class="px-4 py-4 text-slate-600"></td>
+                                <td class="px-4 py-4 text-slate-600"></td>
+                                <td class="px-4 py-4 text-slate-600"></td>
 
                             </tr>
 
                             @empty
 
                             <tr>
-
-                                <td colspan="8"
-                                    class="border px-4 py-10 text-center text-gray-500">
-
+                                <td
+                                    colspan="8"
+                                    class="text-center py-20 text-slate-400 italic text-xl">
                                     Data kosong
-
                                 </td>
-
                             </tr>
 
                             @endforelse

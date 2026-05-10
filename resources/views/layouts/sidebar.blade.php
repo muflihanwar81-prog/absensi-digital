@@ -1,96 +1,144 @@
 <aside id="sidebar"
-    class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all duration-300 h-screen">
+    class="w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col justify-between shadow-2xl border-r border-slate-700 transition-all duration-300 h-screen">
 
+    {{-- HEADER --}}
     <div>
-        <div class="p-5 flex items-center justify-between">
-            <h1 id="sidebarTitle" class="text-2xl font-bold text-gray-700">
-                CODIA
-            </h1>
+        <div class="p-5 border-b border-slate-700">
+            <div class="flex items-center justify-between">
+                <div id="sidebarTitle">
+                    <p class="text-xs uppercase tracking-[0.35em] text-blue-300 font-semibold">
+                        Admin Panel
+                    </p>
+                    <h1 class="text-3xl font-extrabold tracking-tight mt-1">
+                        CODIA
+                    </h1>
+                </div>
 
-            <button onclick="toggleSidebar()"
-                class="bg-gray-300 p-2 rounded-lg hover:bg-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
+                <button onclick="toggleSidebar()"
+                    class="bg-slate-700/80 hover:bg-slate-600 p-2.5 rounded-xl transition duration-300 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
         </div>
 
-        <ul class="space-y-2 px-4">
-            <li>
-                <a href="{{ route('admin.dashboard') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg
-                    {{ request()->is('dashboard') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
-                    <span>🏠</span>
-                    <span class="menu-text">Dashboard</span>
-                </a>
-            </li>
+        {{-- NAVIGATION --}}
+        <nav class="px-4 py-6">
+            <p class="menu-text text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold px-4 mb-4">
+                Navigation
+            </p>
 
-            <li>
-                <a href="{{ route('admin.karyawan') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg
-                    {{ request()->is('karyawan*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
-                    <span>👨‍💼</span>
-                    <span class="menu-text">Data Karyawan</span>
-                </a>
-            </li>
+            <ul class="space-y-2">
 
-            <li>
-                <a href="{{ route('admin.keloladivisi') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg
-                    {{ request()->is('keloladivisi*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
-                    <span>🏢</span>
-                    <span class="menu-text">Kelola Divisi</span>
-                </a>
-            </li>
+                {{-- DASHBOARD --}}
+                <li>
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        {{ request()->is('dashboard') 
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
+                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
+                        <span class="text-2xl w-8 text-center">🏠</span>
+                        <span class="menu-text font-medium">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.keloladivisi') }}"
+                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        {{ request()->is('keloladivisi*') 
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
+                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
+                        <span class="text-2xl w-8 text-center">🏢</span>
+                        <span class="menu-text font-medium">Kelola Divisi</span>
+                    </a>
+                </li>
+                {{-- DATA KARYAWAN --}}
+                <li>
+                    <a href="{{ route('admin.karyawan') }}"
+                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        {{ request()->is('karyawan*') 
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
+                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
+                        <span class="text-2xl w-8 text-center">👨‍💼</span>
+                        <span class="menu-text font-medium">Data Karyawan</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="{{ route('admin.absensi.index') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg
-                    {{ request()->is('absensi*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
-                    <span>📅</span>
-                    <span class="menu-text">Data Kehadiran</span>
-                </a>
-            </li>
+                {{-- KELOLA DIVISI --}}
+                
 
-            <li>
-                <a href="{{ route('admin.perizinan.index') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg
-                    {{ request()->is('perizinan*') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
-                    <span>📄</span>
-                    <span class="menu-text">Data Perizinan</span>
-                </a>
-            </li>
+                {{-- DATA KEHADIRAN --}}
+                <li>
+                    <a href="{{ route('admin.absensi.index') }}"
+                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        {{ request()->is('absensi*') 
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
+                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
+                        <span class="text-2xl w-8 text-center">📅</span>
+                        <span class="menu-text font-medium">Data Kehadiran</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="{{ route('admin.laporan') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg
-                    {{ request()->is('laporan') ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300' }}">
-                    <span>📊</span>
-                    <span class="menu-text">Laporan</span>
-                </a>
-            </li>
-        </ul>
+                {{-- DATA PERIZINAN --}}
+                <li>
+                    <a href="{{ route('admin.perizinan.index') }}"
+                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        {{ request()->is('perizinan*') 
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
+                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
+                        <span class="text-2xl w-8 text-center">📄</span>
+                        <span class="menu-text font-medium">Data Perizinan</span>
+                    </a>
+                </li>
+
+                {{-- LAPORAN --}}
+                <li>
+                    <a href="{{ route('admin.laporan') }}"
+                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        {{ request()->is('laporan') 
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
+                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
+                        <span class="text-2xl w-8 text-center">📊</span>
+                        <span class="menu-text font-medium">Laporan</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
     </div>
 
-    {{-- Tambahkan bagian ini di paling bawah sidebar --}}
-    <div class="p-4 bg-gray-300">
-        <div class="text-xl font-bold flex items-center gap-3 mb-3">
-            <span>👤</span>
-            <span class="menu-text">DK</span>
+    {{-- FOOTER PROFILE --}}
+    <div class="p-4 border-t border-slate-700 bg-slate-800/70 backdrop-blur-sm">
+
+        {{-- USER INFO --}}
+        <div class="flex items-center gap-3 mb-4 px-2">
+            <div
+                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                DK
+            </div>
+
+            <div class="menu-text">
+                <p class="font-bold text-white">
+                    Admin
+                </p>
+                <p class="text-xs text-slate-400">
+                    CODIA-SYNC System
+                </p>
+            </div>
         </div>
 
+        {{-- LOGOUT --}}
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"
-                class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
-                <span>🚪</span>
+                class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition duration-300">
                 <span class="menu-text">Logout</span>
             </button>
         </form>
@@ -103,13 +151,16 @@ function toggleSidebar() {
     const texts = document.querySelectorAll('.menu-text');
     const title = document.getElementById('sidebarTitle');
 
-    sidebar.classList.toggle('w-64');
+    // Lebar sidebar (fungsi tetap sama)
+    sidebar.classList.toggle('w-72');
     sidebar.classList.toggle('w-24');
 
+    // Sembunyikan / tampilkan teks
     texts.forEach(text => {
         text.classList.toggle('hidden');
     });
 
+    // Sembunyikan / tampilkan judul
     title.classList.toggle('hidden');
 }
 </script>
