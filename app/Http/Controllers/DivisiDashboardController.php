@@ -1,22 +1,45 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class DivisiDashboardController extends Controller
 {
     public function index()
     {
-        // Data statistik simulasi sesuai gambar
-        $stats = [
-            'hadir'     => 20,
-            'terlambat' => 5,
-            'alpha'     => 2,
-            'izin'      => 0
+        $data = [
+            'total_karyawan' => 50,
+            'hadir' => 35,
+            'terlambat' => 2,
+            'alpha' => 5,
+            'izin' => 3,
+            'sakit' => 2,
+            'nama_user' => 'Dio Kurniawan',
+            'divisi' => 'HRD'
         ];
 
-        return view('divisi.DashboardDivisi', compact('stats'));
+        return view('divisi.DashboardDivisi', $data);
+    }
+    public function karyawan()
+    {
+        // Sementara menggunakan data kosong sesuai gambar
+        $karyawans = []; 
+    
+        return view('divisi.DataKaryawanDivisi', compact('karyawans'));
+    }
+    public function riwayatAbsensi()
+    {
+        // Sementara menggunakan data kosong sesuai gambar
+        $absensi = []; 
+    
+        return view('divisi.RiwayatAbsensiDivisi', compact('absensi'));
+    }
+    public function perizinan()
+    {
+    return view('divisi.DivisiPerizinan');
+    }
+    public function laporan()
+    {
+    return view('divisi.DivisiLaporan');
     }
 }
