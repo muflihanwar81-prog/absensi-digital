@@ -22,7 +22,7 @@
         <div class="flex-1 flex flex-col">
 
             {{-- HEADER --}}
-            @include('pages.header')
+            @include('components.header')
 
             {{-- CONTENT --}}
             <main class="flex-1 p-8">

@@ -13,7 +13,7 @@
 
     <div class="flex-1">
         <!-- Header -->
-        @include('pages.header_admin')
+        @include('components.header-admin')
 
         <!-- Judul -->
         <div class="bg-white border-b border-blue-100 px-6 py-6 shadow-sm">

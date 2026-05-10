@@ -22,7 +22,7 @@
         <main class="flex-1 overflow-y-auto">
 
             {{-- TOP HEADER --}}
-            @include('pages.header')
+            @include('components.header')
 
             {{-- CONTENT --}}
             <div class="p-6">

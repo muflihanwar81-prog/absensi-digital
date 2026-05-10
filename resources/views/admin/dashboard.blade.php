@@ -20,7 +20,7 @@
         <main class="flex-1 p-5 overflow-y-auto">
 
             <!-- HEADER -->
-            @include('pages.header_admin')
+            @include('components.header-admin')
 
             <!-- WELCOME SECTION -->
             <div

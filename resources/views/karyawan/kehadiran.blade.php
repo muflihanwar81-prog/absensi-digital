@@ -20,7 +20,7 @@
         <div class="flex-1">
 
             {{-- Header --}}
-            @include('pages.header')
+            @include('components.header')
 
             {{-- Content --}}
             <div class="p-8">

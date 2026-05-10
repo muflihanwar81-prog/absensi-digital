@@ -7,75 +7,143 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
+
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
 
 <div class="min-h-screen flex flex-col md:flex-row">
 
     <!-- KIRI -->
-    <div class="md:w-1/2 w-full bg-gray-200 flex items-center justify-center p-10">
-        <div class="text-center">
-            <img src="/logo.png" class="w-32 md:w-44 mx-auto mb-4">
-            <h1 class="text-lg md:text-2xl font-bold text-blue-800">
-                CODIASYNC
+    <div class="md:w-1/2 w-full relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 flex items-center justify-center p-10">
+
+        <!-- Background Decoration -->
+        <div class="absolute inset-0">
+            <div class="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 text-center max-w-md">
+            <div
+                class="w-32 h-32 md:w-44 md:h-44 mx-auto mb-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center p-6">
+                <img src="/logo.png"
+                    class="w-full h-full object-contain"
+                    alt="CODIA Logo">
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-4">
+                CODIA<span class="text-cyan-400">SYNC</span>
             </h1>
+
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed">
+                Sistem Manajemen Absensi Karyawan Modern
+                untuk memantau kehadiran, izin, dan laporan
+                secara efisien dan terintegrasi.
+            </p>
+
+            <!-- Feature Pills -->
+            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                <span class="px-4 py-2 rounded-full bg-white/10 text-slate-200 text-sm backdrop-blur-sm">
+                    Presensi Digital
+                </span>
+                <span class="px-4 py-2 rounded-full bg-white/10 text-slate-200 text-sm backdrop-blur-sm">
+                    Monitoring Real-Time
+                </span>
+                <span class="px-4 py-2 rounded-full bg-white/10 text-slate-200 text-sm backdrop-blur-sm">
+                    Laporan Otomatis
+                </span>
+            </div>
         </div>
     </div>
 
-    
-    <div class="md:w-1/2 w-full flex items-center justify-center bg-white px-6 py-10">
+    <!-- KANAN -->
+    <div class="md:w-1/2 w-full flex items-center justify-center px-6 py-10 md:px-10">
 
-        <div class="w-full max-w-md md:max-w-lg lg:max-w-xl p-6 md:p-10 bg-white rounded-2xl shadow-xl">
+        <div
+            class="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white/90 backdrop-blur-xl border border-white/70 rounded-3xl shadow-2xl p-6 md:p-10">
 
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                Login Pengguna
-            </h2>
-            <p class="text-gray-500 mb-6 text-sm md:text-base">
-                Login menggunakan akun terdaftar
-            </p>
+            <!-- Header -->
+            <div class="mb-8">
 
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-2">
+                    Login Pengguna
+                </h2>
+
+                <p class="text-slate-500 text-sm md:text-base leading-relaxed">
+                    Masuk menggunakan akun terdaftar untuk mengakses sistem CODIA-SYNC.
+                </p>
+            </div>
+
+            <!-- Error Message -->
             @if(session('error'))
-                <div class="mb-4 text-red-500 text-sm">
-                    {{ session('error') }}
+                <div
+                    class="mb-6 flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl">
+                    <span class="text-sm font-medium">
+                        {{ session('error') }}
+                    </span>
                 </div>
             @endif
 
+            <!-- Form -->
             <form method="POST" action="/login" class="space-y-6">
                 @csrf
 
                 <!-- Email -->
                 <div>
-                    <label class="block mb-2 text-sm md:text-base font-medium">
+                    <label class="block mb-2 text-sm md:text-base font-semibold text-slate-700">
                         Email
                     </label>
-                    <input type="email" name="email"
-                        class="w-full p-3 border rounded-lg bg-gray-50 text-sm md:text-base focus:ring-green-400 focus:border-green-400"
-                        placeholder="Masukkan email" required>
+
+                    <div class="relative">
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Masukkan email"
+                            required
+                            class="w-full pr-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 transition">
+                    </div>
                 </div>
 
                 <!-- Password -->
                 <div>
-                    <label class="block mb-2 text-sm md:text-base font-medium">
+                    <label class="block mb-2 text-sm md:text-base font-semibold text-slate-700">
                         Password
                     </label>
-                    <div class="relative">
-                        <input type="password" id="password" name="password"
-                            class="w-full p-3 border rounded-lg bg-gray-50 text-sm md:text-base pr-10 focus:ring-green-400 focus:border-green-400"
-                            placeholder="Masukkan password" required>
 
-                        <button type="button" onclick="togglePassword()"
-                            class="absolute right-3 top-3 text-gray-500">
+                    <div class="relative">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Masukkan password"
+                            required
+                            class="w-full pr-12 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 transition">
+
+                        <button
+                            type="button"
+                            onclick="togglePassword()"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition">
                             👁️
                         </button>
                     </div>
                 </div>
 
                 <!-- Button -->
-                <button type="submit"
-                    class="w-full text-white text-sm md:text-base bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 rounded-lg px-5 py-3">
+                <button
+                    type="submit"
+                    class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-sm md:text-base shadow-lg hover:shadow-xl hover:scale-[1.01] transition duration-300">
                     Login
                 </button>
             </form>
 
+            <!-- Footer -->
+            <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+                <p class="text-xs md:text-sm text-slate-400">
+                    © {{ date('Y') }} CODIA-SYNC. All rights reserved.
+                </p>
+            </div>
         </div>
 
     </div>

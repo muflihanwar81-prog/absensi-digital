@@ -17,7 +17,7 @@
     @include('layouts.sidebar')
 
     <main class="flex-1 h-screen overflow-y-auto">
-       @include('pages.header_admin')
+       @include('components.header-admin')
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">

@@ -19,7 +19,7 @@
     <main class="flex-1 overflow-y-auto">
 
         {{-- HEADER --}}
-        @include('pages.header_admin')
+        @include('components.header-admin')
         {{-- PAGE TITLE --}}
         <div class="bg-white border-b border-blue-100 px-6 py-6 shadow-sm">
             <p class="text-blue-600 font-semibold uppercase tracking-widest text-sm mb-2">
