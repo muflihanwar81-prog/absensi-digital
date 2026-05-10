@@ -15,7 +15,7 @@
 
     <div class="flex h-screen">
 
-        @include('layouts.partials.sidebar')
+        @include('layouts.sidebar')
 
         <main class="flex-1 p-5 overflow-y-auto">
 

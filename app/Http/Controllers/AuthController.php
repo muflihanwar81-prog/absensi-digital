@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Karyawan;
 
 class AuthController extends Controller
 {
@@ -16,29 +17,39 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $user = DB::table('users')
-            ->where('email', $request->email)
-            ->first();
+        // Login admin
+        $admin = User::where('email', $request->email)->first();
 
-        if (!$user) {
-            return back()->with('error', 'Email tidak ditemukan');
+        if ($admin && Hash::check($request->password, $admin->password)) {
+            Auth::login($admin);
+            return redirect('/dashboard');
         }
 
-        if (!Hash::check($request->password, $user->password)) {
-            return back()->with('error', 'Password salah');
+        // Login karyawan
+        $karyawan = Karyawan::where('email', $request->email)->first();
+
+        if ($karyawan && Hash::check($request->password, $karyawan->password)) {
+            session([
+                'karyawan_id' => $karyawan->id,
+                'karyawan_nama' => $karyawan->nama,
+            ]);
+
+            return redirect('/dashboard_karyawan');
         }
 
-        Auth::loginUsingId($user->id);
-
-        return redirect('/dashboard');
+        return back()->with('error', 'Email atau password salah');
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
 
-        $request->session()->invalidate();
+        $request->session()->forget([
+            'karyawan_id',
+            'karyawan_nama',
+        ]);
 
+        $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect('/login');

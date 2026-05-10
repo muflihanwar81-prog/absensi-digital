@@ -13,11 +13,11 @@
 
 <body class="bg-[#efefef] flex font-sans overflow-hidden">
 
-    @include('layouts.partials.sidebar')
+    @include('layouts.sidebar')
 
     {{-- GANTI BAGIAN INI --}}
     <main class="flex-1 h-screen overflow-y-auto">
-        @include('layouts.partials.header', ['title' => 'Data Karyawan'])
+        @include('layouts.header', ['title' => 'Data Karyawan'])
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">

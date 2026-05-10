@@ -3,34 +3,43 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Absensi;
 use App\Models\User;
+use App\Models\Divisi;
 
-class Karyawan extends Model
+class Karyawan extends Authenticatable
 {
     use HasFactory;
 
     protected $table = 'karyawans';
 
-    // app/Models/Karyawan.php
+    protected $fillable = [
+        'nip',
+        'nama',
+        'divisi_id',
+        'divisi',
+        'jabatan',
+        'status',
+        'jam_masuk',
+        'jam_keluar',
+        'email',
+        'password',
+    ];
 
-protected $fillable = [
-    'nip',
-    'nama',
-    'divisi_id',
-    'divisi',
-    'jabatan',
-    'status',
-    'password',
-];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-protected $hidden = [
-    'password',
-];
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class);
     }
 
     public function absensi()

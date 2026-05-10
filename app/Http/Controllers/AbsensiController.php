@@ -2,56 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Absensi;
-use Illuminate\Support\Facades\Auth;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $karyawanId = $user->karyawan->id;
+        $karyawanId = session('karyawan_id');
 
-        $query = Absensi::with('karyawan')->where('karyawan_id', $karyawanId);
-
-        if ($request->dari && $request->sampai) {
-            $query->whereBetween('tanggal', [$request->dari, $request->sampai]);
+        if (!$karyawanId) {
+            return redirect('/login');
         }
 
-        $absensi = $query->orderBy('tanggal', 'desc')->get();
+        $query = Absensi::where('karyawan_id', $karyawanId);
 
-        return view('absensi', compact('absensi'));
-    }
-
-    public function show($id)
-    {
-        $user = Auth::user();
-        $karyawanId = $user->karyawan->id;
-
-        $data = Absensi::where('id', $id)
-            ->where('karyawan_id', $karyawanId)
-            ->firstOrFail();
-
-        return view('absensi_detail', compact('data'));
-    }
-
-    public function exportPdf(Request $request)
-    {
-        $user = Auth::user();
-        $karyawanId = $user->karyawan->id;
-
-        $query = Absensi::with('karyawan')->where('karyawan_id', $karyawanId);
-
-        if ($request->dari && $request->sampai) {
-            $query->whereBetween('tanggal', [$request->dari, $request->sampai]);
+        if ($request->filled('tanggal_awal')) {
+            $query->whereDate('tanggal', '>=', $request->tanggal_awal);
         }
 
-        $absensi = $query->orderBy('tanggal', 'desc')->get();
+        if ($request->filled('tanggal_akhir')) {
+            $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+        }
 
-        $pdf = Pdf::loadView('absensi_pdf', compact('absensi'));
+        if ($request->filled('bulan')) {
+            $query->whereMonth('tanggal', $request->bulan);
+        }
 
-        return $pdf->download('laporan-absensi.pdf');
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $absensis = $query
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('karyawan.kehadiran', compact('absensis'));
+    }
+
+    public function exportPdf()
+    {
+        $karyawanId = session('karyawan_id');
+
+        if (!$karyawanId) {
+            return redirect('/login');
+        }
+
+        $absensis = Absensi::where('karyawan_id', $karyawanId)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('karyawan.kehadiran', compact('absensis'));
     }
 }

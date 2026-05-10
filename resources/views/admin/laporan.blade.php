@@ -12,7 +12,7 @@
 
 <div class="flex">
 
-    @include('layouts.partials.sidebar')
+    @include('layouts.sidebar')
 
     <main class="flex-1 p-6">
 

@@ -9,12 +9,12 @@
 <body class="bg-white flex font-sans overflow-hidden">
 
     <!-- Memanggil Sidebar -->
-    @include('layouts.partials.sidebar')
+    @include('layouts.sidebar')
 
     <main class="flex-1 h-screen overflow-y-auto">
         
         <!-- Memanggil Header -->
-        @include('layouts.partials.header', ['title' => 'Data Absensi'])
+        @include('layouts.header', ['title' => 'Data Absensi'])
 
         <div class="p-8">
             <!-- Filter Bar (Opsional) -->

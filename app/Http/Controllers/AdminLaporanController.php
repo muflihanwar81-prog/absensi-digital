@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Absensi;
 
 class AdminLaporanController extends Controller
 {
     public function index()
     {
-        $data = [];
+        $data = Absensi::with(['karyawan.divisi'])
+            ->orderBy('tanggal', 'desc')
+            ->get();
 
         return view('admin.laporan', compact('data'));
     }

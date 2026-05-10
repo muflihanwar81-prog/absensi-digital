@@ -13,31 +13,36 @@
 
     <div class="flex min-h-screen">
 
-        @include('layouts.partials.sidebar')
+        @include('layouts.sidebar')
 
         <div class="flex-1">
 
-            {{-- HEADER --}}
             <div class="bg-[#efefef] border-b">
                 <div class="flex items-center gap-5 px-6 py-4">
                     <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
-                    <h1 class="text-4xl font-bold">CODIA-SYNC</h1>
+
+                    <h1 class="text-4xl font-bold">
+                        CODIA-SYNC
+                    </h1>
                 </div>
             </div>
 
-            {{-- TITLE --}}
             <div class="bg-gray-300 p-6">
-                <h1 class="text-5xl font-bold">Kelola Divisi.</h1>
+                <h1 class="text-5xl font-bold">
+                    Kelola Divisi.
+                </h1>
             </div>
 
             <div class="p-5">
 
-                {{-- MAP PREVIEW --}}
+                {{-- MAP / LOKASI --}}
                 <div class="bg-gray-300 rounded-lg h-64 flex items-center justify-center">
-                    <h1 class="text-3xl font-bold text-gray-700">Maps Google</h1>
+                    <h1 class="text-3xl font-bold text-gray-700">
+                        Maps Google
+                    </h1>
                 </div>
 
-                {{-- FILTER --}}
+                {{-- FILTER DAN BUTTON --}}
                 <div class="flex flex-wrap gap-5 mt-5 items-center">
 
                     <input
@@ -52,6 +57,7 @@
 
                     <div class="ml-auto flex gap-5">
 
+                        {{-- BUTTON TAMBAH DIVISI --}}
                         <button
                             type="button"
                             onclick="openModalTambahDivisi()"
@@ -59,6 +65,7 @@
                             + Tambah Divisi
                         </button>
 
+                        {{-- BUTTON ATUR LOKASI --}}
                         <button
                             type="button"
                             onclick="openModalAturLokasi()"
@@ -67,10 +74,12 @@
                         </button>
 
                     </div>
+
                 </div>
 
                 {{-- TABLE --}}
                 <div class="mt-5 border border-black overflow-x-auto bg-white">
+
                     <table class="w-full border-collapse">
 
                         <thead class="bg-gray-300">
@@ -104,7 +113,9 @@
 
                                 <td class="border border-black px-4 py-3">
                                     <div class="flex gap-2">
-                                        <button class="bg-yellow-300 px-4 py-1 rounded">
+
+                                        <button
+                                            class="bg-yellow-300 px-4 py-1 rounded">
                                             Edit
                                         </button>
 
@@ -121,6 +132,7 @@
                                                 Hapus
                                             </button>
                                         </form>
+
                                     </div>
                                 </td>
                             </tr>
@@ -136,10 +148,13 @@
                         </tbody>
 
                     </table>
+
                 </div>
 
             </div>
+
         </div>
+
     </div>
 
     {{-- MODAL TAMBAH DIVISI --}}
@@ -191,6 +206,7 @@
                 </div>
 
                 <div class="border-t border-gray-400 mt-8 pt-6 flex gap-4">
+
                     <button
                         type="submit"
                         class="w-full bg-gray-300 hover:bg-gray-400 py-3 rounded font-bold text-xl">
@@ -203,224 +219,256 @@
                         class="bg-red-400 hover:bg-red-500 text-white px-6 rounded font-bold">
                         X
                     </button>
+
                 </div>
             </form>
+
         </div>
     </div>
 
     {{-- MODAL ATUR LOKASI --}}
+<div
+    id="modalAturLokasi"
+    class="fixed inset-0 bg-black/30 hidden items-center justify-center z-50">
+
+    <div class="bg-gray-200 w-[500px] rounded-lg shadow-xl overflow-hidden">
+
+        {{-- HEADER --}}
+        <div class="bg-gray-300 px-6 py-4 flex items-center justify-between border-b border-gray-400">
+            <h2 class="text-3xl font-bold">
+                Pengaturan Lokasi
+            </h2>
+
+            <button
+                type="button"
+                onclick="closeModalAturLokasi()"
+                class="text-4xl leading-none font-light hover:text-red-500">
+                ×
+            </button>
+        </div>
+
+        {{-- FORM --}}
+        <form
+            action="{{ route('admin.lokasi.store') }}"
+            method="POST"
+            class="p-6">
+            @csrf
+
+            {{-- LABEL MAP --}}
+            <div class="mb-4">
+                <label class="block text-2xl font-bold mb-3">
+                    Lokasi GPS
+                </label>
+
+                {{-- AREA MAP --}}
+    <div class="bg-gray-300 rounded-lg h-48 overflow-hidden shadow-inner">
     <div
-        id="modalAturLokasi"
-        class="fixed inset-0 bg-black/30 hidden items-center justify-center z-50">
-
-        <div class="bg-gray-200 w-[500px] rounded-lg shadow-xl overflow-hidden">
-
-            <div class="bg-gray-300 px-6 py-4 flex items-center justify-between border-b border-gray-400">
-                <h2 class="text-3xl font-bold">Pengaturan Lokasi</h2>
-
-                <button
-                    type="button"
-                    onclick="closeModalAturLokasi()"
-                    class="text-4xl leading-none font-light hover:text-red-500">
-                    ×
-                </button>
+    id="map"
+    class="rounded-lg h-64 border border-gray-400 shadow-inner">
+</div>
+    </iframe>
+</div>
+</div>
             </div>
 
-            <form
-                action="{{ route('admin.lokasi.store') }}"
-                method="POST"
-                class="p-6">
-                @csrf
+            {{-- INPUT KOORDINAT --}}
+            <div class="grid grid-cols-2 gap-6 mt-6">
 
-                <div class="mb-4">
-                    <label class="block text-2xl font-bold mb-3">
-                        Lokasi GPS
-                    </label>
-
-                    <div class="bg-gray-300 rounded-lg overflow-hidden shadow-inner">
-                        <div
-                            id="map"
-                            class="w-full h-64 border border-gray-400">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-6 mt-6">
-
-                    <div>
-                        <label class="block text-2xl font-bold mb-3">
-                            Longitude
-                        </label>
-                        <input
-                            type="text"
-                            id="longitude"
-                            name="longitude"
-                            class="w-full bg-gray-300 rounded-lg px-4 py-3 text-xl outline-none shadow"
-                            required>
-                    </div>
-
-                    <div>
-                        <label class="block text-2xl font-bold mb-3">
-                            Latitude
-                        </label>
-                        <input
-                            type="text"
-                            id="latitude"
-                            name="latitude"
-                            class="w-full bg-gray-300 rounded-lg px-4 py-3 text-xl outline-none shadow"
-                            required>
-                    </div>
-                </div>
-
-                <input
-                    type="hidden"
-                    name="nama_lokasi"
-                    value="Kantor Pusat">
-
-                <input
-                    type="hidden"
-                    name="radius"
-                    value="100">
-
-                <div class="border-t border-gray-400 mt-8 pt-6">
-                    <button
-                        type="submit"
-                        class="w-full bg-gray-300 hover:bg-gray-400 py-3 rounded-lg shadow font-bold text-2xl">
-                        Simpan Data
-                    </button>
-                </div>
-            </form>
-        </div>
+                <div>
+        <label class="block text-2xl font-bold mb-3">
+            Longitude
+        </label>
+        <input
+            type="text"
+            id="longitude"
+            name="longitude"
+            class="w-full bg-gray-300 rounded-lg px-4 py-3 text-xl outline-none shadow"
+            required>
     </div>
 
-    {{-- SCRIPT GOOGLE MAPS --}}
-    <script>
-        let map = null;
-        let marker = null;
-        let mapsLoaded = false;
+    <div>
+        <label class="block text-2xl font-bold mb-3">
+            Latitude
+        </label>
+        <input
+            type="text"
+            id="latitude"
+            name="latitude"
+            class="w-full bg-gray-300 rounded-lg px-4 py-3 text-xl outline-none shadow"
+            required>
+    </div>
 
-        function initMap() {
-            mapsLoaded = true;
-        }
 
-        function createMap() {
-            const defaultLocation = {
-                lat: -6.200000,
-                lng: 106.816666
-            };
+            </div>
 
-            const mapElement = document.getElementById('map');
-            if (!mapElement) return;
+            {{-- INPUT TAMBAHAN --}}
+            <input
+                type="hidden"
+                name="nama_lokasi"
+                value="Kantor Pusat">
 
-            map = new google.maps.Map(mapElement, {
-                center: defaultLocation,
-                zoom: 15,
-                mapTypeId: 'roadmap'
-            });
+            <input
+                type="hidden"
+                name="radius"
+                value="100">
 
-            marker = new google.maps.Marker({
-                position: defaultLocation,
-                map: map,
-                draggable: true,
-                animation: google.maps.Animation.DROP
-            });
+            {{-- FOOTER --}}
+            <div class="border-t border-gray-400 mt-8 pt-6">
+                <button
+                    type="submit"
+                    class="w-full bg-gray-300 hover:bg-gray-400 py-3 rounded-lg shadow font-bold text-2xl">
+                    Simpan Data
+                </button>
+            </div>
+        </form>
 
-            updateCoordinateInputs(defaultLocation.lat, defaultLocation.lng);
+    </div>
+</div>
+{{-- TEMPATKAN SCRIPT INI DI BAGIAN PALING BAWAH SEBELUM </body> --}}
 
-            map.addListener('click', function(event) {
-                const lat = event.latLng.lat();
-                const lng = event.latLng.lng();
+<script>
+    let map;
+    let marker;
 
-                marker.setPosition(event.latLng);
-                updateCoordinateInputs(lat, lng);
-            });
+    // Inisialisasi Google Maps
+    function initMap() {
+        const defaultLocation = {
+            lat: -6.200000,
+            lng: 106.816666
+        };
 
-            marker.addListener('dragend', function(event) {
-                const lat = event.latLng.lat();
-                const lng = event.latLng.lng();
+        const mapElement = document.getElementById('map');
+        if (!mapElement) return;
 
-                updateCoordinateInputs(lat, lng);
-            });
-        }
-
-        function updateCoordinateInputs(lat, lng) {
-            document.getElementById('latitude').value = lat.toFixed(6);
-            document.getElementById('longitude').value = lng.toFixed(6);
-        }
-
-        function moveMarkerFromInput() {
-            if (!map || !marker) return;
-
-            const lat = parseFloat(document.getElementById('latitude').value);
-            const lng = parseFloat(document.getElementById('longitude').value);
-
-            if (isNaN(lat) || isNaN(lng)) return;
-
-            const newPosition = {
-                lat: lat,
-                lng: lng
-            };
-
-            marker.setPosition(newPosition);
-            map.setCenter(newPosition);
-        }
-
-        function openModalTambahDivisi() {
-            const modal = document.getElementById('modalTambahDivisi');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeModalTambahDivisi() {
-            const modal = document.getElementById('modalTambahDivisi');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        function openModalAturLokasi() {
-            const modal = document.getElementById('modalAturLokasi');
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-
-            setTimeout(() => {
-                if (!mapsLoaded || typeof google === 'undefined') {
-                    alert('Google Maps belum selesai dimuat.');
-                    return;
-                }
-
-                if (!map) {
-                    createMap();
-                } else {
-                    google.maps.event.trigger(map, 'resize');
-                    if (marker) {
-                        map.setCenter(marker.getPosition());
-                    }
-                }
-            }, 300);
-        }
-
-        function closeModalAturLokasi() {
-            const modal = document.getElementById('modalAturLokasi');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('latitude')
-                ?.addEventListener('change', moveMarkerFromInput);
-
-            document.getElementById('longitude')
-                ?.addEventListener('change', moveMarkerFromInput);
+        // Membuat peta
+        map = new google.maps.Map(mapElement, {
+            center: defaultLocation,
+            zoom: 15,
+            mapTypeId: 'roadmap'
         });
-    </script>
 
-    {{-- GOOGLE MAPS API --}}
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"
-        async
-        defer>
-    </script>
+        // Membuat marker yang bisa digeser
+        marker = new google.maps.Marker({
+            position: defaultLocation,
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP
+        });
+
+        // Isi input default
+        updateCoordinateInputs(defaultLocation.lat, defaultLocation.lng);
+
+        // Klik di peta untuk memilih lokasi
+        map.addListener('click', function (event) {
+            const lat = event.latLng.lat();
+            const lng = event.latLng.lng();
+
+            marker.setPosition(event.latLng);
+            updateCoordinateInputs(lat, lng);
+        });
+
+        // Geser marker
+        marker.addListener('dragend', function (event) {
+            const lat = event.latLng.lat();
+            const lng = event.latLng.lng();
+
+            updateCoordinateInputs(lat, lng);
+        });
+    }
+
+    // Update input latitude dan longitude
+    function updateCoordinateInputs(lat, lng) {
+        const latitudeInput = document.getElementById('latitude');
+        const longitudeInput = document.getElementById('longitude');
+
+        if (latitudeInput) {
+            latitudeInput.value = lat.toFixed(6);
+        }
+
+        if (longitudeInput) {
+            longitudeInput.value = lng.toFixed(6);
+        }
+    }
+
+    // Pindahkan marker saat input diubah manual
+    function moveMarkerFromInput() {
+        if (!map || !marker) return;
+
+        const lat = parseFloat(document.getElementById('latitude').value);
+        const lng = parseFloat(document.getElementById('longitude').value);
+
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        const newPosition = {
+            lat: lat,
+            lng: lng
+        };
+
+        marker.setPosition(newPosition);
+        map.setCenter(newPosition);
+    }
+
+    // Modal Tambah Divisi
+    function openModalTambahDivisi() {
+        const modal = document.getElementById('modalTambahDivisi');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModalTambahDivisi() {
+        const modal = document.getElementById('modalTambahDivisi');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // Modal Atur Lokasi
+    function openModalAturLokasi() {
+        const modal = document.getElementById('modalAturLokasi');
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        // Tunggu modal tampil lalu render map
+        setTimeout(() => {
+            if (!map) {
+                initMap();
+            } else {
+                google.maps.event.trigger(map, 'resize');
+
+                if (marker) {
+                    map.setCenter(marker.getPosition());
+                }
+            }
+        }, 300);
+    }
+
+    function closeModalAturLokasi() {
+        const modal = document.getElementById('modalAturLokasi');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // Event saat halaman selesai dimuat
+    document.addEventListener('DOMContentLoaded', function () {
+        const latitudeInput = document.getElementById('latitude');
+        const longitudeInput = document.getElementById('longitude');
+
+        if (latitudeInput) {
+            latitudeInput.addEventListener('change', moveMarkerFromInput);
+        }
+
+        if (longitudeInput) {
+            longitudeInput.addEventListener('change', moveMarkerFromInput);
+        }
+    });
+</script>
+
+{{-- GOOGLE MAPS API --}}
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"
+    async
+    defer>
+</script>  
 
 </body>
 

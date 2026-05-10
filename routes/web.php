@@ -3,17 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Divisi;
+use App\Models\Karyawan;
+use App\Models\Absensi;
+use App\Models\Perizinan;
+
 use App\Http\Controllers\{
     HomeController,
     AbsensiController,
     AuthController,
-    KaryawanController,
     TAController,
     ProdukController,
-    AdminDashboardController,
     KaryawanDashboardController,
     IzinController,
-    ProductController,
     AdminDataKaryawanController,
     AdminDataAbsensiController,
     AdminDataPerizinanController,
@@ -24,14 +26,20 @@ use App\Http\Controllers\{
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products', [ProdukController::class, 'index']);
 Route::get('/tecno_view', [TAController::class, 'tampilkan']);
 Route::get('/test', [ProdukController::class, 'test']);
 
 Route::get('/login', function () {
-    return Auth::check()
-        ? redirect('/dashboard')
-        : view('login');
+    if (Auth::check()) {
+        return redirect('/dashboard');
+    }
+
+    if (session()->has('karyawan_id')) {
+        return redirect('/dashboard_karyawan');
+    }
+
+    return view('login');
 })->name('login');
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -39,75 +47,107 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth'])
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+        Route::get('/dashboard', function () {
+            $totalDivisi = Divisi::count();
+            $totalKaryawan = Karyawan::count();
+            $totalAbsensi = Absensi::count();
+            $totalPerizinan = Perizinan::count();
 
-    Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])
-        ->name('divisi.dashboard');
+            return view('admin.dashboard', compact(
+                'totalDivisi',
+                'totalKaryawan',
+                'totalAbsensi',
+                'totalPerizinan'
+            ));
+        })->name('dashboard');
 
-    Route::get('/karyawan', [AdminDataKaryawanController::class, 'index'])
-        ->name('karyawan');
+        Route::get('/divisi/dashboard', [DivisiDashboardController::class, 'index'])
+            ->name('divisi.dashboard');
 
-    Route::resource('karyawan', AdminDataKaryawanController::class)
-        ->except(['index']);
+        Route::get('/karyawan', [AdminDataKaryawanController::class, 'index'])
+            ->name('karyawan');
 
-    Route::resource('absensi', AdminDataAbsensiController::class);
+        Route::get('/karyawan/create', [AdminDataKaryawanController::class, 'create'])
+            ->name('karyawan.create');
 
-    Route::resource('perizinan', AdminDataPerizinanController::class);
+        Route::post('/karyawan', [AdminDataKaryawanController::class, 'store'])
+            ->name('karyawan.store');
 
-    Route::get('/laporan', [AdminLaporanController::class, 'index'])
-        ->name('laporan');
+        Route::get('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'show'])
+            ->name('karyawan.show');
 
-    Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
-    ->name('keloladivisi');
+        Route::get('/karyawan/{karyawan}/edit', [AdminDataKaryawanController::class, 'edit'])
+            ->name('karyawan.edit');
 
-Route::get('/keloladivisi/{id}/edit', [AdminKelolaDivisiController::class, 'edit'])
-    ->name('keloladivisi.edit');
+        Route::put('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'update'])
+            ->name('karyawan.update');
 
-Route::put('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'update'])
-    ->name('keloladivisi.update');
+        Route::delete('/karyawan/{karyawan}', [AdminDataKaryawanController::class, 'destroy'])
+            ->name('karyawan.destroy');
 
-Route::delete('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'destroy'])
-    ->name('keloladivisi.destroy');
+        Route::resource('absensi', AdminDataAbsensiController::class)
+            ->names('absensi');
 
-    Route::post('/divisi', [AdminKelolaDivisiController::class, 'store'])
-    ->name('divisi.store');
+        Route::resource('perizinan', AdminDataPerizinanController::class)
+            ->names('perizinan');
 
-    Route::post('keloladivisi/lokasi', [AdminKelolaDivisiController::class, 'updateLokasi'])
-    ->name('divisi.lokasi');
-    Route::post('/lokasi/store', [AdminKelolaDivisiController::class, 'storeLokasi'])
-    ->name('lokasi.store');
-});
+        Route::get('/laporan', [AdminLaporanController::class, 'index'])
+            ->name('laporan');
 
-Route::middleware(['auth'])->group(function () {
+        Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
+            ->name('keloladivisi');
 
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-        ->name('dashboard');
+        Route::post('/divisi', [AdminKelolaDivisiController::class, 'store'])
+            ->name('divisi.store');
 
-    Route::get('/dashboard_karyawan', [KaryawanDashboardController::class, 'index']);
+        Route::get('/keloladivisi/{id}/edit', [AdminKelolaDivisiController::class, 'edit'])
+            ->name('keloladivisi.edit');
 
-    Route::post('/absen-masuk', [KaryawanDashboardController::class, 'absenMasuk']);
+        Route::put('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'update'])
+            ->name('keloladivisi.update');
 
-    Route::post('/tidak-hadir', [KaryawanDashboardController::class, 'tidakHadir']);
+        Route::delete('/keloladivisi/{id}', [AdminKelolaDivisiController::class, 'destroy'])
+            ->name('keloladivisi.destroy');
 
-    Route::get('/riwayat', [KaryawanDashboardController::class, 'riwayat']);
+        Route::post('/keloladivisi/lokasi', [AdminKelolaDivisiController::class, 'updateLokasi'])
+            ->name('divisi.lokasi');
 
-    Route::get('/profile', [KaryawanDashboardController::class, 'profile']);
-
-    Route::get('/izin', [IzinController::class, 'index']);
-
-    Route::post('/izin', [IzinController::class, 'store']);
-
-    Route::get('/absensi', function () {
-        return view('absensi');
+        Route::post('/lokasi/store', [AdminKelolaDivisiController::class, 'storeLokasi'])
+            ->name('lokasi.store');
     });
 
-    Route::get('/karyawan_absen', [AbsensiController::class, 'index']);
+Route::middleware(['karyawan.auth'])->group(function () {
+    Route::get('/dashboard_karyawan', [KaryawanDashboardController::class, 'index'])
+        ->name('karyawan.dashboard');
 
-    Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf']);
+    Route::get('/karyawan_absen', [AbsensiController::class, 'index'])
+        ->name('karyawan.kehadiran');
 
-    Route::resource('karyawan', KaryawanController::class);
+    Route::get('/izin', [IzinController::class, 'index'])
+        ->name('karyawan.perizinan');
+
+    Route::post('/izin', [IzinController::class, 'store'])
+        ->name('izin.store');
+
+    Route::delete('/izin/{id}', [IzinController::class, 'destroy'])
+        ->name('izin.destroy');
+
+    Route::post('/absen-masuk', [KaryawanDashboardController::class, 'absenMasuk'])
+        ->name('karyawan.absen-masuk');
+
+    Route::post('/tidak-hadir', [KaryawanDashboardController::class, 'tidakHadir'])
+        ->name('karyawan.tidak-hadir');
+
+    Route::get('/riwayat', [KaryawanDashboardController::class, 'riwayat'])
+        ->name('karyawan.riwayat');
+
+    Route::get('/profile', [KaryawanDashboardController::class, 'profile'])
+        ->name('karyawan.profile');
+
+    Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf'])
+        ->name('absensi.pdf');
 });

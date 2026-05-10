@@ -2,115 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Absensi;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Izin;
+use App\Models\Karyawan;
+use Illuminate\Http\Request;
 
 class KaryawanDashboardController extends Controller
 {
-    // 🔹 DASHBOARD
     public function index()
     {
-        $user = Auth::user();
+        $karyawanId = session('karyawan_id');
 
-        // 🔥 CEGAH ERROR kalau belum ada relasi karyawan
-        if (!$user->karyawan) {
-            return redirect()->back()->with('error', 'Data karyawan tidak ditemukan');
+        if (!$karyawanId) {
+            return redirect('/login')
+                ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $karyawan = $user->karyawan;
-        $today = now()->toDateString();
+        $karyawan = Karyawan::findOrFail($karyawanId);
 
-        $absensiHariIni = Absensi::where('karyawan_id', $karyawan->id)
-            ->whereDate('tanggal', $today)
-            ->first();
+        $hadir = Absensi::where('karyawan_id', $karyawanId)
+            ->where('status', 'Hadir')
+            ->count();
 
-        // 🔥 HITUNG STATISTIK REAL
-        $hadir = Absensi::where('karyawan_id', $karyawan->id)
-            ->where('status', 'hadir')->count();
+        $terlambat = Absensi::where('karyawan_id', $karyawanId)
+            ->where('status', 'Terlambat')
+            ->count();
 
-        $terlambat = Absensi::where('karyawan_id', $karyawan->id)
-            ->where('status', 'terlambat')->count();
+        $tidakHadir = Absensi::where('karyawan_id', $karyawanId)
+            ->where('status', 'Tidak Hadir')
+            ->count();
 
-        $izin = Absensi::where('karyawan_id', $karyawan->id)
-            ->where('status', 'izin')->count();
+        $izin = Izin::where('karyawan_id', $karyawanId)
+            ->count();
 
-        $alpha = Absensi::where('karyawan_id', $karyawan->id)
-            ->where('status', 'alpha')->count();
-
-        return view('karyawan.dashboard', compact(
-            'absensiHariIni',
-            'hadir',
-            'terlambat',
-            'izin',
-            'alpha'
-        ));
-    }
-
-    // 🔹 ABSEN MASUK
-    public function absenMasuk()
-    {
-        $karyawan = Auth::user()->karyawan;
-        $today = now()->toDateString();
-
-        // ❌ cegah double absen
-        $cek = Absensi::where('karyawan_id', $karyawan->id)
-            ->whereDate('tanggal', $today)
-            ->first();
-
-        if ($cek) {
-            return back()->with('error', 'Kamu sudah absen hari ini');
-        }
-
-        Absensi::create([
-            'karyawan_id' => $karyawan->id,
-            'tanggal' => $today,
-            'jam_masuk' => now(),
-            'status' => 'hadir'
-        ]);
-
-        return back()->with('success', 'Absen berhasil');
-    }
-
-    // 🔹 TIDAK HADIR
-    public function tidakHadir()
-    {
-        $karyawan = Auth::user()->karyawan;
-        $today = now()->toDateString();
-
-        $cek = Absensi::where('karyawan_id', $karyawan->id)
-            ->whereDate('tanggal', $today)
-            ->first();
-
-        if ($cek) {
-            return back()->with('error', 'Sudah ada data hari ini');
-        }
-
-        Absensi::create([
-            'karyawan_id' => $karyawan->id,
-            'tanggal' => $today,
-            'status' => 'alpha'
-        ]);
-
-        return back()->with('success', 'Status tidak hadir dicatat');
-    }
-
-    // 🔹 RIWAYAT
-    public function riwayat()
-    {
-        $karyawan = Auth::user()->karyawan;
-
-        $data = Absensi::where('karyawan_id', $karyawan->id)
+        $aktivitas = Absensi::where('karyawan_id', $karyawanId)
             ->latest()
+            ->take(10)
             ->get();
 
-        return view('karyawan.riwayat', compact('data'));
-    }
+        session([
+            'karyawan_nama' => $karyawan->nama,
+            'karyawan_divisi' => $karyawan->divisi,
+            'karyawan_jabatan' => $karyawan->jabatan,
+        ]);
 
-    // 🔹 PROFILE
-    public function profile()
-    {
-        $user = Auth::user();
-        return view('karyawan.profile', compact('user'));
+        return view('karyawan.dashboard', compact(
+            'karyawan',
+            'hadir',
+            'terlambat',
+            'tidakHadir',
+            'izin',
+            'aktivitas'
+        ));
     }
 }

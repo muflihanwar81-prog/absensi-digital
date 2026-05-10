@@ -9,13 +9,13 @@
 <body class="bg-white flex font-sans h-screen overflow-hidden">
 
     <!-- Memanggil Sidebar (Otomatis menangani menu aktif) -->
-    @include('layouts.partials.sidebar')
+    @include('layouts.sidebar')
 
     <!-- MAIN CONTENT -->
     <main class="flex-1 flex flex-col bg-gray-50 overflow-y-auto">
         
         <!-- Memanggil Header dengan judul dinamis -->
-        @include('layouts.partials.header', ['title' => 'Data Perizinan Karyawan'])
+        @include('layouts.header', ['title' => 'Data Perizinan Karyawan'])
 
         <div class="p-8">
             <!-- SEARCH BAR -->
