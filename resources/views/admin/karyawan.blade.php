@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Karyawan - Dashboard Admin</title>
-
+<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="stylesheet"
@@ -17,7 +17,7 @@
     @include('layouts.sidebar')
 
     <main class="flex-1 h-screen overflow-y-auto">
-       @include('components.header-admin')
+       @include('components.header_admin')
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">

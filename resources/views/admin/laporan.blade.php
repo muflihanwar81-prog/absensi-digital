@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan - CODIA-SYNC</title>
-
+<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -19,7 +19,7 @@
     <main class="flex-1 overflow-y-auto">
 
         {{-- HEADER --}}
-        @include('components.header-admin')
+        @include('components.header_admin')
         {{-- PAGE TITLE --}}
         <div class="bg-white border-b border-blue-100 px-6 py-6 shadow-sm">
             <p class="text-blue-600 font-semibold uppercase tracking-widest text-sm mb-2">

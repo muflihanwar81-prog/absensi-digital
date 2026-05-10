@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Divisi</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
@@ -13,7 +14,7 @@
 
     <div class="flex-1">
         <!-- Header -->
-        @include('components.header-admin')
+        @include('components.header_admin')
 
         <!-- Judul -->
         <div class="bg-white border-b border-blue-100 px-6 py-6 shadow-sm">

@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-
+<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,7 +20,7 @@
         <main class="flex-1 p-5 overflow-y-auto">
 
             <!-- HEADER -->
-            @include('components.header-admin')
+            @include('components.header_admin')
 
             <!-- WELCOME SECTION -->
             <div
