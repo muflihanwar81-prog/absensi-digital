@@ -6,158 +6,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karyawan Dashboard</title>
+    <title>Karyawan Dashboard - CODIA SYNC</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-200 font-sans">
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
 
     <div class="flex min-h-screen">
 
+        {{-- SIDEBAR --}}
         @include('layouts.sidebar_karyawan')
 
-        <main class="flex-1">
+        {{-- MAIN CONTENT --}}
+        <main class="flex-1 overflow-y-auto">
 
-            <div class="bg-[#efefef] border-b border-gray-400 px-6 py-3 flex justify-between items-center">
-                <h1 class="text-3xl font-bold">Presensia</h1>
-                <p class="text-sm font-semibold">
-                    Hallo, {{ session('karyawan_nama', 'Karyawan') }}
-                </p>
-            </div>
+            {{-- TOP HEADER --}}
+            @include('pages.header')
 
+            {{-- CONTENT --}}
             <div class="p-6">
 
-                <div class="bg-gray-300 rounded-lg p-6 mb-6 flex justify-between items-center">
+                {{-- WELCOME CARD --}}
+                <div
+                    class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-8 mb-6 flex justify-between items-center">
                     <div>
-                        <h2 class="text-4xl font-bold mb-2">Selamat Datang Karyawan</h2>
+                        <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold mb-2">
+                            Welcome Back
+                        </p>
+
+                        <h2 class="text-5xl font-extrabold text-slate-800 tracking-tight">
+                            Selamat Datang Karyawan
+                        </h2>
+
+                        <p class="text-slate-500 text-lg mt-3">
+                            Dashboard presensi dan aktivitas harian Anda.
+                        </p>
                     </div>
-                    <div class="text-xl font-semibold text-gray-700">
-                        {{ session('karyawan_divisi', 'Divisi') }}
+
+                    <div
+                        class="px-6 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl">
+                        <p class="text-sm uppercase tracking-widest opacity-80">
+                            Divisi
+                        </p>
+                        <p class="text-2xl font-bold mt-1">
+                            {{ session('karyawan_divisi', 'Divisi') }}
+                        </p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-4 gap-4 mb-6">
+                {{-- STATISTICS --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
 
-                    <div class="bg-gray-300 rounded-lg p-4">
-                        <p class="font-semibold mb-2">Hadir</p>
-                        <p class="text-5xl font-bold text-center">{{ $hadir ?? 0 }}</p>
+                    {{-- HADIR --}}
+                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
+                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                            Hadir
+                        </p>
+                        <p class="text-6xl font-extrabold text-emerald-600 text-center">
+                            {{ $hadir ?? 0 }}
+                        </p>
                     </div>
 
-                    <div class="bg-gray-300 rounded-lg p-4">
-                        <p class="font-semibold mb-2">Terlambat</p>
-                        <p class="text-5xl font-bold text-center">{{ $terlambat ?? 0 }}</p>
+                    {{-- TERLAMBAT --}}
+                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
+                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                            Terlambat
+                        </p>
+                        <p class="text-6xl font-extrabold text-amber-500 text-center">
+                            {{ $terlambat ?? 0 }}
+                        </p>
                     </div>
 
-                    <div class="bg-gray-300 rounded-lg p-4">
-                        <p class="font-semibold mb-2">Tidak Hadir</p>
-                        <p class="text-5xl font-bold text-center">{{ $tidakHadir ?? 0 }}</p>
+                    {{-- TIDAK HADIR --}}
+                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
+                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                            Tidak Hadir
+                        </p>
+                        <p class="text-6xl font-extrabold text-red-500 text-center">
+                            {{ $tidakHadir ?? 0 }}
+                        </p>
                     </div>
 
-                    <div class="bg-gray-300 rounded-lg p-4">
-                        <p class="font-semibold mb-2">Izin</p>
-                        <p class="text-5xl font-bold text-center">{{ $izin ?? 0 }}</p>
+                    {{-- IZIN --}}
+                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
+                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                            Izin
+                        </p>
+                        <p class="text-6xl font-extrabold text-blue-600 text-center">
+                            {{ $izin ?? 0 }}
+                        </p>
                     </div>
 
                 </div>
 
-                <div class="bg-gray-300 rounded-lg p-6 mb-6">
+                {{-- PROFILE + CLOCK CARD --}}
+                <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-8 mb-6">
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col xl:flex-row justify-between gap-8">
 
+                        {{-- PROFILE --}}
                         <div class="flex items-center gap-6">
                             <div
-                                class="w-28 h-28 rounded-full bg-gray-400 flex items-center justify-center text-5xl font-bold text-black">
+                                class="w-28 h-28 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-4xl font-extrabold text-white shadow-xl">
                                 {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 3)) }}
                             </div>
 
                             <div>
-                                <h3 class="text-4xl font-bold">
+                                <p class="text-sm uppercase tracking-[0.25em] text-slate-500 font-semibold mb-2">
+                                    Employee Profile
+                                </p>
+
+                                <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight">
                                     {{ session('karyawan_nama', 'Karyawan') }}
                                 </h3>
-                                <p class="text-2xl text-gray-700">
+
+                                <p class="text-2xl text-slate-500 mt-2">
                                     {{ session('karyawan_jabatan', 'Karyawan') }}
                                 </p>
                             </div>
                         </div>
 
+                        {{-- CLOCK --}}
                         <div class="text-right">
-                            <div id="clock" class="text-6xl font-bold leading-none">
+                            <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold mb-2">
+                                Waktu Sekarang
+                            </p>
+
+                            <div id="clock"
+                                class="text-7xl font-extrabold text-slate-800 leading-none tracking-tight">
                                 08 : 57
                             </div>
-                            <div id="date" class="text-lg text-gray-700 mt-2">
+
+                            <div id="date"
+                                class="text-lg text-slate-500 mt-3 font-medium">
                                 Kamis, 2 Nov 2026
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="flex justify-end gap-4 mt-6">
+                    {{-- ACTION BUTTONS --}}
+                    <div class="flex justify-end gap-4 mt-8">
+
                         <button
-                            class="w-48 bg-gray-400 hover:bg-gray-500 py-3 rounded font-bold text-xl shadow">
+                            class="w-48 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-xl shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300">
                             Masuk
                         </button>
 
                         <button
-                            class="w-48 bg-white hover:bg-gray-100 py-3 rounded font-bold text-xl shadow border border-gray-300">
+                            class="w-48 bg-white border border-blue-100 text-slate-700 py-4 rounded-2xl font-bold text-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
                             Pulang
                         </button>
+
                     </div>
 
                 </div>
 
+                {{-- ACTIVITY SECTION --}}
                 <div>
-                    <h3 class="text-2xl font-bold mb-3">Aktivitas Hari Ini :</h3>
+                    <div class="mb-4">
+                        <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold mb-2">
+                            Daily Activity
+                        </p>
+                        <h3 class="text-3xl font-extrabold text-slate-800">
+                            Aktivitas Hari Ini
+                        </h3>
+                    </div>
 
-                    <div class="bg-white border border-black overflow-x-auto">
-                        <table class="w-full border-collapse">
-                            <thead class="bg-gray-300">
-                                <tr>
-                                    <th class="border border-black px-4 py-2 text-left">No</th>
-                                    <th class="border border-black px-4 py-2 text-left">Nama Karyawan</th>
-                                    <th class="border border-black px-4 py-2 text-left">Tanggal</th>
-                                    <th class="border border-black px-4 py-2 text-left">Waktu</th>
-                                    <th class="border border-black px-4 py-2 text-left">Keterangan</th>
-                                </tr>
-                            </thead>
+                    {{-- TABLE CARD --}}
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
 
-                            <tbody>
-    @php
-        $aktivitas = $aktivitas ?? collect();
-    @endphp
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-collapse">
 
-    @forelse($aktivitas as $item)
-        <tr>
-            <td class="border border-black px-4 py-2">
-                {{ $loop->iteration }}
-            </td>
+                                {{-- TABLE HEADER --}}
+                                <thead
+                                    class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                                    <tr>
+                                        <th class="px-6 py-4 text-left font-bold">No</th>
+                                        <th class="px-6 py-4 text-left font-bold">Nama Karyawan</th>
+                                        <th class="px-6 py-4 text-left font-bold">Tanggal</th>
+                                        <th class="px-6 py-4 text-left font-bold">Waktu</th>
+                                        <th class="px-6 py-4 text-left font-bold">Keterangan</th>
+                                    </tr>
+                                </thead>
 
-            <td class="border border-black px-4 py-2">
-                {{ data_get($item, 'nama', session('karyawan_nama')) }}
-            </td>
+                                <tbody>
+                                    @php
+                                        $aktivitas = $aktivitas ?? collect();
+                                    @endphp
 
-            <td class="border border-black px-4 py-2">
-                {{ data_get($item, 'tanggal', '-') }}
-            </td>
+                                    @forelse($aktivitas as $item)
+                                        <tr
+                                            class="border-b border-slate-100 hover:bg-blue-50 transition duration-200">
+                                            <td class="px-6 py-4 font-medium text-slate-700">
+                                                {{ $loop->iteration }}
+                                            </td>
 
-            <td class="border border-black px-4 py-2">
-                {{ data_get($item, 'jam_masuk', data_get($item, 'waktu', '-')) }}
-            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-800">
+                                                {{ data_get($item, 'nama', session('karyawan_nama')) }}
+                                            </td>
 
-            <td class="border border-black px-4 py-2">
-                {{ data_get($item, 'status', '-') }}
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="5"
-                class="border border-black py-10 text-center text-gray-500">
-                Belum ada aktivitas hari ini.
-            </td>
-        </tr>
-    @endforelse
-</tbody>
-                        </table>
+                                            <td class="px-6 py-4 text-slate-600">
+                                                {{ data_get($item, 'tanggal', '-') }}
+                                            </td>
+
+                                            <td class="px-6 py-4 text-slate-600">
+                                                {{ data_get($item, 'jam_masuk', data_get($item, 'waktu', '-')) }}
+                                            </td>
+
+                                            <td class="px-6 py-4">
+                                                <span
+                                                    class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
+                                                    {{ data_get($item, 'status', '-') }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5"
+                                                class="py-16 text-center text-slate-400 italic text-lg">
+                                                Belum ada aktivitas hari ini.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+
+                            </table>
+                        </div>
+
                     </div>
                 </div>
 
@@ -167,6 +246,7 @@
 
     </div>
 
+    {{-- CLOCK SCRIPT (TIDAK DIUBAH) --}}
     <script>
         function updateClock() {
             const now = new Date();

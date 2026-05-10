@@ -9,167 +9,199 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
 
     <div class="flex min-h-screen">
 
+        {{-- Sidebar Karyawan --}}
         @include('layouts.sidebar_karyawan')
 
+        {{-- Main Content --}}
         <div class="flex-1">
 
-            <div class="bg-[#efefef] border-b border-gray-400">
-                <div class="flex items-center justify-between px-6 py-3">
-                    <h1 class="text-3xl font-bold text-gray-800">
-                        Presensia
-                    </h1>
+            {{-- Header --}}
+            @include('pages.header')
 
-                    <div class="text-sm font-medium text-gray-700">
-                        Hallo, {{ session('karyawan_nama', 'Karyawan') }}
-                    </div>
-                </div>
-            </div>
+            {{-- Content --}}
+            <div class="p-8">
 
-            <div class="p-6">
+                {{-- Container --}}
+                <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
 
-                <div class="bg-white border border-gray-400 rounded-lg shadow-sm p-6">
-
-                    <div class="bg-gray-200 rounded-lg px-6 py-4 mb-6">
-                        <h2 class="text-4xl font-bold text-gray-800">
+                    {{-- Title Section --}}
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6 text-white">
+                        <p class="uppercase tracking-[0.3em] text-xs font-semibold opacity-90 mb-2">
+                            Attendance Records
+                        </p>
+                        <h2 class="text-4xl font-extrabold">
                             Data Kehadiran Anda
                         </h2>
+                        <p class="mt-2 text-blue-100">
+                            Riwayat kehadiran dan status absensi karyawan.
+                        </p>
                     </div>
 
-                    <form method="GET" action="{{ route('karyawan.kehadiran') }}">
-                        <div class="flex flex-wrap items-center gap-4 mb-6">
+                    {{-- Filter Section --}}
+                    <div class="p-8 border-b border-slate-100">
+                        <form method="GET" action="{{ route('karyawan.kehadiran') }}">
+                            <div class="flex flex-wrap items-end gap-4">
 
-                            <div class="flex items-center gap-2">
-                                <label class="font-semibold text-sm">Tanggal :</label>
+                                {{-- Tanggal --}}
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <label class="font-semibold text-slate-700 text-sm">
+                                        Tanggal:
+                                    </label>
 
-                                <input
-                                    type="date"
-                                    name="tanggal_awal"
-                                    value="{{ request('tanggal_awal') }}"
-                                    class="border border-gray-400 rounded px-3 py-2 text-sm">
+                                    <input
+                                        type="date"
+                                        name="tanggal_awal"
+                                        value="{{ request('tanggal_awal') }}"
+                                        class="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-                                <span class="font-semibold text-sm">s/d</span>
+                                    <span class="font-semibold text-slate-500 text-sm">
+                                        s/d
+                                    </span>
 
-                                <input
-                                    type="date"
-                                    name="tanggal_akhir"
-                                    value="{{ request('tanggal_akhir') }}"
-                                    class="border border-gray-400 rounded px-3 py-2 text-sm">
-                            </div>
+                                    <input
+                                        type="date"
+                                        name="tanggal_akhir"
+                                        value="{{ request('tanggal_akhir') }}"
+                                        class="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
 
-                            <div class="ml-auto flex gap-3">
+                                {{-- Filter Dropdown --}}
+                                <div class="ml-auto flex flex-wrap gap-3">
 
-                                <select
-                                    name="bulan"
-                                    class="border border-gray-400 rounded px-3 py-2 text-sm">
-                                    <option value="">Bulan</option>
-                                    @for ($i = 1; $i <= 12; $i++)
-                                        <option
-                                        value="{{ $i }}"
-                                        {{ request('bulan') == $i ? 'selected' : '' }}>
-                                        {{ DateTime::createFromFormat('!m', $i)->format('F') }}
-                                        </option>
+                                    {{-- Bulan --}}
+                                    <select
+                                        name="bulan"
+                                        class="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Bulan</option>
+                                        @for ($i = 1; $i <= 12; $i++)
+                                            <option
+                                                value="{{ $i }}"
+                                                {{ request('bulan') == $i ? 'selected' : '' }}>
+                                                {{ DateTime::createFromFormat('!m', $i)->format('F') }}
+                                            </option>
                                         @endfor
-                                </select>
+                                    </select>
 
-                                <select
-                                    name="status"
-                                    class="border border-gray-400 rounded px-3 py-2 text-sm">
-                                    <option value="">Status</option>
-                                    <option value="Hadir" {{ request('status') == 'Hadir' ? 'selected' : '' }}>Hadir</option>
-                                    <option value="Izin" {{ request('status') == 'Izin' ? 'selected' : '' }}>Izin</option>
-                                    <option value="Tidak Hadir" {{ request('status') == 'Tidak Hadir' ? 'selected' : '' }}>Tidak Hadir</option>
-                                    <option value="Terlambat" {{ request('status') == 'Terlambat' ? 'selected' : '' }}>Terlambat</option>
-                                </select>
+                                    {{-- Status --}}
+                                    <select
+                                        name="status"
+                                        class="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Status</option>
+                                        <option value="Hadir" {{ request('status') == 'Hadir' ? 'selected' : '' }}>Hadir</option>
+                                        <option value="Izin" {{ request('status') == 'Izin' ? 'selected' : '' }}>Izin</option>
+                                        <option value="Tidak Hadir" {{ request('status') == 'Tidak Hadir' ? 'selected' : '' }}>Tidak Hadir</option>
+                                        <option value="Terlambat" {{ request('status') == 'Terlambat' ? 'selected' : '' }}>Terlambat</option>
+                                    </select>
 
-                                <button
-                                    type="submit"
-                                    class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded text-sm font-semibold">
-                                    Filter
-                                </button>
-
+                                    {{-- Button Filter --}}
+                                    <button
+                                        type="submit"
+                                        class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-2xl text-sm font-bold shadow-lg hover:shadow-xl hover:scale-105 transition duration-300">
+                                        Filter
+                                    </button>
+                                </div>
                             </div>
+                        </form>
+                    </div>
+
+                    {{-- Table --}}
+                    <div class="p-8">
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+
+                            <table class="w-full text-sm">
+
+                                {{-- Table Header --}}
+                                <thead class="bg-gradient-to-r from-slate-100 to-blue-50 text-slate-700">
+                                    <tr>
+                                        <th class="px-4 py-4 text-center font-bold border-b border-slate-200">No</th>
+                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Nama Karyawan</th>
+                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">NIK</th>
+                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Divisi</th>
+                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Jabatan</th>
+                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Tanggal</th>
+                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Jam Masuk</th>
+                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Jam Keluar</th>
+                                        <th class="px-4 py-4 text-center font-bold border-b border-slate-200">Status</th>
+                                        <th class="px-4 py-4 text-center font-bold border-b border-slate-200">Aksi</th>
+                                    </tr>
+                                </thead>
+
+                                {{-- Table Body --}}
+                                <tbody class="divide-y divide-slate-100">
+                                    @forelse ($absensis as $item)
+                                        <tr class="hover:bg-blue-50/60 transition duration-200">
+                                            <td class="px-4 py-4 text-center font-semibold text-slate-600">
+                                                {{ $loop->iteration }}
+                                            </td>
+
+                                            <td class="px-4 py-4 font-semibold text-slate-800">
+                                                {{ $item->nama_karyawan ?? session('karyawan_nama') }}
+                                            </td>
+
+                                            <td class="px-4 py-4 text-slate-600">
+                                                {{ $item->nip ?? '-' }}
+                                            </td>
+
+                                            <td class="px-4 py-4 text-slate-600">
+                                                {{ $item->divisi ?? '-' }}
+                                            </td>
+
+                                            <td class="px-4 py-4 text-slate-600">
+                                                {{ $item->jabatan ?? '-' }}
+                                            </td>
+
+                                            <td class="px-4 py-4 text-slate-600">
+                                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
+                                            </td>
+
+                                            <td class="px-4 py-4 font-semibold text-green-600">
+                                                {{ $item->jam_masuk ?? '-' }}
+                                            </td>
+
+                                            <td class="px-4 py-4 font-semibold text-red-500">
+                                                {{ $item->jam_keluar ?? '-' }}
+                                            </td>
+
+                                            <td class="px-4 py-4 text-center">
+                                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-bold
+                                                    @if(($item->status ?? '-') == 'Hadir')
+                                                        bg-green-100 text-green-700
+                                                    @elseif(($item->status ?? '-') == 'Izin')
+                                                        bg-yellow-100 text-yellow-700
+                                                    @elseif(($item->status ?? '-') == 'Terlambat')
+                                                        bg-orange-100 text-orange-700
+                                                    @else
+                                                        bg-red-100 text-red-700
+                                                    @endif">
+                                                    {{ $item->status ?? '-' }}
+                                                </span>
+                                            </td>
+
+                                            <td class="px-4 py-4 text-center">
+                                                <button
+                                                    type="button"
+                                                    class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl shadow-sm transition duration-200">
+                                                    👁
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td
+                                                colspan="10"
+                                                class="text-center py-24 text-slate-400 italic">
+                                                Belum ada data kehadiran.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+
+                            </table>
                         </div>
-                    </form>
-
-                    <div class="border border-gray-400 overflow-x-auto">
-                        <table class="w-full border-collapse text-sm">
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th class="border border-gray-400 px-3 py-2">No</th>
-                                    <th class="border border-gray-400 px-3 py-2">Nama Karyawan</th>
-                                    <th class="border border-gray-400 px-3 py-2">Nik</th>
-                                    <th class="border border-gray-400 px-3 py-2">Divisi</th>
-                                    <th class="border border-gray-400 px-3 py-2">Jabatan</th>
-                                    <th class="border border-gray-400 px-3 py-2">Tanggal</th>
-                                    <th class="border border-gray-400 px-3 py-2">Jam Masuk</th>
-                                    <th class="border border-gray-400 px-3 py-2">Jam Keluar</th>
-                                    <th class="border border-gray-400 px-3 py-2">Status</th>
-                                    <th class="border border-gray-400 px-3 py-2">Aksi</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @forelse ($absensis as $item)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="border border-gray-400 px-3 py-2 text-center">
-                                        {{ $loop->iteration }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ $item->nama_karyawan ?? session('karyawan_nama') }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ $item->nip ?? '-' }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ $item->divisi ?? '-' }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ $item->jabatan ?? '-' }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ $item->jam_masuk ?? '-' }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ $item->jam_keluar ?? '-' }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2">
-                                        {{ $item->status ?? '-' }}
-                                    </td>
-
-                                    <td class="border border-gray-400 px-3 py-2 text-center">
-                                        <button
-                                            type="button"
-                                            class="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded">
-                                            👁
-                                        </button>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td
-                                        colspan="10"
-                                        class="border border-gray-400 text-center py-20 text-gray-500">
-                                        Belum ada data kehadiran.
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
                     </div>
 
                 </div>

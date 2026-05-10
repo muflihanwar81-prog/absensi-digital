@@ -4,47 +4,42 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pengajuan Izin</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
 
     <div class="flex min-h-screen">
 
+        {{-- Sidebar Karyawan --}}
         @include('layouts.sidebar_karyawan')
 
-        <div class="flex-1">
+        {{-- Main Content --}}
+        <div class="flex-1 flex flex-col">
 
             {{-- HEADER --}}
-            <div class="bg-[#efefef] border-b border-gray-400">
-                <div class="flex items-center justify-between px-6 py-3">
-                    <h1 class="text-3xl font-bold text-gray-800">
-                        Presensia
-                    </h1>
+            @include('pages.header')
 
-                    <div class="text-sm font-medium text-gray-700">
-                        Hallo, {{ session('karyawan_nama', 'Karyawan') }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-6">
+            {{-- CONTENT --}}
+            <main class="flex-1 p-8">
 
                 {{-- ALERT SUCCESS --}}
                 @if (session('success'))
-                    <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                    <div
+                        class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl shadow-sm">
                         {{ session('success') }}
                     </div>
                 @endif
 
                 {{-- ALERT ERROR --}}
                 @if ($errors->any())
-                    <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                        <ul class="list-disc ml-5">
+                    <div
+                        class="mb-6 bg-rose-50 border border-rose-200 text-rose-700 px-6 py-4 rounded-2xl shadow-sm">
+                        <ul class="list-disc ml-5 space-y-1">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -54,167 +49,226 @@
 
                 {{-- BUTTON TAMBAH IZIN --}}
                 <div class="flex justify-end mb-6">
-                    <button onclick="openModal()"
-                        class="bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold shadow">
+                    <button
+                        onclick="openModal()"
+                        class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-2xl font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300">
                         + Ajukan Izin
                     </button>
                 </div>
 
-                {{-- TABEL DATA IZIN --}}
-                <div class="bg-white border border-gray-400 rounded-lg shadow-sm p-6">
+                {{-- CARD UTAMA --}}
+                <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
 
-                    <div class="bg-gray-200 rounded-lg px-6 py-4 mb-6">
-                        <h2 class="text-4xl font-bold text-gray-800">
+                    {{-- HEADER CARD --}}
+                    <div
+                        class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-8 py-8 text-white">
+                        <p class="text-sm uppercase tracking-[0.3em] font-semibold opacity-90 mb-2">
+                            Permission Request
+                        </p>
+                        <h2 class="text-4xl font-black tracking-tight">
                             Pengajuan Izin
                         </h2>
+                        <p class="text-blue-100 mt-2 text-lg">
+                            Kelola dan pantau seluruh pengajuan izin Anda.
+                        </p>
                     </div>
 
-                    <div class="border border-gray-400 overflow-x-auto">
-                        <table class="w-full border-collapse text-sm">
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th class="border border-gray-400 px-3 py-2">No</th>
-                                    <th class="border border-gray-400 px-3 py-2">NIP</th>
-                                    <th class="border border-gray-400 px-3 py-2">Nama Karyawan</th>
-                                    <th class="border border-gray-400 px-3 py-2">Divisi</th>
-                                    <th class="border border-gray-400 px-3 py-2">Jabatan</th>
-                                    <th class="border border-gray-400 px-3 py-2">Jenis Izin</th>
-                                    <th class="border border-gray-400 px-3 py-2">Status</th>
-                                    <th class="border border-gray-400 px-3 py-2">Aksi</th>
-                                </tr>
-                            </thead>
+                    <div class="p-8">
 
-                            <tbody>
-                                @forelse ($data as $item)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="border border-gray-400 px-3 py-2 text-center">
-                                            {{ $loop->iteration }}
-                                        </td>
+                        {{-- TABLE --}}
+                        <div
+                            class="bg-white rounded-3xl border border-blue-100 shadow-xl overflow-hidden">
 
-                                        <td class="border border-gray-400 px-3 py-2">
-                                            {{ $item->nip }}
-                                        </td>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
 
-                                        <td class="border border-gray-400 px-3 py-2">
-                                            {{ $item->nama }}
-                                        </td>
+                                    {{-- TABLE HEADER --}}
+                                    <thead
+                                        class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm uppercase tracking-wider">
+                                        <tr>
+                                            <th class="px-4 py-4 text-center font-bold">No</th>
+                                            <th class="px-4 py-4 text-left font-bold">NIP</th>
+                                            <th class="px-4 py-4 text-left font-bold">Nama Karyawan</th>
+                                            <th class="px-4 py-4 text-left font-bold">Divisi</th>
+                                            <th class="px-4 py-4 text-left font-bold">Jabatan</th>
+                                            <th class="px-4 py-4 text-left font-bold">Jenis Izin</th>
+                                            <th class="px-4 py-4 text-center font-bold">Status</th>
+                                            <th class="px-4 py-4 text-center font-bold">Aksi</th>
+                                        </tr>
+                                    </thead>
 
-                                        <td class="border border-gray-400 px-3 py-2">
-                                            {{ $item->divisi }}
-                                        </td>
+                                    {{-- TABLE BODY --}}
+                                    <tbody class="divide-y divide-slate-100">
+                                        @forelse ($data as $item)
+                                            <tr
+                                                class="hover:bg-blue-50/60 transition duration-200">
 
-                                        <td class="border border-gray-400 px-3 py-2">
-                                            {{ $item->jabatan }}
-                                        </td>
+                                                <td
+                                                    class="px-4 py-4 text-center font-semibold text-slate-700">
+                                                    {{ $loop->iteration }}
+                                                </td>
 
-                                        <td class="border border-gray-400 px-3 py-2">
-                                            {{ $item->kategori }}
-                                        </td>
+                                                <td
+                                                    class="px-4 py-4 font-mono text-sm text-slate-600">
+                                                    {{ $item->nip }}
+                                                </td>
 
-                                        <td class="border border-gray-400 px-3 py-2">
-                                            <span class="px-2 py-1 rounded text-xs font-semibold
-                                                @if($item->status == 'Disetujui') bg-green-100 text-green-700
-                                                @elseif($item->status == 'Ditolak') bg-red-100 text-red-700
-                                                @else bg-yellow-100 text-yellow-700
-                                                @endif">
-                                                {{ $item->status }}
-                                            </span>
-                                        </td>
+                                                <td
+                                                    class="px-4 py-4 font-semibold text-slate-800">
+                                                    {{ $item->nama }}
+                                                </td>
 
-                                        <td class="border border-gray-400 px-3 py-2 text-center">
-                                            @if ($item->file_tambahan)
-                                                <a href="{{ asset('storage/' . $item->file_tambahan) }}"
-                                                    target="_blank"
-                                                    class="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded">
-                                                    👁
-                                                </a>
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="8"
-                                            class="border border-gray-400 text-center py-20 text-gray-500">
-                                            Belum ada pengajuan izin.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                                <td class="px-4 py-4 text-slate-700">
+                                                    {{ $item->divisi }}
+                                                </td>
+
+                                                <td class="px-4 py-4 text-slate-700">
+                                                    {{ $item->jabatan }}
+                                                </td>
+
+                                                <td class="px-4 py-4 text-slate-700">
+                                                    {{ $item->kategori }}
+                                                </td>
+
+                                                <td class="px-4 py-4 text-center">
+                                                    <span
+                                                        class="px-3 py-1 rounded-full text-xs font-bold
+                                                        @if ($item->status == 'Disetujui')
+                                                            bg-emerald-100 text-emerald-700
+                                                        @elseif($item->status == 'Ditolak')
+                                                            bg-rose-100 text-rose-700
+                                                        @else
+                                                            bg-amber-100 text-amber-700
+                                                        @endif">
+                                                        {{ $item->status }}
+                                                    </span>
+                                                </td>
+
+                                                <td class="px-4 py-4 text-center">
+                                                    @if ($item->file_tambahan)
+                                                        <a
+                                                            href="{{ asset('storage/' . $item->file_tambahan) }}"
+                                                            target="_blank"
+                                                            class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-blue-100 text-blue-700 hover:bg-blue-200 transition duration-200">
+                                                            👁
+                                                        </a>
+                                                    @else
+                                                        <span class="text-slate-400">-</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td
+                                                    colspan="8"
+                                                    class="text-center py-24 text-slate-400 italic text-lg">
+                                                    Belum ada pengajuan izin.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+
                     </div>
-
                 </div>
 
-            </div>
+            </main>
 
         </div>
 
     </div>
 
     {{-- MODAL AJUKAN IZIN --}}
-    <div id="modalIzin"
-        class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <div
+        id="modalIzin"
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
 
-        <div class="bg-white w-full max-w-lg rounded-xl shadow-xl overflow-hidden">
+        <div
+            class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
 
             {{-- HEADER MODAL --}}
-            <div class="bg-gray-200 px-6 py-4 border-b border-gray-300 flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-gray-800">
-                    Ajukan Izin
-                </h2>
+            <div
+                class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-8 py-6 text-white flex justify-between items-center">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.3em] font-semibold opacity-90 mb-1">
+                        New Request
+                    </p>
+                    <h2 class="text-3xl font-black tracking-tight">
+                        Ajukan Izin
+                    </h2>
+                </div>
 
-                <button onclick="closeModal()"
-                    class="text-red-600 font-bold text-2xl hover:text-red-800">
+                <button
+                    onclick="closeModal()"
+                    class="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-2xl font-light transition duration-200">
                     ×
                 </button>
             </div>
 
             {{-- FORM --}}
-            <form action="{{ route('izin.store') }}"
+            <form
+                action="{{ route('izin.store') }}"
                 method="POST"
                 enctype="multipart/form-data"
-                class="p-6 space-y-4">
+                class="p-8 space-y-5">
                 @csrf
 
                 <div>
-                    <label class="block text-sm font-semibold mb-1">NIP</label>
-                    <input type="text"
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        NIP
+                    </label>
+                    <input
+                        type="text"
                         value="{{ $karyawan->nip }}"
                         readonly
-                        class="w-full border border-gray-400 rounded px-3 py-2 bg-gray-100">
+                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold mb-1">Nama</label>
-                    <input type="text"
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Nama
+                    </label>
+                    <input
+                        type="text"
                         value="{{ $karyawan->nama }}"
                         readonly
-                        class="w-full border border-gray-400 rounded px-3 py-2 bg-gray-100">
+                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold mb-1">Divisi</label>
-                    <input type="text"
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Divisi
+                    </label>
+                    <input
+                        type="text"
                         value="{{ $karyawan->divisi }}"
                         readonly
-                        class="w-full border border-gray-400 rounded px-3 py-2 bg-gray-100">
+                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold mb-1">Jabatan</label>
-                    <input type="text"
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Jabatan
+                    </label>
+                    <input
+                        type="text"
                         value="{{ $karyawan->jabatan }}"
                         readonly
-                        class="w-full border border-gray-400 rounded px-3 py-2 bg-gray-100">
+                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold mb-1">Kategori</label>
-                    <select name="kategori"
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Kategori
+                    </label>
+                    <select
+                        name="kategori"
                         required
-                        class="w-full border border-gray-400 rounded px-3 py-2">
+                        class="w-full bg-white border border-blue-100 rounded-2xl px-4 py-3 outline-none focus:ring-4 focus:ring-blue-100 shadow-sm">
                         <option value="">Pilih Kategori</option>
                         <option value="Sakit">Sakit</option>
                         <option value="Izin">Izin</option>
@@ -223,14 +277,18 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold mb-1">File Tambahan</label>
-                    <input type="file"
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        File Tambahan
+                    </label>
+                    <input
+                        type="file"
                         name="file_tambahan"
-                        class="w-full border border-gray-400 rounded px-3 py-2">
+                        class="w-full bg-white border border-blue-100 rounded-2xl px-4 py-3 outline-none shadow-sm">
                 </div>
 
-                <button type="submit"
-                    class="w-full bg-gray-700 hover:bg-gray-800 text-white py-3 rounded font-semibold">
+                <button
+                    type="submit"
+                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-2xl font-bold shadow-xl hover:shadow-2xl transition duration-300">
                     Kirim Pengajuan
                 </button>
             </form>

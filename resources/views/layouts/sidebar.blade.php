@@ -6,9 +6,6 @@
         <div class="p-5 border-b border-slate-700">
             <div class="flex items-center justify-between">
                 <div id="sidebarTitle">
-                    <p class="text-xs uppercase tracking-[0.35em] text-blue-300 font-semibold">
-                        Admin Panel
-                    </p>
                     <h1 class="text-3xl font-extrabold tracking-tight mt-1">
                         CODIA
                     </h1>
@@ -32,9 +29,6 @@
 
         {{-- NAVIGATION --}}
         <nav class="px-4 py-6">
-            <p class="menu-text text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold px-4 mb-4">
-                Navigation
-            </p>
 
             <ul class="space-y-2">
 
