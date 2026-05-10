@@ -19,24 +19,7 @@
     <main class="flex-1 overflow-y-auto">
 
         {{-- HEADER --}}
-        <div class="bg-white border-b border-blue-100 shadow-sm">
-            <div class="flex items-center gap-5 px-6 py-4">
-                <div
-                    class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
-                </div>
-
-                <div>
-                    <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold">
-                        Admin Panel
-                    </p>
-
-                    <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight">
-                        CODIA-SYNC
-                    </h1>
-                </div>
-            </div>
-        </div>
-
+        @include('pages.header_admin')
         {{-- PAGE TITLE --}}
         <div class="bg-white border-b border-blue-100 px-6 py-6 shadow-sm">
             <p class="text-blue-600 font-semibold uppercase tracking-widest text-sm mb-2">

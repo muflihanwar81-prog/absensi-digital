@@ -17,7 +17,7 @@
     <main class="flex-1 h-screen overflow-y-auto">
 
         {{-- Header --}}
-        @include('layouts.header', ['title' => 'Data Perizinan Karyawan'])
+        @include('pages.header_admin')
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">

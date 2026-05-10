@@ -32,7 +32,7 @@
                     class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-8 mb-6 flex justify-between items-center">
                     <div>
                         <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold mb-2">
-                            Welcome Back
+                            selamat datang kembali
                         </p>
 
                         <h2 class="text-5xl font-extrabold text-slate-800 tracking-tight">
@@ -114,7 +114,7 @@
 
                             <div>
                                 <p class="text-sm uppercase tracking-[0.25em] text-slate-500 font-semibold mb-2">
-                                    Employee Profile
+                                    Karyawan profil
                                 </p>
 
                                 <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight">
