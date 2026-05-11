@@ -23,10 +23,12 @@ class AuthController extends Controller
             Auth::login($user);
             $request->session()->regenerate();
 
-            if ($user->role === 'divisi') {
+            // Kepala Divisi
+            if ($user->role === 'kepala_divisi') {
                 return redirect('/divisi-dashboard');
             }
 
+            // Admin
             if ($user->role === 'admin') {
                 return redirect('/dashboard');
             }
@@ -36,6 +38,7 @@ class AuthController extends Controller
             return back()->with('error', 'Role tidak dikenali.');
         }
 
+        // Login Karyawan
         $karyawan = Karyawan::where('email', $request->email)->first();
 
         if ($karyawan && Hash::check($request->password, $karyawan->password)) {

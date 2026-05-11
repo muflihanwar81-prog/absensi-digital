@@ -13,50 +13,47 @@ class DivisiDashboardController extends Controller
     /**
      * Dashboard Divisi
      */
-    public function index()
-    {
-        $user = Auth::user();
+   public function index()
+{
+    $user = Auth::user();
 
-        // Nama divisi diambil dari akun yang login
-        // Misalnya akun user name = HR, maka hanya data divisi HR yang ditampilkan
-        $namaDivisi = $user->name;
+    $nama_user = $user->name;
+    $namaDivisi = $user->name;
+    $divisi = $namaDivisi;
 
-        // Statistik dashboard
-        $total_karyawan = Karyawan::where('divisi', $namaDivisi)->count();
+    $total_karyawan = Karyawan::where('divisi', $namaDivisi)->count();
 
-        $hadir = Absensi::where('divisi', $namaDivisi)
-            ->where('status', 'Hadir')
-            ->count();
+    $hadir = Absensi::where('divisi', $namaDivisi)
+        ->where('status', 'Hadir')
+        ->count();
 
-        $terlambat = Absensi::where('divisi', $namaDivisi)
-            ->where('status', 'Terlambat')
-            ->count();
+    $terlambat = Absensi::where('divisi', $namaDivisi)
+        ->where('status', 'Terlambat')
+        ->count();
 
-        $alpha = Absensi::where('divisi', $namaDivisi)
-            ->where('status', 'Alpha')
-            ->count();
+    $alpha = Absensi::where('divisi', $namaDivisi)
+        ->where('status', 'Alpha')
+        ->count();
 
-        $izin = Izin::where('divisi', $namaDivisi)
-            ->whereIn('kategori', ['Izin', 'Cuti'])
-            ->count();
+    $izin = Izin::where('divisi', $namaDivisi)
+        ->whereIn('kategori', ['Izin', 'Cuti'])
+        ->count();
 
-        $sakit = Izin::where('divisi', $namaDivisi)
-            ->where('kategori', 'Sakit')
-            ->count();
+    $sakit = Izin::where('divisi', $namaDivisi)
+        ->where('kategori', 'Sakit')
+        ->count();
 
-        return view('divisi.DashboardDivisi', compact(
-            'total_karyawan',
-            'hadir',
-            'terlambat',
-            'alpha',
-            'izin',
-            'sakit'
-        ));
-    }
-
-    /**
-     * Data Karyawan berdasarkan divisi yang login
-     */
+    return view('divisi.DashboardDivisi', compact(
+        'nama_user',
+        'divisi',
+        'total_karyawan',
+        'hadir',
+        'terlambat',
+        'alpha',
+        'izin',
+        'sakit'
+    ));
+}
     public function karyawan()
     {
         $user = Auth::user();
@@ -69,9 +66,6 @@ class DivisiDashboardController extends Controller
         return view('divisi.DataKaryawanDivisi', compact('karyawans'));
     }
 
-    /**
-     * Riwayat Absensi berdasarkan divisi yang login
-     */
     public function riwayatAbsensi()
     {
         $user = Auth::user();
@@ -84,9 +78,6 @@ class DivisiDashboardController extends Controller
         return view('divisi.RiwayatAbsensiDivisi', compact('absensi'));
     }
 
-    /**
-     * Data Perizinan berdasarkan divisi yang login
-     */
     public function perizinan()
     {
         $user = Auth::user();
@@ -99,9 +90,6 @@ class DivisiDashboardController extends Controller
         return view('divisi.DivisiPerizinan', compact('data'));
     }
 
-    /**
-     * Laporan Divisi
-     */
     public function laporan()
     {
         $user = Auth::user();
