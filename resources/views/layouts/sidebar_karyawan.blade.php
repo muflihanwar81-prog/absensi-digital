@@ -38,7 +38,6 @@
                         {{ request()->is('dashboard_karyawan')
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">🏠</span>
                         <span class="menu-text font-medium">Dashboard</span>
                     </a>
                 </li>
@@ -50,7 +49,6 @@
                         {{ request()->is('karyawan_absen')
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">📅</span>
                         <span class="menu-text font-medium">Data Kehadiran</span>
                     </a>
                 </li>
@@ -62,7 +60,6 @@
                         {{ request()->is('izin')
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">📄</span>
                         <span class="menu-text font-medium">Pengajuan Izin</span>
                     </a>
                 </li>

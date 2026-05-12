@@ -139,23 +139,22 @@
             <!-- CHART & SHORTCUT -->
             <div class="grid grid-cols-1 xl:grid-cols-4 gap-5 w-full">
 
-                <!-- CHART -->
-                <div class="xl:col-span-3 bg-white rounded-3xl shadow-2xl border border-blue-100 p-6 h-96">
+    <!-- CHART -->
+    <div class="xl:col-span-3 bg-white rounded-3xl shadow-2xl border border-blue-100 p-6 h-96">
 
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold text-slate-800">
-                            Grafik Absensi Mingguan
-                        </h2>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold text-slate-800">
+                Grafik Statistik Kehadiran
+            </h2>
 
-                        <span
-                            class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-                            Real-Time
-                        </span>
-                    </div>
+            <span
+                class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
+                Real-Time
+            </span>
+        </div>
 
-                    <canvas id="absensiChart"></canvas>
-
-</div>
+        <canvas id="absensiChart"></canvas>
+    </div>
 
     <!-- SHORTCUT -->
     <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-5 min-w-0">
@@ -164,17 +163,44 @@
             Jalan Pintas
         </h2>
 
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-2 gap-4">
 
-            <div class="bg-gradient-to-br from-blue-100 to-blue-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
-            <div class="bg-gradient-to-br from-indigo-100 to-indigo-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
-            <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
-            <div class="bg-gradient-to-br from-sky-100 to-sky-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
-            <div class="bg-gradient-to-br from-blue-100 to-indigo-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
-            <div class="bg-gradient-to-br from-indigo-100 to-purple-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition"></div>
+            <!-- Kelola Divisi -->
+            <a href="{{ route('admin.keloladivisi') }}"
+               class="bg-gradient-to-br from-blue-100 to-blue-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition flex flex-col items-center justify-center text-blue-800 font-bold text-sm">
+                🏢
+                <span class="mt-1 text-center">Kelola Divisi</span>
+            </a>
+
+            <!-- Data Karyawan -->
+            <a href="{{ route('admin.karyawan') }}"
+               class="bg-gradient-to-br from-indigo-100 to-indigo-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition flex flex-col items-center justify-center text-indigo-800 font-bold text-sm">
+                👨‍💼
+                <span class="mt-1 text-center">Data Karyawan</span>
+            </a>
+
+            <!-- Data Kehadiran -->
+            <a href="{{ route('admin.absensi.index') }}"
+               class="bg-gradient-to-br from-green-100 to-green-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition flex flex-col items-center justify-center text-green-800 font-bold text-sm">
+                📅
+                <span class="mt-1 text-center">Data Kehadiran</span>
+            </a>
+
+            <!-- Data Perizinan -->
+            <a href="{{ route('admin.perizinan.index') }}"
+               class="bg-gradient-to-br from-yellow-100 to-yellow-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition flex flex-col items-center justify-center text-yellow-800 font-bold text-sm">
+                📄
+                <span class="mt-1 text-center">Perizinan</span>
+            </a>
+
+            <!-- Laporan -->
+            <a href="{{ route('admin.laporan') }}"
+               class="bg-gradient-to-br from-purple-100 to-purple-200 h-24 rounded-2xl shadow-inner hover:scale-105 transition flex flex-col items-center justify-center text-purple-800 font-bold text-sm col-span-2">
+                📊
+                <span class="mt-1 text-center">Laporan</span>
+            </a>
 
         </div>
-
     </div>
 
 </div>
@@ -184,66 +210,72 @@
 
     <!-- CHART -->
     <script>
-        const ctx = document.getElementById('absensiChart');
+    const ctx = document.getElementById('absensiChart');
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-                datasets: [{
-                        label: 'ABSENSI 1',
-                        data: [1, 3, 2, 1, 2, 1, 3],
-                        backgroundColor: 'rgba(37, 99, 235, 0.8)',
-                        borderRadius: 8
-                    },
-                    {
-                        label: 'ABSENSI 2',
-                        data: [1, 2, 1, 2, 1, 2, 1],
-                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
-                        borderRadius: 8
-                    },
-                    {
-                        label: 'ABSENSI 3',
-                        data: [3, 1, 2, 1, 3, 2, 1],
-                        backgroundColor: 'rgba(99, 102, 241, 0.7)',
-                        borderRadius: 8
-                    }
-                ]
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+
+                'Hadir',
+                'Terlambat',
+                'Alpha',
+                'Izin',
+                'Sakit'
+            ],
+            datasets: [{
+                label: 'Jumlah Data',
+                data: [
+                    260,   // Hadir
+                    10,    // Terlambat
+                    20,    // Alpha
+                    5,     // Izin
+                    5      // Sakit
+                ],
+                backgroundColor: [
+                    'rgba(34, 197, 94, 0.8)',   // Hijau
+                    'rgba(234, 179, 8, 0.8)',   // Kuning
+                    'rgba(239, 68, 68, 0.8)',   // Merah
+                    'rgba(6, 182, 212, 0.8)',   // Cyan
+                    'rgba(236, 72, 153, 0.8)'   // Pink
+                ],
+                borderRadius: 10,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#334155',
-                            font: {
-                                weight: 'bold'
-                            }
+            scales: {
+                x: {
+                    ticks: {
+                        color: '#475569',
+                        font: {
+                            weight: 'bold'
                         }
+                    },
+                    grid: {
+                        display: false
                     }
                 },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: '#475569'
-                        },
-                        grid: {
-                            display: false
-                        }
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#475569'
                     },
-                    y: {
-                        ticks: {
-                            color: '#475569'
-                        },
-                        grid: {
-                            color: 'rgba(148, 163, 184, 0.15)'
-                        }
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.15)'
                     }
                 }
             }
-        });
-    </script>
+        }
+    });
+</script>
 
     <!-- CLOCK -->
     <script>

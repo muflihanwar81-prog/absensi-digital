@@ -201,6 +201,119 @@
             </div>
         </div>
     </main>
+    <!-- TAMBAHKAN INI SEBELUM TAG </body> -->
+<!-- Jika modal ini tidak ada, fungsi openModal() tidak akan bekerja -->
+
+{{-- MODAL TAMBAH KARYAWAN --}}
+<div id="modalTambah"
+     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8 relative">
+
+        <!-- Tombol Close -->
+        <button type="button"
+                onclick="closeModal()"
+                class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-3xl">
+            &times;
+        </button>
+
+        <!-- Judul -->
+        <h2 class="text-3xl font-bold text-slate-800 mb-6">
+            Tambah Karyawan
+        </h2>
+
+        <!-- Form -->
+        <form action="{{ route('admin.karyawan.store') }}" method="POST">
+            @csrf
+
+            <div class="grid grid-cols-2 gap-6">
+
+                <!-- NIP -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">NIP</label>
+                    <input type="text"
+                           name="nip"
+                           required
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Nama -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Nama Karyawan</label>
+                    <input type="text"
+                           name="nama"
+                           required
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Divisi -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Divisi</label>
+                    <select name="divisi"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">Pilih Divisi</option>
+                        @foreach($daftarDivisi as $divisi)
+                            <option value="{{ $divisi }}">{{ $divisi }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Jabatan -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Jabatan</label>
+                    <input type="text"
+                           name="jabatan"
+                           required
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <!-- TAMBAHKAN FIELD EMAIL DAN PASSWORD DI DALAM <div class="grid grid-cols-2 gap-6"> -->
+
+<!-- EMAIL -->
+<div>
+    <label class="block mb-2 font-semibold text-slate-700">Email</label>
+    <input type="email"
+           name="email"
+           required
+           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+</div>
+
+<!-- PASSWORD -->
+<div>
+    <label class="block mb-2 font-semibold text-slate-700">Password</label>
+    <input type="password"
+           name="password"
+           required
+           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+</div>
+                <!-- Status -->
+                <div class="col-span-2">
+                    <label class="block mb-2 font-semibold text-slate-700">Status</label>
+                    <select name="status"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="Aktif">Aktif</option>
+                        <option value="Nonaktif">Nonaktif</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tombol -->
+            <div class="flex justify-end gap-4 mt-8">
+                <button type="button"
+                        onclick="closeModal()"
+                        class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold">
+                    Batal
+                </button>
+
+                <button type="submit"
+                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl">
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
     // =========================
     // MODAL TAMBAH KARYAWAN

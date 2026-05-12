@@ -39,7 +39,6 @@
                         {{ request()->is('dashboard') 
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">🏠</span>
                         <span class="menu-text font-medium">Dashboard</span>
                     </a>
                 </li>
@@ -49,7 +48,6 @@
                         {{ request()->is('keloladivisi*') 
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">🏢</span>
                         <span class="menu-text font-medium">Kelola Divisi</span>
                     </a>
                 </li>
@@ -60,7 +58,6 @@
                         {{ request()->is('karyawan*') 
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">👨‍💼</span>
                         <span class="menu-text font-medium">Data Karyawan</span>
                     </a>
                 </li>
@@ -75,7 +72,7 @@
                         {{ request()->is('absensi*') 
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">📅</span>
+                        
                         <span class="menu-text font-medium">Data Kehadiran</span>
                     </a>
                 </li>
@@ -87,7 +84,6 @@
                         {{ request()->is('perizinan*') 
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">📄</span>
                         <span class="menu-text font-medium">Data Perizinan</span>
                     </a>
                 </li>
@@ -99,7 +95,6 @@
                         {{ request()->is('laporan') 
                             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold' 
                             : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="text-2xl w-8 text-center">📊</span>
                         <span class="menu-text font-medium">Laporan</span>
                     </a>
                 </li>

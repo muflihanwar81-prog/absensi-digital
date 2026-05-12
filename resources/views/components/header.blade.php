@@ -2,7 +2,7 @@
                 <div class="flex items-center justify-between px-8 py-5">
                     <div>
                         <h1 class="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                            Presensia
+                            CODIA-SYNC
                         </h1>
                     </div>
 
