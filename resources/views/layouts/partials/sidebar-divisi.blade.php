@@ -79,15 +79,6 @@
                 </li>
 
                 {{-- LAPORAN --}}
-                <li>
-                    <a href="{{ route('divisi.laporan') }}"
-                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
-                        {{ request()->routeIs('divisi.laporan')
-                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
-                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="menu-text font-medium">Laporan</span>
-                    </a>
-                </li>
 
             </ul>
         </nav>
