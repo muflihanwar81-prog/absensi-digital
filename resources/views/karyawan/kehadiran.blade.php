@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Kehadiran</title>
-<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -79,11 +79,11 @@
                                         <option value="">Bulan</option>
                                         @for ($i = 1; $i <= 12; $i++)
                                             <option
-                                                value="{{ $i }}"
-                                                {{ request('bulan') == $i ? 'selected' : '' }}>
-                                                {{ DateTime::createFromFormat('!m', $i)->format('F') }}
+                                            value="{{ $i }}"
+                                            {{ request('bulan') == $i ? 'selected' : '' }}>
+                                            {{ DateTime::createFromFormat('!m', $i)->format('F') }}
                                             </option>
-                                        @endfor
+                                            @endfor
                                     </select>
 
                                     {{-- Status --}}
@@ -115,13 +115,11 @@
                             <table class="w-full text-sm">
 
                                 {{-- Table Header --}}
+
                                 <thead class="bg-gradient-to-r from-slate-100 to-blue-50 text-slate-700">
                                     <tr>
                                         <th class="px-4 py-4 text-center font-bold border-b border-slate-200">No</th>
                                         <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Nama Karyawan</th>
-                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">NIK</th>
-                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Divisi</th>
-                                        <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Jabatan</th>
                                         <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Tanggal</th>
                                         <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Jam Masuk</th>
                                         <th class="px-4 py-4 text-left font-bold border-b border-slate-200">Jam Keluar</th>
@@ -133,70 +131,68 @@
                                 {{-- Table Body --}}
                                 <tbody class="divide-y divide-slate-100">
                                     @forelse ($absensis as $item)
-                                        <tr class="hover:bg-blue-50/60 transition duration-200">
-                                            <td class="px-4 py-4 text-center font-semibold text-slate-600">
-                                                {{ $loop->iteration }}
-                                            </td>
+                                    <tr class="hover:bg-blue-50/60 transition duration-200">
 
-                                            <td class="px-4 py-4 font-semibold text-slate-800">
-                                                {{ $item->nama_karyawan ?? session('karyawan_nama') }}
-                                            </td>
+                                        {{-- No --}}
+                                        <td class="px-4 py-4 text-center font-semibold text-slate-600">
+                                            {{ $loop->iteration }}
+                                        </td>
 
-                                            <td class="px-4 py-4 text-slate-600">
-                                                {{ $item->nip ?? '-' }}
-                                            </td>
+                                        {{-- Nama --}}
+                                        <td class="px-4 py-4 font-semibold text-slate-800">
+                                            {{ $item->nama_karyawan ?? session('karyawan_nama') }}
+                                        </td>
 
-                                            <td class="px-4 py-4 text-slate-600">
-                                                {{ $item->divisi ?? '-' }}
-                                            </td>
+                                        {{-- Tanggal --}}
+                                        <td class="px-4 py-4 text-slate-600">
+                                            {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
+                                        </td>
 
-                                            <td class="px-4 py-4 text-slate-600">
-                                                {{ $item->jabatan ?? '-' }}
-                                            </td>
+                                        {{-- Jam Masuk --}}
+                                        <td class="px-4 py-4 font-semibold text-green-600">
+                                            {{ $item->jam_masuk ?? '-' }}
+                                        </td>
 
-                                            <td class="px-4 py-4 text-slate-600">
-                                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
-                                            </td>
+                                        {{-- Jam Keluar --}}
+                                        <td class="px-4 py-4 font-semibold text-red-500">
+                                            {{ $item->jam_keluar ?? '-' }}
+                                        </td>
 
-                                            <td class="px-4 py-4 font-semibold text-green-600">
-                                                {{ $item->jam_masuk ?? '-' }}
-                                            </td>
+                                        {{-- Status --}}
+                                        <td class="px-4 py-4 text-center">
+                                            <span class="inline-flex px-3 py-1 rounded-full text-xs font-bold
+                                                @if(($item->status ?? '-') == 'Hadir')
+                                                    bg-green-100 text-green-700
+                                                @elseif(($item->status ?? '-') == 'Izin')
+                                                    bg-yellow-100 text-yellow-700
+                                                @elseif(($item->status ?? '-') == 'Terlambat')
+                                                    bg-orange-100 text-orange-700
+                                                @else
+                                                    bg-red-100 text-red-700
+                                                @endif">
 
-                                            <td class="px-4 py-4 font-semibold text-red-500">
-                                                {{ $item->jam_keluar ?? '-' }}
-                                            </td>
+                                                {{ $item->status ?? '-' }}
 
-                                            <td class="px-4 py-4 text-center">
-                                                <span class="inline-flex px-3 py-1 rounded-full text-xs font-bold
-                                                    @if(($item->status ?? '-') == 'Hadir')
-                                                        bg-green-100 text-green-700
-                                                    @elseif(($item->status ?? '-') == 'Izin')
-                                                        bg-yellow-100 text-yellow-700
-                                                    @elseif(($item->status ?? '-') == 'Terlambat')
-                                                        bg-orange-100 text-orange-700
-                                                    @else
-                                                        bg-red-100 text-red-700
-                                                    @endif">
-                                                    {{ $item->status ?? '-' }}
-                                                </span>
-                                            </td>
+                                            </span>
+                                        </td>
 
-                                            <td class="px-4 py-4 text-center">
-                                                <button
-                                                    type="button"
-                                                    class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl shadow-sm transition duration-200">
-                                                    👁
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        {{-- Aksi --}}
+                                        <td class="px-4 py-4 text-center">
+                                            <button
+                                                type="button"
+                                                class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl shadow-sm transition duration-200">
+                                                👁
+                                            </button>
+                                        </td>
+
+                                    </tr>
                                     @empty
-                                        <tr>
-                                            <td
-                                                colspan="10"
-                                                class="text-center py-24 text-slate-400 italic">
-                                                Belum ada data kehadiran.
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="7"
+                                            class="text-center py-24 text-slate-400 italic">
+                                            Belum ada data kehadiran.
+                                        </td>
+                                    </tr>
                                     @endforelse
                                 </tbody>
 

@@ -144,6 +144,12 @@ Route::middleware(['karyawan.auth'])->group(function () {
     Route::get('/karyawan_absen', [AbsensiController::class, 'index'])
         ->name('karyawan.kehadiran');
 
+    Route::post('/karyawan/absensi/masuk', [KaryawanDashboardController::class, 'absenMasuk'])
+    ->name('karyawan.absensi.masuk');
+
+    Route::post('/karyawan/absensi/pulang', [KaryawanDashboardController::class, 'absenPulang'])
+    ->name('karyawan.absensi.pulang');
+
     Route::get('/izin', [IzinController::class, 'index'])
         ->name('karyawan.perizinan');
 

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karyawan Dashboard - CODIA SYNC</title>
-<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -147,17 +147,27 @@
                     </div>
 
                     {{-- ACTION BUTTONS --}}
+                    {{-- Ganti bagian ACTION BUTTONS dengan kode berikut --}}
+
                     <div class="flex justify-end gap-4 mt-8">
 
-                        <button
-                            class="w-48 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-xl shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300">
-                            Masuk
-                        </button>
+                        {{-- Tombol Masuk --}}
+                        <form action="{{ route('karyawan.absensi.masuk') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="w-48 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-xl shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300">
+                                Masuk
+                            </button>
+                        </form>
 
-                        <button
-                            class="w-48 bg-white border border-blue-100 text-slate-700 py-4 rounded-2xl font-bold text-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
-                            Pulang
-                        </button>
+                        {{-- Tombol Pulang --}}
+                        <form action="{{ route('karyawan.absensi.pulang') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="w-48 bg-white border border-blue-100 text-slate-700 py-4 rounded-2xl font-bold text-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
+                                Pulang
+                            </button>
+                        </form>
 
                     </div>
 
@@ -188,49 +198,75 @@
                                         <th class="px-6 py-4 text-left font-bold">No</th>
                                         <th class="px-6 py-4 text-left font-bold">Nama Karyawan</th>
                                         <th class="px-6 py-4 text-left font-bold">Tanggal</th>
-                                        <th class="px-6 py-4 text-left font-bold">Waktu</th>
+                                        <th class="px-6 py-4 text-left font-bold">jam masuk</th>
+                                        <th class="px-6 py-4 text-left font-bold">jam pulang</th>
                                         <th class="px-6 py-4 text-left font-bold">Keterangan</th>
                                     </tr>
                                 </thead>
 
+                                {{-- GANTI BAGIAN TBODY PADA ACTIVITY SECTION MENJADI INI --}}
+
                                 <tbody>
                                     @php
-                                        $aktivitas = $aktivitas ?? collect();
+                                    $aktivitas = $aktivitas ?? collect();
                                     @endphp
 
                                     @forelse($aktivitas as $item)
-                                        <tr
-                                            class="border-b border-slate-100 hover:bg-blue-50 transition duration-200">
-                                            <td class="px-6 py-4 font-medium text-slate-700">
-                                                {{ $loop->iteration }}
-                                            </td>
+                                    <tr
+                                        class="border-b border-slate-100 hover:bg-blue-50 transition duration-200">
 
-                                            <td class="px-6 py-4 font-semibold text-slate-800">
-                                                {{ data_get($item, 'nama', session('karyawan_nama')) }}
-                                            </td>
+                                        {{-- NO --}}
+                                        <td class="px-6 py-4 font-medium text-slate-700">
+                                            {{ $loop->iteration }}
+                                        </td>
 
-                                            <td class="px-6 py-4 text-slate-600">
-                                                {{ data_get($item, 'tanggal', '-') }}
-                                            </td>
+                                        {{-- NAMA --}}
+                                        <td class="px-6 py-4 font-semibold text-slate-800">
+                                            {{ session('karyawan_nama') }}
+                                        </td>
 
-                                            <td class="px-6 py-4 text-slate-600">
-                                                {{ data_get($item, 'jam_masuk', data_get($item, 'waktu', '-')) }}
-                                            </td>
+                                        {{-- TANGGAL --}}
+                                        <td class="px-6 py-4 text-slate-600">
+                                            {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
+                                        </td>
 
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
-                                                    {{ data_get($item, 'status', '-') }}
-                                                </span>
-                                            </td>
-                                        </tr>
+                                        {{-- JAM MASUK --}}
+                                        <td class="px-6 py-4 font-semibold text-green-600">
+                                            {{ $item->jam_masuk ?? '-' }}
+                                        </td>
+
+                                        {{-- JAM PULANG --}}
+                                        <td class="px-6 py-4 font-semibold text-red-500">
+                                            {{ $item->jam_keluar ?? '-' }}
+                                        </td>
+
+                                        {{-- STATUS --}}
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-sm font-semibold
+                    @if(($item->status ?? '-') == 'Hadir')
+                        bg-green-100 text-green-700
+                    @elseif(($item->status ?? '-') == 'Terlambat')
+                        bg-yellow-100 text-yellow-700
+                    @elseif(($item->status ?? '-') == 'Izin')
+                        bg-blue-100 text-blue-700
+                    @else
+                        bg-red-100 text-red-700
+                    @endif">
+
+                                                {{ $item->status ?? '-' }}
+
+                                            </span>
+                                        </td>
+
+                                    </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="5"
-                                                class="py-16 text-center text-slate-400 italic text-lg">
-                                                Belum ada aktivitas hari ini.
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="6"
+                                            class="py-16 text-center text-slate-400 italic text-lg">
+                                            Belum ada aktivitas hari ini.
+                                        </td>
+                                    </tr>
                                     @endforelse
                                 </tbody>
 
