@@ -78,8 +78,8 @@
                             Total Karyawan
                         </p>
                         <h1 class="text-6xl font-extrabold mt-2 text-blue-700">
-                            300
-                        </h1>
+    {{ $totalKaryawan }}
+</h1>
                     </div>
 
                     <div
