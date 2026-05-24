@@ -26,14 +26,12 @@
 
         <div class="p-6">
             <!-- Maps -->
-            <div class="bg-white rounded-3xl h-64 flex items-center justify-center shadow-2xl border border-blue-100 mb-6">
-                <div class="text-center">
-                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-3xl shadow-lg mb-4">
-                        📍
-                    </div>
-                    <h1 class="text-3xl font-extrabold text-slate-800">Maps Google</h1>
-                    <p class="text-slate-500 mt-2">Pengaturan lokasi absensi perusahaan</p>
+            <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 mb-6 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-white">
+                    <h3 class="font-extrabold text-xl flex items-center gap-2">📍 Peta Lokasi Absensi Divisi</h3>
+                    <p class="text-blue-100 text-sm mt-1">Titik pusat dan area radius absensi untuk masing-masing divisi yang telah diatur</p>
                 </div>
+                <div id="main-map" class="h-80 w-full"></div>
             </div>
 
             <!-- Filter dan Button -->
@@ -109,7 +107,7 @@
 
 <!-- Modal Tambah Divisi -->
 <div id="modalTambahDivisi"
-    class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[600px] rounded-3xl shadow-2xl overflow-hidden border border-blue-100">
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-white">
             <h2 class="text-3xl font-extrabold">Tambah Divisi</h2>
@@ -151,7 +149,7 @@
 
 <!-- Modal Atur Lokasi -->
 <div id="modalAturLokasi"
-    class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[650px] rounded-3xl shadow-2xl overflow-hidden border border-blue-100">
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between text-white">
             <h2 class="text-3xl font-extrabold">Pengaturan Lokasi</h2>
@@ -211,21 +209,82 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
+let mainMap;
 let map;
 let marker;
+let circle;
+const divisiData = @json($data);
+
+// Fix Leaflet marker icon path issue globally
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+
+function initMainMap() {
+    const mainMapElement = document.getElementById('main-map');
+    if (!mainMapElement) return;
+
+    const divisionsWithLocation = divisiData.filter(d => d.latitude && d.longitude);
+
+    let defaultCenter = [-6.200000, 106.816666]; // Default Jakarta
+    let zoomLevel = 13;
+
+    if (divisionsWithLocation.length > 0) {
+        defaultCenter = [parseFloat(divisionsWithLocation[0].latitude), parseFloat(divisionsWithLocation[0].longitude)];
+        zoomLevel = 15;
+    }
+
+    mainMap = L.map('main-map').setView(defaultCenter, zoomLevel);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(mainMap);
+
+    const bounds = [];
+
+    divisionsWithLocation.forEach(divisi => {
+        const lat = parseFloat(divisi.latitude);
+        const lng = parseFloat(divisi.longitude);
+        const radius = parseInt(divisi.radius) || 100;
+        const pos = [lat, lng];
+
+        bounds.push(pos);
+
+        // Add Marker
+        const m = L.marker(pos).addTo(mainMap);
+        m.bindPopup(`
+            <div style="font-family: sans-serif; font-size: 14px; padding: 5px;">
+                <h4 style="margin: 0 0 8px 0; font-weight: 800; color: #2563eb; font-size: 15px;">🏢 Divisi: ${divisi.nama_divisi}</h4>
+                <div style="color: #475569; display: flex; flex-direction: column; gap: 4px;">
+                    <div><b>Latitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lat}</code></div>
+                    <div><b>Longitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lng}</code></div>
+                    <div><b>Radius:</b> <span style="font-weight: bold; color: #10b981;">${radius} meter</span></div>
+                </div>
+            </div>
+        `);
+
+        // Add Circle
+        L.circle(pos, {
+            color: '#2563eb',
+            fillColor: '#3b82f6',
+            fillOpacity: 0.25,
+            radius: radius
+        }).addTo(mainMap);
+    });
+
+    if (bounds.length > 1) {
+        mainMap.fitBounds(bounds, { padding: [50, 50] });
+    }
+}
 
 function initMap() {
     const defaultLocation = [-6.200000, 106.816666];
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
-
-    // Fix Leaflet marker icon path issue with CDN
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    });
 
     map = L.map('map').setView(defaultLocation, 15);
 
@@ -238,15 +297,25 @@ function initMap() {
         draggable: true
     }).addTo(map);
 
+    const initialRadius = parseInt(document.getElementById('radius').value) || 100;
+    circle = L.circle(defaultLocation, {
+        color: '#ef4444',
+        fillColor: '#ef4444',
+        fillOpacity: 0.2,
+        radius: initialRadius
+    }).addTo(map);
+
     updateCoordinateInputs(defaultLocation[0], defaultLocation[1]);
 
     map.on('click', function(e) {
         marker.setLatLng(e.latlng);
+        circle.setLatLng(e.latlng);
         updateCoordinateInputs(e.latlng.lat, e.latlng.lng);
     });
 
     marker.on('dragend', function() {
         const position = marker.getLatLng();
+        circle.setLatLng(position);
         updateCoordinateInputs(position.lat, position.lng);
     });
 }
@@ -263,6 +332,7 @@ function moveMarkerFromInput() {
     if (isNaN(lat) || isNaN(lng)) return;
     const pos = [lat, lng];
     marker.setLatLng(pos);
+    if (circle) circle.setLatLng(pos);
     map.setView(pos, map.getZoom());
 }
 
@@ -300,8 +370,38 @@ function closeModalAturLokasi() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    initMainMap();
+
     document.getElementById('latitude')?.addEventListener('change', moveMarkerFromInput);
     document.getElementById('longitude')?.addEventListener('change', moveMarkerFromInput);
+    
+    document.getElementById('radius')?.addEventListener('input', function() {
+        if (circle) {
+            circle.setRadius(parseInt(this.value) || 100);
+        }
+    });
+
+    document.querySelector('select[name="divisi_id"]')?.addEventListener('change', function() {
+        const selectedId = this.value;
+        const divisi = divisiData.find(d => d.id == selectedId);
+        if (divisi && divisi.latitude && divisi.longitude) {
+            const pos = [parseFloat(divisi.latitude), parseFloat(divisi.longitude)];
+            const rad = parseInt(divisi.radius) || 100;
+            
+            document.getElementById('latitude').value = pos[0].toFixed(6);
+            document.getElementById('longitude').value = pos[1].toFixed(6);
+            document.getElementById('radius').value = rad;
+            
+            if (marker && map) {
+                marker.setLatLng(pos);
+                if (circle) {
+                    circle.setLatLng(pos);
+                    circle.setRadius(rad);
+                }
+                map.setView(pos, 16);
+            }
+        }
+    });
 });
 </script>
 

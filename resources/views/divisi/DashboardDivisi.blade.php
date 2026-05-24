@@ -62,6 +62,161 @@
                     @endforeach
                 </div>
 
+                {{-- ABSENSI KEPALA DIVISI --}}
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-blue-200">
+
+                    <div class="flex flex-col xl:flex-row justify-between gap-8">
+
+                        {{-- PROFILE --}}
+                        <div class="flex items-center gap-6">
+                            <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-3xl font-black text-white shadow-lg">
+                                {{ strtoupper(substr($nama_user, 0, 3)) }}
+                            </div>
+
+                            <div>
+                                <p class="text-[10px] uppercase tracking-[0.25em] text-blue-600 font-bold mb-1">
+                                    Kepala Divisi
+                                </p>
+
+                                <h3 class="text-3xl font-black text-blue-900 tracking-tight">
+                                    {{ $nama_user }}
+                                </h3>
+
+                                <p class="text-lg text-blue-500 mt-1 font-semibold">
+                                    Divisi {{ $divisi }}
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- STATUS ABSENSI HARI INI --}}
+                        <div class="text-right">
+                            <p class="text-[10px] uppercase tracking-[0.25em] text-blue-600 font-bold mb-2">
+                                Status Hari Ini
+                            </p>
+                            @if($absensiHariIni)
+                                <div class="flex items-center justify-end gap-4">
+                                    <div>
+                                        <p class="text-sm text-blue-700 font-semibold">Masuk: <span class="text-green-600 font-black">{{ $absensiHariIni->jam_masuk ?? '-' }}</span></p>
+                                        <p class="text-sm text-blue-700 font-semibold">Pulang: <span class="text-red-500 font-black">{{ $absensiHariIni->jam_keluar ?? '-' }}</span></p>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-black
+                                        @if($absensiHariIni->status == 'Hadir') bg-green-100 text-green-700
+                                        @elseif($absensiHariIni->status == 'Terlambat') bg-yellow-100 text-yellow-700
+                                        @else bg-red-100 text-red-700
+                                        @endif">
+                                        {{ $absensiHariIni->status }}
+                                    </span>
+                                </div>
+                            @else
+                                <p class="text-sm text-blue-400 italic">Belum absen hari ini</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- FLASH MESSAGES --}}
+                    @if(session('success'))
+                        <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm font-semibold">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm font-semibold">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    {{-- ACTION BUTTONS --}}
+                    <div class="flex justify-end gap-4 mt-6">
+
+                        {{-- Tombol Masuk --}}
+                        @if(!$absensiHariIni)
+                            <form action="{{ route('divisi.absensi.masuk') }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="w-44 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl font-black text-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300">
+                                    Masuk
+                                </button>
+                            </form>
+                        @else
+                            <button disabled
+                                class="w-44 bg-blue-200 text-blue-400 py-3 rounded-xl font-black text-lg cursor-not-allowed">
+                                ✓ Sudah Masuk
+                            </button>
+                        @endif
+
+                        {{-- Tombol Pulang --}}
+                        @if($absensiHariIni && !$absensiHariIni->jam_keluar)
+                            <form action="{{ route('divisi.absensi.keluar') }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="w-44 bg-white border-2 border-blue-300 text-blue-700 py-3 rounded-xl font-black text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
+                                    Pulang
+                                </button>
+                            </form>
+                        @elseif($absensiHariIni && $absensiHariIni->jam_keluar)
+                            <button disabled
+                                class="w-44 bg-blue-200 text-blue-400 py-3 rounded-xl font-black text-lg cursor-not-allowed">
+                                ✓ Sudah Pulang
+                            </button>
+                        @else
+                            <button disabled
+                                class="w-44 bg-gray-100 text-gray-300 py-3 rounded-xl font-black text-lg cursor-not-allowed">
+                                Pulang
+                            </button>
+                        @endif
+
+                    </div>
+                </div>
+
+                {{-- AKTIVITAS TERBARU --}}
+                <div class="bg-white rounded-xl shadow-sm border border-blue-200 overflow-hidden">
+                    <div class="p-6 border-b border-blue-100">
+                        <h3 class="text-sm font-black uppercase tracking-widest text-blue-700">
+                            Riwayat Absensi Pribadi
+                        </h3>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead class="bg-blue-600 text-white">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-black uppercase tracking-wider">No</th>
+                                    <th class="px-6 py-3 text-left text-xs font-black uppercase tracking-wider">Tanggal</th>
+                                    <th class="px-6 py-3 text-left text-xs font-black uppercase tracking-wider">Jam Masuk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-black uppercase tracking-wider">Jam Pulang</th>
+                                    <th class="px-6 py-3 text-left text-xs font-black uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($aktivitas as $item)
+                                    <tr class="border-b border-blue-50 hover:bg-blue-50 transition duration-200">
+                                        <td class="px-6 py-3 text-sm font-semibold text-blue-800">{{ $loop->iteration }}</td>
+                                        <td class="px-6 py-3 text-sm text-blue-700">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                                        <td class="px-6 py-3 text-sm font-semibold text-green-600">{{ $item->jam_masuk ?? '-' }}</td>
+                                        <td class="px-6 py-3 text-sm font-semibold text-red-500">{{ $item->jam_keluar ?? '-' }}</td>
+                                        <td class="px-6 py-3">
+                                            <span class="px-3 py-1 rounded-full text-xs font-black
+                                                @if($item->status == 'Hadir') bg-green-100 text-green-700
+                                                @elseif($item->status == 'Terlambat') bg-yellow-100 text-yellow-700
+                                                @elseif($item->status == 'Izin') bg-blue-100 text-blue-700
+                                                @else bg-red-100 text-red-700
+                                                @endif">
+                                                {{ $item->status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="py-10 text-center text-blue-300 italic text-sm">
+                                            Belum ada riwayat absensi.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-3 gap-6">
                     <div class="col-span-2 bg-white p-6 rounded-xl min-h-[350px] flex flex-col justify-end shadow-sm border border-blue-200">
                         <div class="flex items-end justify-between h-48 px-10">

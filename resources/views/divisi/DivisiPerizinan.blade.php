@@ -22,6 +22,18 @@
             <!-- Konten -->
             <div class="p-8">
 
+                <!-- Alert Success / Error -->
+                @if (session('success'))
+                    <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-xl shadow-sm font-semibold text-sm">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('danger'))
+                    <div class="mb-6 bg-rose-50 border border-rose-200 text-rose-700 px-6 py-4 rounded-xl shadow-sm font-semibold text-sm">
+                        {{ session('danger') }}
+                    </div>
+                @endif
+
                 <!-- Filter -->
                 <div class="flex flex-wrap items-center gap-4 mb-6">
                     <div class="flex-1 min-w-[300px]">
@@ -56,7 +68,8 @@
                                 <th class="py-3 px-3 border-r border-blue-200">Kategori</th>
                                 <th class="py-3 px-3 border-r border-blue-200">Bukti</th>
                                 <th class="py-3 px-3 border-r border-blue-200">Tanggal</th>
-                                <th class="py-3 px-3 text-center">Aksi</th>
+                                <th class="py-3 px-3 border-r border-blue-200 text-center w-28">Status</th>
+                                <th class="py-3 px-3 text-center w-48">Aksi</th>
                             </tr>
                         </thead>
 
@@ -79,15 +92,35 @@
                                     @endif
                                 </td>
                                 <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-xs font-semibold">{{ $i->created_at->format('d-m-Y') }}</td>
-                                <td class="py-3 px-3 text-center">
+                                <td class="py-3 px-3 border-r border-blue-200 text-center">
                                     <span class="px-2.5 py-1 rounded-full text-xs font-bold {{ $i->status === 'Disetujui' ? 'bg-green-100 text-green-700' : ($i->status === 'Ditolak' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700') }}">
                                         {{ $i->status ?? 'Menunggu' }}
                                     </span>
                                 </td>
+                                <td class="py-3 px-3 text-center">
+                                    @if($i->status === 'Menunggu')
+                                        <div class="flex justify-center gap-2">
+                                            <form action="{{ route('divisi.perizinan.setujui', $i->id) }}" method="POST" onsubmit="return confirm('Setujui pengajuan izin ini?')">
+                                                @csrf
+                                                <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm hover:shadow">
+                                                    Setujui
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('divisi.perizinan.tolak', $i->id) }}" method="POST" onsubmit="return confirm('Tolak pengajuan izin ini?')">
+                                                @csrf
+                                                <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm hover:shadow">
+                                                    Tolak
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <span class="text-slate-400 text-xs font-medium">-</span>
+                                    @endif
+                                </td>
                             </tr>
                             @empty
                             <tr class="h-96">
-                                <td colspan="9"
+                                <td colspan="10"
                                     class="text-center text-blue-300 italic text-sm font-medium">
                                     Tidak ada data perizinan...
                                 </td>

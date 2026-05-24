@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
 use App\Models\Absensi;
+use App\Models\Divisi;
 use App\Models\Izin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DivisiDashboardController extends Controller
 {
@@ -15,6 +17,16 @@ class DivisiDashboardController extends Controller
      * Nama divisi diambil dari field 'name' user kepala_divisi.
      * Pastikan user kepala_divisi dibuat dengan name = nama divisinya.
      */
+    /**
+     * Cari karyawan record milik kepala divisi yang login
+     */
+    private function getKaryawanKepala()
+    {
+        $user = Auth::user();
+        // Cari karyawan berdasarkan email user
+        return Karyawan::where('email', $user->email)->first();
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -48,6 +60,22 @@ class DivisiDashboardController extends Controller
             ->where('kategori', 'Sakit')
             ->count();
 
+        // Absensi kepala divisi hari ini
+        $karyawanKepala = $this->getKaryawanKepala();
+        $absensiHariIni = null;
+        $aktivitas = collect();
+
+        if ($karyawanKepala) {
+            $absensiHariIni = Absensi::where('karyawan_id', $karyawanKepala->id)
+                ->whereDate('tanggal', Carbon::today())
+                ->first();
+
+            $aktivitas = Absensi::where('karyawan_id', $karyawanKepala->id)
+                ->latest('tanggal')
+                ->take(10)
+                ->get();
+        }
+
         return view('divisi.DashboardDivisi', compact(
             'nama_user',
             'divisi',
@@ -56,8 +84,76 @@ class DivisiDashboardController extends Controller
             'terlambat',
             'alpha',
             'izin',
-            'sakit'
+            'sakit',
+            'absensiHariIni',
+            'karyawanKepala',
+            'aktivitas'
         ));
+    }
+
+    public function absenMasuk()
+    {
+        $karyawan = $this->getKaryawanKepala();
+
+        if (!$karyawan) {
+            return redirect()->back()
+                ->with('error', 'Data karyawan kepala divisi tidak ditemukan.');
+        }
+
+        $today = Carbon::today()->toDateString();
+
+        $absensi = Absensi::where('karyawan_id', $karyawan->id)
+            ->whereDate('tanggal', $today)
+            ->first();
+
+        if (!$absensi) {
+            $jamSekarang = Carbon::now('Asia/Jakarta');
+
+            // Cek jam masuk divisi
+            $divisi = Divisi::where('nama_divisi', $karyawan->divisi)->first();
+            $status = 'Hadir';
+
+            if ($divisi && $divisi->jam_masuk) {
+                $jamMasukDivisi = Carbon::today('Asia/Jakarta')
+                    ->setTimeFromTimeString($divisi->jam_masuk);
+                $status = $jamSekarang->gt($jamMasukDivisi) ? 'Terlambat' : 'Hadir';
+            }
+
+            Absensi::create([
+                'karyawan_id' => $karyawan->id,
+                'tanggal'     => $today,
+                'jam_masuk'   => $jamSekarang->format('H:i:s'),
+                'status'      => $status,
+            ]);
+        }
+
+        return redirect()->back()
+            ->with('success', 'Absensi masuk berhasil dicatat.');
+    }
+
+    public function absenKeluar()
+    {
+        $karyawan = $this->getKaryawanKepala();
+
+        if (!$karyawan) {
+            return redirect()->back()
+                ->with('error', 'Data karyawan kepala divisi tidak ditemukan.');
+        }
+
+        $today = Carbon::today()->toDateString();
+
+        $absensi = Absensi::where('karyawan_id', $karyawan->id)
+            ->whereDate('tanggal', $today)
+            ->first();
+
+        if ($absensi && !$absensi->jam_keluar) {
+            $absensi->update([
+                'jam_keluar' => Carbon::now('Asia/Jakarta')->format('H:i:s'),
+            ]);
+        }
+
+        return redirect()->back()
+            ->with('success', 'Absensi pulang berhasil dicatat.');
     }
 
     public function karyawan()
@@ -98,6 +194,58 @@ class DivisiDashboardController extends Controller
             ->get();
 
         return view('divisi.DivisiPerizinan', compact('data'));
+    }
+
+    public function setujui($id)
+    {
+        $izin = Izin::findOrFail($id);
+        $izin->status = 'Disetujui';
+        $izin->save();
+
+        // Sync with Absensi table
+        $tanggal = \Carbon\Carbon::parse($izin->created_at)->toDateString();
+
+        // Map kategori to valid absensis status ('Cuti' -> 'Izin')
+        $statusAbsensi = $izin->kategori === 'Cuti' ? 'Izin' : $izin->kategori;
+
+        $absensi = Absensi::where('karyawan_id', $izin->karyawan_id)
+            ->whereDate('tanggal', $tanggal)
+            ->first();
+
+        if ($absensi) {
+            $absensi->status = $statusAbsensi;
+            $absensi->save();
+        } else {
+            Absensi::create([
+                'karyawan_id' => $izin->karyawan_id,
+                'tanggal'     => $tanggal,
+                'jam_masuk'   => null,
+                'jam_keluar'  => null,
+                'status'      => $statusAbsensi,
+            ]);
+        }
+
+        return redirect()
+            ->route('divisi.data-perizinan')
+            ->with('success', 'Pengajuan izin berhasil disetujui.');
+    }
+
+    public function tolak($id)
+    {
+        $izin = Izin::findOrFail($id);
+        $izin->status = 'Ditolak';
+        $izin->save();
+
+        // Sync with Absensi table - delete if it exists
+        $tanggal = \Carbon\Carbon::parse($izin->created_at)->toDateString();
+        Absensi::where('karyawan_id', $izin->karyawan_id)
+            ->whereDate('tanggal', $tanggal)
+            ->whereIn('status', ['Izin', 'Sakit', 'Cuti'])
+            ->delete();
+
+        return redirect()
+            ->route('divisi.data-perizinan')
+            ->with('danger', 'Pengajuan izin telah ditolak.');
     }
 
     public function laporan()

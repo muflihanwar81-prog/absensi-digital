@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Absensi;
 use App\Models\Izin;
 use App\Models\Perizinan;
+use App\Models\User;
 class AdminDataKaryawanController extends Controller
 {
     public function index(Request $request)
@@ -94,6 +95,18 @@ class AdminDataKaryawanController extends Controller
 
         $karyawan->save();
 
+        // If Jabatan is 'Kepala Divisi', also create/update User record
+        if ($request->jabatan === 'Kepala Divisi') {
+            User::updateOrCreate(
+                ['email' => $request->email],
+                [
+                    'name'     => $request->divisi,
+                    'password' => Hash::make($request->password),
+                    'role'     => 'kepala_divisi',
+                ]
+            );
+        }
+
         return redirect()
             ->route('admin.karyawan')
             ->with('success', 'Data karyawan berhasil ditambahkan.');
@@ -119,6 +132,7 @@ class AdminDataKaryawanController extends Controller
         ]);
 
         $karyawan = Karyawan::findOrFail($id);
+        $oldEmail = $karyawan->email;
         $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
 
         $karyawan->nip = $request->nip;
@@ -140,6 +154,27 @@ class AdminDataKaryawanController extends Controller
 
         $karyawan->save();
 
+        // Handle Kepala Divisi User Sync
+        if ($request->jabatan === 'Kepala Divisi') {
+            $userData = [
+                'name'  => $request->divisi,
+                'email' => $request->email,
+                'role'  => 'kepala_divisi',
+            ];
+            if ($request->filled('password')) {
+                $userData['password'] = Hash::make($request->password);
+            } else {
+                $userData['password'] = $karyawan->password;
+            }
+            User::updateOrCreate(
+                ['email' => $oldEmail],
+                $userData
+            );
+        } else {
+            // Remove user if they are demoted to regular employee
+            User::where('email', $oldEmail)->orWhere('email', $request->email)->where('role', 'kepala_divisi')->delete();
+        }
+
         return redirect()
             ->route('admin.karyawan')
             ->with('success', 'Data karyawan berhasil diperbarui.');
@@ -148,6 +183,9 @@ class AdminDataKaryawanController extends Controller
     public function destroy($id)
 {
     $karyawan = Karyawan::findOrFail($id);
+
+    // Remove user if they were a division head
+    User::where('email', $karyawan->email)->where('role', 'kepala_divisi')->delete();
 
     // hapus seluruh absensi milik karyawan
     Absensi::where('karyawan_id', $id)->delete();

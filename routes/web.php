@@ -55,11 +55,23 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         $totalAbsensi = Absensi::count();
         $totalPerizinan = Perizinan::count();
 
+        // Attendance status counts
+        $totalHadir = Absensi::where('status', 'Hadir')->count();
+        $totalTerlambat = Absensi::where('status', 'Terlambat')->count();
+        $totalAlpha = Absensi::where('status', 'Alpha')->count();
+        $totalIzin = Absensi::where('status', 'Izin')->count();
+        $totalSakit = Absensi::where('status', 'Sakit')->count();
+
         return view('admin.dashboard', compact(
             'totalDivisi',
             'totalKaryawan',
             'totalAbsensi',
-            'totalPerizinan'
+            'totalPerizinan',
+            'totalHadir',
+            'totalTerlambat',
+            'totalAlpha',
+            'totalIzin',
+            'totalSakit'
         ));
     })->name('dashboard');
 
@@ -128,8 +140,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/data-perizinan', [DivisiDashboardController::class, 'perizinan'])
         ->name('divisi.data-perizinan');
 
+    Route::post('/perizinan/{id}/setujui', [DivisiDashboardController::class, 'setujui'])
+        ->name('divisi.perizinan.setujui');
+
+    Route::post('/perizinan/{id}/tolak', [DivisiDashboardController::class, 'tolak'])
+        ->name('divisi.perizinan.tolak');
+
     Route::get('/laporan', [DivisiDashboardController::class, 'laporan'])
         ->name('divisi.laporan');
+
+    Route::post('/divisi/absensi/masuk', [DivisiDashboardController::class, 'absenMasuk'])
+        ->name('divisi.absensi.masuk');
+
+    Route::post('/divisi/absensi/keluar', [DivisiDashboardController::class, 'absenKeluar'])
+        ->name('divisi.absensi.keluar');
 });
 
 Route::middleware(['karyawan.auth'])->group(function () {

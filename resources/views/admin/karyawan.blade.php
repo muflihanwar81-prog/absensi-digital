@@ -264,10 +264,13 @@
                 <!-- Jabatan -->
                 <div>
                     <label class="block mb-2 font-semibold text-slate-700">Jabatan</label>
-                    <input type="text"
-                           name="jabatan"
-                           required
-                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <select name="jabatan"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">Pilih Jabatan</option>
+                        <option value="Karyawan">Karyawan</option>
+                        <option value="Kepala Divisi">Kepala Divisi</option>
+                    </select>
                 </div>
                 <!-- TAMBAHKAN FIELD EMAIL DAN PASSWORD DI DALAM <div class="grid grid-cols-2 gap-6"> -->
 
@@ -378,11 +381,13 @@
                 <!-- Jabatan -->
                 <div>
                     <label class="block mb-2 font-semibold text-slate-700">Jabatan</label>
-                    <input type="text"
-                           id="edit_jabatan"
-                           name="jabatan"
-                           required
-                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <select id="edit_jabatan"
+                            name="jabatan"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="Karyawan">Karyawan</option>
+                        <option value="Kepala Divisi">Kepala Divisi</option>
+                    </select>
                 </div>
 
                 <!-- Email -->

@@ -88,8 +88,8 @@
                             Total Hadir
                         </p>
                         <h1 class="text-6xl font-extrabold mt-2 text-green-600">
-                            260
-                        </h1>
+    {{ $totalHadir }}
+</h1>
                     </div>
 
                     <div
@@ -98,7 +98,7 @@
                             Total Terlambat
                         </p>
                         <h1 class="text-6xl font-extrabold mt-2 text-yellow-500">
-                            10
+                            {{ $totalTerlambat }}
                         </h1>
                     </div>
 
@@ -108,7 +108,7 @@
                             Total Alpha
                         </p>
                         <h1 class="text-6xl font-extrabold mt-2 text-red-500">
-                            20
+                            {{ $totalAlpha }}
                         </h1>
                     </div>
 
@@ -118,7 +118,7 @@
                             Total Izin
                         </p>
                         <h1 class="text-6xl font-extrabold mt-2 text-cyan-600">
-                            5
+                            {{ $totalIzin }}
                         </h1>
                     </div>
 
@@ -128,7 +128,7 @@
                             Total Sakit
                         </p>
                         <h1 class="text-6xl font-extrabold mt-2 text-pink-600">
-                            5
+                            {{ $totalSakit }}
                         </h1>
                     </div>
 
@@ -226,11 +226,11 @@
             datasets: [{
                 label: 'Jumlah Data',
                 data: [
-                    260,   // Hadir
-                    10,    // Terlambat
-                    20,    // Alpha
-                    5,     // Izin
-                    5      // Sakit
+                    {{ $totalHadir }},   // Hadir
+                    {{ $totalTerlambat }},    // Terlambat
+                    {{ $totalAlpha }},    // Alpha
+                    {{ $totalIzin }},     // Izin
+                    {{ $totalSakit }}      // Sakit
                 ],
                 backgroundColor: [
                     'rgba(34, 197, 94, 0.8)',   // Hijau
