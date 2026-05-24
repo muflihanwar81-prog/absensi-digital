@@ -58,32 +58,44 @@ class KaryawanDashboardController extends Controller
     }
 
     public function absenMasuk()
-    {
-        $karyawanId = session('karyawan_id');
+{
+    $karyawanId = session('karyawan_id');
 
-        if (!$karyawanId) {
-            return redirect('/login')
-                ->with('error', 'Silakan login terlebih dahulu.');
-        }
-
-        $today = Carbon::today()->toDateString();
-
-        $absensi = Absensi::where('karyawan_id', $karyawanId)
-            ->whereDate('tanggal', $today)
-            ->first();
-
-        if (!$absensi) {
-            Absensi::create([
-                'karyawan_id' => $karyawanId,
-                'tanggal'     => $today,
-                'jam_masuk' => now()->setTimezone('Asia/Jakarta')->format('H:i:s'),
-                'status'      => 'Hadir',
-            ]);
-        }
-
-        return redirect()->back()
-            ->with('success', 'Absensi masuk berhasil.');
+    if (!$karyawanId) {
+        return redirect('/login')
+            ->with('error', 'Silakan login terlebih dahulu.');
     }
+
+    $today = Carbon::today()->toDateString();
+
+    $absensi = Absensi::where('karyawan_id', $karyawanId)
+        ->whereDate('tanggal', $today)
+        ->first();
+
+    if (!$absensi) {
+
+        $karyawan = Karyawan::with('divisi')
+            ->findOrFail($karyawanId);
+
+        $jamSekarang = Carbon::now('Asia/Jakarta');
+
+        $jamMasukDivisi = Carbon::today('Asia/Jakarta')
+            ->setTimeFromTimeString($karyawan->getRelation('divisi')->jam_masuk);
+        $status = $jamSekarang->gt($jamMasukDivisi)
+            ? 'Terlambat'
+            : 'Hadir';
+
+        Absensi::create([
+            'karyawan_id' => $karyawanId,
+            'tanggal'     => $today,
+            'jam_masuk'   => $jamSekarang->format('H:i:s'),
+            'status'      => $status,
+        ]);
+    }
+
+    return redirect()->back()
+        ->with('success', 'Absensi masuk berhasil.');
+}
 
     public function absenPulang()
     {
@@ -150,5 +162,37 @@ class KaryawanDashboardController extends Controller
         });
 
         return view('karyawan.kehadiran', compact('absensis'));
+    }
+
+    public function riwayat(Request $request)
+    {
+        $karyawanId = session('karyawan_id');
+
+        if (!$karyawanId) {
+            return redirect('/login')
+                ->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $karyawan = Karyawan::findOrFail($karyawanId);
+
+        $absensis = Absensi::where('karyawan_id', $karyawanId)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('karyawan.kehadiran', compact('absensis', 'karyawan'));
+    }
+
+    public function profile()
+    {
+        $karyawanId = session('karyawan_id');
+
+        if (!$karyawanId) {
+            return redirect('/login')
+                ->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $karyawan = Karyawan::with('divisi')->findOrFail($karyawanId);
+
+        return view('karyawan.dashboard', compact('karyawan'));
     }
 }

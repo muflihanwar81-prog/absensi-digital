@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Divisi</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
@@ -157,8 +158,18 @@
             <button type="button" onclick="closeModalAturLokasi()" class="text-4xl leading-none">×</button>
         </div>
 
-        <form action="{{ route('admin.lokasi.store') }}" method="POST" class="p-6">
+        <form action="{{ route('admin.divisi.lokasi') }}" method="POST" class="p-6">
             @csrf
+
+            <div class="mb-4">
+                <label class="block text-lg font-bold text-slate-700 mb-3">Pilih Divisi</label>
+                <select name="divisi_id" required class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm font-semibold text-slate-700 focus:ring-2 focus:ring-blue-200">
+                    <option value="" disabled selected>-- Pilih Divisi --</option>
+                    @foreach ($data as $divisi)
+                        <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             <div class="mb-4">
                 <label class="block text-xl font-bold text-slate-800 mb-3">Lokasi GPS</label>
@@ -167,7 +178,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-6 mt-6">
+            <div class="grid grid-cols-3 gap-6 mt-6">
                 <div>
                     <label class="block text-lg font-bold text-slate-700 mb-3">Longitude</label>
                     <input type="text" id="longitude" name="longitude"
@@ -180,14 +191,17 @@
                         class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
                         required>
                 </div>
+                <div>
+                    <label class="block text-lg font-bold text-slate-700 mb-3">Radius (Meter)</label>
+                    <input type="number" id="radius" name="radius" value="100" min="1"
+                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
+                        required>
+                </div>
             </div>
-
-            <input type="hidden" name="nama_lokasi" value="Kantor Pusat">
-            <input type="hidden" name="radius" value="100">
 
             <div class="border-t border-slate-200 mt-8 pt-6">
                 <button type="submit"
-                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-2xl shadow-xl font-bold text-xl">
+                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-2xl shadow-xl font-bold text-xl hover:shadow-2xl transition">
                     Simpan Data
                 </button>
             </div>
@@ -195,37 +209,45 @@
     </div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
 let map;
 let marker;
 
 function initMap() {
-    const defaultLocation = { lat: -6.200000, lng: 106.816666 };
+    const defaultLocation = [-6.200000, 106.816666];
     const mapElement = document.getElementById('map');
-    if (!mapElement || typeof google === 'undefined') return;
+    if (!mapElement) return;
 
-    map = new google.maps.Map(mapElement, {
-        center: defaultLocation,
-        zoom: 15,
-        mapTypeId: 'roadmap'
+    // Fix Leaflet marker icon path issue with CDN
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
     });
 
-    marker = new google.maps.Marker({
-        position: defaultLocation,
-        map: map,
-        draggable: true,
-        animation: google.maps.Animation.DROP
+    map = L.map('map').setView(defaultLocation, 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    marker = L.marker(defaultLocation, {
+        draggable: true
+    }).addTo(map);
+
+    updateCoordinateInputs(defaultLocation[0], defaultLocation[1]);
+
+    map.on('click', function(e) {
+        marker.setLatLng(e.latlng);
+        updateCoordinateInputs(e.latlng.lat, e.latlng.lng);
     });
 
-    updateCoordinateInputs(defaultLocation.lat, defaultLocation.lng);
-
-    map.addListener('click', function(event) {
-        marker.setPosition(event.latLng);
-        updateCoordinateInputs(event.latLng.lat(), event.latLng.lng());
-    });
-
-    marker.addListener('dragend', function(event) {
-        updateCoordinateInputs(event.latLng.lat(), event.latLng.lng());
+    marker.on('dragend', function() {
+        const position = marker.getLatLng();
+        updateCoordinateInputs(position.lat, position.lng);
     });
 }
 
@@ -239,9 +261,9 @@ function moveMarkerFromInput() {
     const lat = parseFloat(document.getElementById('latitude').value);
     const lng = parseFloat(document.getElementById('longitude').value);
     if (isNaN(lat) || isNaN(lng)) return;
-    const pos = { lat, lng };
-    marker.setPosition(pos);
-    map.setCenter(pos);
+    const pos = [lat, lng];
+    marker.setLatLng(pos);
+    map.setView(pos, map.getZoom());
 }
 
 function openModalTambahDivisi() {
@@ -264,9 +286,9 @@ function openModalAturLokasi() {
     setTimeout(() => {
         if (!map) {
             initMap();
-        } else if (typeof google !== 'undefined') {
-            google.maps.event.trigger(map, 'resize');
-            if (marker) map.setCenter(marker.getPosition());
+        } else {
+            map.invalidateSize();
+            if (marker) map.setView(marker.getLatLng(), map.getZoom());
         }
     }, 300);
 }
@@ -281,12 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('latitude')?.addEventListener('change', moveMarkerFromInput);
     document.getElementById('longitude')?.addEventListener('change', moveMarkerFromInput);
 });
-</script>
-
-<script
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"
-    async
-    defer>
 </script>
 
 </body>

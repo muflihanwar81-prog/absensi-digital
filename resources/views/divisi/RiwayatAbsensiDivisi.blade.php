@@ -60,12 +60,30 @@
                         </thead>
 
                         <tbody>
+                            @forelse($absensi as $a)
+                            <tr class="border-b border-blue-100 hover:bg-blue-50/50 transition">
+                                <td class="py-3 px-2 border-r border-blue-200 text-center text-blue-900 font-semibold text-sm">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-950 font-bold text-sm">{{ optional($a->karyawan)->nip ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm font-semibold">{{ optional($a->karyawan)->nama ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm">{{ optional($a->karyawan)->divisi ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm">{{ optional($a->karyawan)->jabatan ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-emerald-600 font-bold text-sm">{{ $a->jam_masuk ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-rose-600 font-bold text-sm">{{ $a->jam_keluar ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm font-medium">{{ \Carbon\Carbon::parse($a->tanggal)->format('d-m-Y') }}</td>
+                                <td class="py-3 px-3 text-center">
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {{ $a->status === 'Hadir' ? 'bg-green-100 text-green-700' : ($a->status === 'Terlambat' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700') }}">
+                                        {{ $a->status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            @empty
                             <tr class="h-96">
                                 <td colspan="9"
                                     class="text-center text-blue-300 italic text-sm font-medium">
                                     Tidak ada data riwayat absensi untuk ditampilkan...
                                 </td>
                             </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

@@ -48,10 +48,13 @@ class AbsensiController extends Controller
             return redirect('/login');
         }
 
-        $absensis = Absensi::where('karyawan_id', $karyawanId)
+        $absensis = Absensi::with('karyawan')
+            ->where('karyawan_id', $karyawanId)
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        return view('karyawan.kehadiran', compact('absensis'));
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('absensi_pdf', ['absensi' => $absensis]);
+
+        return $pdf->download('laporan-absensi.pdf');
     }
 }

@@ -68,20 +68,29 @@ class AdminKelolaDivisiController extends Controller
     }
 
     public function destroy($id)
-    {
-        $divisi = Divisi::findOrFail($id);
+{
+    $divisi = Divisi::findOrFail($id);
 
-        \App\Models\Karyawan::where('divisi_id', $divisi->id)->update([
-            'divisi_id' => null,
-            'divisi'    => null,
-        ]);
+    $jumlahKaryawan = \App\Models\Karyawan::where(
+        'divisi_id',
+        $divisi->id
+    )->count();
 
-        $divisi->delete();
-
+    if ($jumlahKaryawan > 0) {
         return redirect()
             ->route('admin.keloladivisi')
-            ->with('success', 'Data divisi berhasil dihapus.');
+            ->with(
+                'error',
+                'Divisi tidak dapat dihapus karena masih digunakan oleh karyawan.'
+            );
     }
+
+    $divisi->delete();
+
+    return redirect()
+        ->route('admin.keloladivisi')
+        ->with('success', 'Data divisi berhasil dihapus.');
+}
     public function updateLokasi(Request $request)
 {
     $request->validate([

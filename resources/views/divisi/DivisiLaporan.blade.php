@@ -75,12 +75,25 @@
                         </thead>
 
                         <tbody>
+                            @forelse($absensi as $a)
+                            <tr class="border-b border-blue-100 hover:bg-blue-50/50 transition">
+                                <td class="py-3 px-2 border-r border-blue-200 text-center text-blue-900 font-semibold text-sm">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-950 font-bold text-sm">{{ optional($a->karyawan)->nip ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm font-semibold">{{ optional($a->karyawan)->nama ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm">{{ optional($a->karyawan)->divisi ?? $a->divisi }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm">{{ optional($a->karyawan)->jabatan ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-emerald-600 font-bold text-sm">{{ $a->jam_masuk ?? '-' }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-rose-600 font-bold text-sm">{{ $a->jam_keluar ?? '-' }}</td>
+                                <td class="py-3 px-3 text-blue-900 text-sm font-medium">{{ \Carbon\Carbon::parse($a->tanggal)->format('d-m-Y') }}</td>
+                            </tr>
+                            @empty
                             <tr class="h-96">
                                 <td colspan="8"
                                     class="text-center text-blue-300 italic text-sm font-medium">
                                     Data laporan belum tersedia...
                                 </td>
                             </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

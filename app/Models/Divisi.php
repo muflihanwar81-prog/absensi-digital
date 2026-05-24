@@ -10,5 +10,8 @@ class Divisi extends Model
         'nama_divisi',
         'jam_masuk',
         'jam_keluar',
+        'latitude',
+        'longitude',
+        'radius',
     ];
 }

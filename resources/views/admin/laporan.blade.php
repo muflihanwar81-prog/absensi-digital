@@ -134,14 +134,13 @@
                                     {{ $loop->iteration }}
                                 </td>
 
-                                {{-- DATA TETAP DIKOSONGKAN AGAR FUNGSI TIDAK BERUBAH --}}
-                                <td class="px-4 py-4 text-slate-600"></td>
-                                <td class="px-4 py-4 text-slate-600"></td>
-                                <td class="px-4 py-4 text-slate-600"></td>
-                                <td class="px-4 py-4 text-slate-600"></td>
-                                <td class="px-4 py-4 text-slate-600"></td>
-                                <td class="px-4 py-4 text-slate-600"></td>
-                                <td class="px-4 py-4 text-slate-600"></td>
+                                <td class="px-4 py-4 font-semibold text-slate-800">{{ optional($item->karyawan)->nip ?? '-' }}</td>
+                                <td class="px-4 py-4 font-semibold text-slate-800">{{ optional($item->karyawan)->nama ?? '-' }}</td>
+                                <td class="px-4 py-4 text-slate-600">{{ optional($item->karyawan)->divisi ?? '-' }}</td>
+                                <td class="px-4 py-4 text-slate-600">{{ optional($item->karyawan)->jabatan ?? '-' }}</td>
+                                <td class="px-4 py-4 text-emerald-600 font-bold">{{ $item->jam_masuk ?? '-' }}</td>
+                                <td class="px-4 py-4 text-rose-600 font-bold">{{ $item->jam_keluar ?? '-' }}</td>
+                                <td class="px-4 py-4 text-slate-600 font-medium">{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}</td>
 
                             </tr>
 

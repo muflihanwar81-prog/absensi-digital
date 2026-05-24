@@ -119,21 +119,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/divisi-dashboard', [DivisiDashboardController::class, 'index'])
         ->name('divisi.dashboard');
 
-    Route::get('/data-karyawan', function () {
-        return view('divisi.DataKaryawanDivisi');
-    })->name('divisi.karyawan');
+    Route::get('/data-karyawan', [DivisiDashboardController::class, 'karyawan'])
+        ->name('divisi.karyawan');
 
-    Route::get('/riwayat-absensi', function () {
-        return view('divisi.RiwayatAbsensiDivisi');
-    })->name('divisi.riwayat-absensi');
+    Route::get('/riwayat-absensi', [DivisiDashboardController::class, 'riwayatAbsensi'])
+        ->name('divisi.riwayat-absensi');
 
-    Route::get('/data-perizinan', function () {
-        return view('divisi.DivisiPerizinan');
-    })->name('divisi.data-perizinan');
+    Route::get('/data-perizinan', [DivisiDashboardController::class, 'perizinan'])
+        ->name('divisi.data-perizinan');
 
-    Route::get('/laporan', function () {
-        return view('divisi.DivisiLaporan');
-    })->name('divisi.laporan');
+    Route::get('/laporan', [DivisiDashboardController::class, 'laporan'])
+        ->name('divisi.laporan');
 });
 
 Route::middleware(['karyawan.auth'])->group(function () {

@@ -118,11 +118,11 @@
                                     </td>
 
                                     <td class="px-4 py-4">
-                                        {{ $p->jenis }}
+                                        {{ $p->kategori }}
                                     </td>
 
                                     <td class="px-4 py-4 text-slate-600">
-                                        {{ $p->tanggal }}
+                                        {{ $p->created_at ? $p->created_at->format('d-m-Y') : '-' }}
                                     </td>
 
                                     <td class="px-4 py-4 text-center">

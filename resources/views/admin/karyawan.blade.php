@@ -163,9 +163,11 @@
                                             onclick="openEditModal(
                                                 '{{ $k->id }}',
                                                 '{{ $k->nip }}',
-                                                '{{ $k->nama }}',
+                                                '{{ addslashes($k->nama) }}',
                                                 '{{ $k->divisi }}',
-                                                '{{ $k->jabatan }}'
+                                                '{{ addslashes($k->jabatan) }}',
+                                                '{{ $k->email }}',
+                                                '{{ $k->status }}'
                                             )"
                                             class="text-slate-500 hover:text-blue-600 transition">
                                             <i class="fa-solid fa-pen-to-square"></i>
@@ -314,6 +316,121 @@
         </form>
     </div>
 </div>
+{{-- MODAL EDIT KARYAWAN --}}
+<div id="modalEdit"
+     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8 relative">
+
+        <!-- Tombol Close -->
+        <button type="button"
+                onclick="closeEditModal()"
+                class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-3xl">
+            &times;
+        </button>
+
+        <!-- Judul -->
+        <h2 class="text-3xl font-bold text-slate-800 mb-6">
+            Edit Karyawan
+        </h2>
+
+        <!-- Form -->
+        <form id="formEdit" action="" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="grid grid-cols-2 gap-6">
+
+                <!-- NIP -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">NIP</label>
+                    <input type="text"
+                           id="edit_nip"
+                           name="nip"
+                           required
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Nama -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Nama Karyawan</label>
+                    <input type="text"
+                           id="edit_nama"
+                           name="nama"
+                           required
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Divisi -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Divisi</label>
+                    <select id="edit_divisi"
+                            name="divisi"
+                            required
+                            class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="">Pilih Divisi</option>
+                        @foreach($daftarDivisi as $divisi)
+                            <option value="{{ $divisi }}">{{ $divisi }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Jabatan -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Jabatan</label>
+                    <input type="text"
+                           id="edit_jabatan"
+                           name="jabatan"
+                           required
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Email</label>
+                    <input type="email"
+                           id="edit_email"
+                           name="email"
+                           required
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block mb-2 font-semibold text-slate-700">Password Baru (Kosongkan jika tidak diganti)</label>
+                    <input type="password"
+                           name="password"
+                           class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Status -->
+                <div class="col-span-2">
+                    <label class="block mb-2 font-semibold text-slate-700">Status</label>
+                    <select id="edit_status"
+                            name="status"
+                            class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="Aktif">Aktif</option>
+                        <option value="Nonaktif">Nonaktif</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tombol -->
+            <div class="flex justify-end gap-4 mt-8">
+                <button type="button"
+                        onclick="closeEditModal()"
+                        class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold">
+                    Batal
+                </button>
+
+                <button type="submit"
+                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
     // =========================
     // MODAL TAMBAH KARYAWAN
@@ -339,15 +456,31 @@
     // =========================
     // MODAL EDIT KARYAWAN
     // =========================
-    function openEditModal(id, nip, nama, divisi, jabatan) {
+    function openEditModal(id, nip, nama, divisi, jabatan, email, status) {
         // Isi form edit
         document.getElementById('edit_nip').value = nip;
         document.getElementById('edit_nama').value = nama;
-        document.getElementById('edit_divisi').value = divisi;
         document.getElementById('edit_jabatan').value = jabatan;
+        document.getElementById('edit_email').value = email || '';
+
+        // Set divisi dropdown
+        const editDivisi = document.getElementById('edit_divisi');
+        if (editDivisi) {
+            for (let option of editDivisi.options) {
+                option.selected = (option.value === divisi);
+            }
+        }
+
+        // Set status dropdown
+        const editStatus = document.getElementById('edit_status');
+        if (editStatus) {
+            for (let option of editStatus.options) {
+                option.selected = (option.value === (status || 'Aktif'));
+            }
+        }
 
         // Set action form update
-        document.getElementById('formEdit').action = '/admin/karyawan/' + id;
+        document.getElementById('formEdit').action = '/karyawan/' + id;
 
         // Tampilkan modal edit
         const modalEdit = document.getElementById('modalEdit');

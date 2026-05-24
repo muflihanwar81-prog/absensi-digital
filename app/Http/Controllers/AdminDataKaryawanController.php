@@ -6,7 +6,9 @@ use App\Models\Divisi;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\Absensi;
+use App\Models\Izin;
+use App\Models\Perizinan;
 class AdminDataKaryawanController extends Controller
 {
     public function index(Request $request)
@@ -69,7 +71,7 @@ class AdminDataKaryawanController extends Controller
             'nama'     => 'required',
             'email'    => 'required|email|unique:karyawans,email',
             'password' => 'required|min:6',
-            'divisi'   => 'required',
+            'divisi'   => 'required|exists:divisis,nama_divisi',
             'jabatan'  => 'required',
         ]);
 
@@ -110,7 +112,7 @@ class AdminDataKaryawanController extends Controller
             'nip'      => 'required|unique:karyawans,nip,' . $id,
             'nama'     => 'required',
             'email'    => 'required|email|unique:karyawans,email,' . $id,
-            'divisi'   => 'required',
+            'divisi'   => 'required|exists:divisis,nama_divisi',
             'jabatan'  => 'required',
             'status'   => 'nullable',
             'password' => 'nullable|min:6',
@@ -144,12 +146,23 @@ class AdminDataKaryawanController extends Controller
     }
 
     public function destroy($id)
-    {
-        $karyawan = Karyawan::findOrFail($id);
-        $karyawan->delete();
+{
+    $karyawan = Karyawan::findOrFail($id);
 
-        return redirect()
-            ->route('admin.karyawan')
-            ->with('success', 'Data karyawan berhasil dihapus.');
-    }
+    // hapus seluruh absensi milik karyawan
+    Absensi::where('karyawan_id', $id)->delete();
+
+    // hapus data izin jika ada
+    Izin::where('karyawan_id', $id)->delete();
+
+    // hapus data perizinan jika ada
+    Perizinan::where('karyawan_id', $id)->delete();
+
+    // hapus karyawan
+    $karyawan->delete();
+
+    return redirect()
+        ->route('admin.karyawan')
+        ->with('success', 'Data karyawan berhasil dihapus.');
+}
 }

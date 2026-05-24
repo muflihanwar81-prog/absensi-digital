@@ -2,43 +2,85 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
 class AdminDataAbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->query('search');
+        $query = Absensi::with('karyawan');
 
-        // Dummy Data Absensi sesuai kolom image_659444.png
-        $allAbsensi = collect([
-            (object)[
-                'nip' => '2025001',
-                'nama' => 'Ita Purba',
-                'divisi' => 'Divisi A',
-                'jabatan' => 'Frontend Developer',
-                'jam_masuk' => '08:00:15',
-                'jam_keluar' => '17:05:00',
-                'tanggal' => '2026-05-04',
-            ],
-            (object)[
-                'nip' => '2025002',
-                'nama' => 'Budi Santoso',
-                'divisi' => 'Divisi B',
-                'jabatan' => 'Backend Developer',
-                'jam_masuk' => '07:55:00',
-                'jam_keluar' => '17:00:10',
-                'tanggal' => '2026-05-04',
-            ],
-        ]);
-
-        // Logika Filter Pencarian
-        $absensi = $allAbsensi->when($search, function($collection, $search) {
-            return $collection->filter(function($item) use ($search) {
-                return false !== stripos($item->nama, $search) || false !== stripos($item->nip, $search);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('karyawan', function ($q) use ($search) {
+                $q->where('nip', 'like', '%' . $search . '%')
+                  ->orWhere('nama', 'like', '%' . $search . '%')
+                  ->orWhere('divisi', 'like', '%' . $search . '%')
+                  ->orWhere('jabatan', 'like', '%' . $search . '%');
             });
+        }
+
+        if ($request->filled('tanggal_awal')) {
+            $query->whereDate('tanggal', '>=', $request->tanggal_awal);
+        }
+
+        if ($request->filled('tanggal_akhir')) {
+            $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $absensi = $query->orderBy('tanggal', 'desc')->get();
+
+        // Map karyawan data onto each absensi record
+        $absensi->transform(function ($item) {
+            $item->nip     = optional($item->karyawan)->nip ?? '-';
+            $item->nama    = optional($item->karyawan)->nama ?? '-';
+            $item->divisi  = optional($item->karyawan)->divisi ?? '-';
+            $item->jabatan = optional($item->karyawan)->jabatan ?? '-';
+            return $item;
         });
 
         return view('admin.AdminDataAbsensi', compact('absensi'));
+    }
+
+    public function create()
+    {
+        return redirect()->route('admin.absensi.index');
+    }
+
+    public function store(Request $request)
+    {
+        return redirect()->route('admin.absensi.index');
+    }
+
+    public function show($id)
+    {
+        $item = Absensi::with('karyawan')->findOrFail($id);
+        return redirect()->route('admin.absensi.index');
+    }
+
+    public function edit($id)
+    {
+        return redirect()->route('admin.absensi.index');
+    }
+
+    public function update(Request $request, $id)
+    {
+        return redirect()->route('admin.absensi.index');
+    }
+
+    public function destroy($id)
+    {
+        $absensi = Absensi::findOrFail($id);
+        $absensi->delete();
+
+        return redirect()
+            ->route('admin.absensi.index')
+            ->with('success', 'Data absensi berhasil dihapus.');
     }
 }

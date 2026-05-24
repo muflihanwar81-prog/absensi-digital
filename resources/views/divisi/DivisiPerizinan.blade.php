@@ -61,12 +61,38 @@
                         </thead>
 
                         <tbody>
+                            @forelse($data as $i)
+                            <tr class="border-b border-blue-100 hover:bg-blue-50/50 transition">
+                                <td class="py-3 px-2 border-r border-blue-200 text-center text-blue-900 font-semibold text-sm">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-950 font-bold text-sm">{{ $i->nip }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm font-semibold">{{ $i->nama }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm">{{ $i->divisi }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-sm">{{ $i->jabatan }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-sm font-medium text-blue-800">{{ $i->kategori }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-sm text-center">
+                                    @if($i->file_tambahan)
+                                        <a href="{{ asset('storage/' . $i->file_tambahan) }}" target="_blank" class="text-blue-600 hover:underline font-semibold text-xs">
+                                            Lihat Bukti
+                                        </a>
+                                    @else
+                                        <span class="text-slate-400 text-xs">-</span>
+                                    @endif
+                                </td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-xs font-semibold">{{ $i->created_at->format('d-m-Y') }}</td>
+                                <td class="py-3 px-3 text-center">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-bold {{ $i->status === 'Disetujui' ? 'bg-green-100 text-green-700' : ($i->status === 'Ditolak' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700') }}">
+                                        {{ $i->status ?? 'Menunggu' }}
+                                    </span>
+                                </td>
+                            </tr>
+                            @empty
                             <tr class="h-96">
                                 <td colspan="9"
                                     class="text-center text-blue-300 italic text-sm font-medium">
                                     Tidak ada data perizinan...
                                 </td>
                             </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

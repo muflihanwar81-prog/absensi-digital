@@ -48,12 +48,30 @@
 
                         <!-- Table Body -->
                         <tbody>
+                            @forelse($karyawans as $k)
+                            <tr class="border-b border-blue-100 hover:bg-blue-50/50 transition">
+                                <td class="py-3 px-4 border-r border-blue-200 text-center text-blue-900 font-semibold text-sm">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-4 border-r border-blue-200 text-blue-950 font-bold text-sm">{{ $k->nip }}</td>
+                                <td class="py-3 px-4 border-r border-blue-200 text-blue-900 text-sm">{{ $k->nama }}</td>
+                                <td class="py-3 px-4 border-r border-blue-200 text-blue-900 text-sm">{{ $k->divisi }}</td>
+                                <td class="py-3 px-4 border-r border-blue-200 text-blue-900 text-sm">{{ $k->jabatan }}</td>
+                                <td class="py-3 px-4 border-r border-blue-200 text-sm">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold {{ $k->status === 'Aktif' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                                        {{ $k->status ?? 'Aktif' }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="text-xs text-slate-400 font-medium">Hanya Admin</span>
+                                </td>
+                            </tr>
+                            @empty
                             <tr class="h-96">
                                 <td colspan="7"
                                     class="text-center text-blue-300 italic font-medium">
                                     Belum ada data karyawan
                                 </td>
                             </tr>
+                            @endforelse
                         </tbody>
 
                     </table>
