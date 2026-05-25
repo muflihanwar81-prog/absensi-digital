@@ -50,7 +50,7 @@ class AuthController extends Controller
             return redirect('/dashboard_karyawan');
         }
 
-        return back()->with('error', 'Email atau password salah');
+        return back()->with('error', 'Email atau Password salah');
     }
 
     public function logout(Request $request)
