@@ -11,7 +11,11 @@ class AdminKelolaDivisiController extends Controller
     {
         $data = Divisi::orderBy('nama_divisi')->get();
 
-        return view('admin.keloladivisi', compact('data'));
+        $globalLatitude = \App\Models\Setting::get('latitude', '-6.200000');
+        $globalLongitude = \App\Models\Setting::get('longitude', '106.816666');
+        $globalRadius = \App\Models\Setting::get('radius', '100');
+
+        return view('admin.keloladivisi', compact('data', 'globalLatitude', 'globalLongitude', 'globalRadius'));
     }
 
     public function store(Request $request)
@@ -92,25 +96,21 @@ class AdminKelolaDivisiController extends Controller
         ->with('success', 'Data divisi berhasil dihapus.');
 }
     public function updateLokasi(Request $request)
-{
-    $request->validate([
-        'divisi_id' => 'required|exists:divisis,id',
-        'latitude'  => 'required|numeric',
-        'longitude' => 'required|numeric',
-        'radius'    => 'required|integer|min:1',
-    ]);
+    {
+        $request->validate([
+            'latitude'  => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'radius'    => 'required|integer|min:1',
+        ]);
 
-    $divisi = Divisi::findOrFail($request->divisi_id);
+        \App\Models\Setting::set('latitude', $request->latitude);
+        \App\Models\Setting::set('longitude', $request->longitude);
+        \App\Models\Setting::set('radius', $request->radius);
 
-    $divisi->latitude = $request->latitude;
-    $divisi->longitude = $request->longitude;
-    $divisi->radius = $request->radius;
-    $divisi->save();
-
-    return redirect()
-        ->route('admin.keloladivisi')
-        ->with('success', 'Lokasi divisi berhasil disimpan.');
-}
+        return redirect()
+            ->route('admin.keloladivisi')
+            ->with('success', 'Lokasi kantor berhasil disimpan.');
+    }
 public function storeLokasi(Request $request)
 {
     $request->validate([

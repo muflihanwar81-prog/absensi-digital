@@ -147,12 +147,22 @@
                     </div>
 
                     {{-- ACTION BUTTONS --}}
-                    {{-- Ganti bagian ACTION BUTTONS dengan kode berikut --}}
+                    {{-- FLASH MESSAGES --}}
+                    @if(session('success'))
+                        <div class="mt-6 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-700 text-lg font-semibold shadow-sm">
+                            ✅ {{ session('success') }}
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="mt-6 p-4 bg-rose-50 border border-rose-200 rounded-2xl text-rose-700 text-lg font-semibold shadow-sm">
+                            ❌ {{ session('error') }}
+                        </div>
+                    @endif
 
                     <div class="flex justify-end gap-4 mt-8">
 
                         {{-- Tombol Masuk --}}
-                        <form action="{{ route('karyawan.absensi.masuk') }}" method="POST">
+                        <form action="{{ route('karyawan.absensi.masuk') }}" method="POST" class="absensi-form">
                             @csrf
                             <button type="submit"
                                 class="w-48 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-xl shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300">
@@ -161,7 +171,7 @@
                         </form>
 
                         {{-- Tombol Pulang --}}
-                        <form action="{{ route('karyawan.absensi.pulang') }}" method="POST">
+                        <form action="{{ route('karyawan.absensi.pulang') }}" method="POST" class="absensi-form">
                             @csrf
                             <button type="submit"
                                 class="w-48 bg-white border border-blue-100 text-slate-700 py-4 rounded-2xl font-bold text-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
@@ -307,6 +317,83 @@
         setInterval(updateClock, 1000);
     </script>
 
-</body>
+    {{-- GPS GEOLOCATION SCRIPT --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('.absensi-form');
 
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const button = form.querySelector('button[type="submit"]');
+                    const originalText = button.innerHTML;
+                    button.disabled = true;
+                    button.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span>Mendapatkan GPS...';
+
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const lat = position.coords.latitude;
+                                const lng = position.coords.longitude;
+
+                                // Buat input tersembunyi
+                                let latInput = form.querySelector('input[name="latitude"]');
+                                if (!latInput) {
+                                    latInput = document.createElement('input');
+                                    latInput.type = 'hidden';
+                                    latInput.name = 'latitude';
+                                    form.appendChild(latInput);
+                                }
+                                latInput.value = lat;
+
+                                let lngInput = form.querySelector('input[name="longitude"]');
+                                if (!lngInput) {
+                                    lngInput = document.createElement('input');
+                                    lngInput.type = 'hidden';
+                                    lngInput.name = 'longitude';
+                                    form.appendChild(lngInput);
+                                }
+                                lngInput.value = lng;
+
+                                // Submit form asli
+                                form.submit();
+                            },
+                            function(error) {
+                                button.disabled = false;
+                                button.innerHTML = originalText;
+                                
+                                let errorMessage = 'Gagal memverifikasi lokasi GPS. ';
+                                switch(error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        errorMessage += 'Mohon izinkan akses lokasi (GPS) pada browser Anda.';
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        errorMessage += 'Informasi lokasi tidak tersedia.';
+                                        break;
+                                    case error.TIMEOUT:
+                                        errorMessage += 'Waktu permintaan lokasi habis.';
+                                        break;
+                                    default:
+                                        errorMessage += 'Terjadi kesalahan tidak dikenal.';
+                                }
+                                alert(errorMessage);
+                            },
+                            {
+                                enableHighAccuracy: true,
+                                timeout: 10000,
+                                maximumAge: 0
+                            }
+                        );
+                    } else {
+                        button.disabled = false;
+                        button.innerHTML = originalText;
+                        alert('Browser Anda tidak mendukung deteksi lokasi GPS.');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
 </html>

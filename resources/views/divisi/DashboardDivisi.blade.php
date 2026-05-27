@@ -130,7 +130,7 @@
 
                         {{-- Tombol Masuk --}}
                         @if(!$absensiHariIni)
-                            <form action="{{ route('divisi.absensi.masuk') }}" method="POST">
+                            <form action="{{ route('divisi.absensi.masuk') }}" method="POST" class="absensi-form">
                                 @csrf
                                 <button type="submit"
                                     class="w-44 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl font-black text-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300">
@@ -146,7 +146,7 @@
 
                         {{-- Tombol Pulang --}}
                         @if($absensiHariIni && !$absensiHariIni->jam_keluar)
-                            <form action="{{ route('divisi.absensi.keluar') }}" method="POST">
+                            <form action="{{ route('divisi.absensi.keluar') }}" method="POST" class="absensi-form">
                                 @csrf
                                 <button type="submit"
                                     class="w-44 bg-white border-2 border-blue-300 text-blue-700 py-3 rounded-xl font-black text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
@@ -297,6 +297,84 @@
 
     // Update setiap 1 detik
     setInterval(updateDateTime, 1000);
+</script>
+
+{{-- GPS GEOLOCATION SCRIPT --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('.absensi-form');
+
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const button = form.querySelector('button[type="submit"]');
+                const originalText = button.innerHTML;
+                button.disabled = true;
+                button.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span>Mendapatkan GPS...';
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+
+                            // Buat input tersembunyi
+                            let latInput = form.querySelector('input[name="latitude"]');
+                            if (!latInput) {
+                                latInput = document.createElement('input');
+                                latInput.type = 'hidden';
+                                latInput.name = 'latitude';
+                                form.appendChild(latInput);
+                            }
+                            latInput.value = lat;
+
+                            let lngInput = form.querySelector('input[name="longitude"]');
+                            if (!lngInput) {
+                                lngInput = document.createElement('input');
+                                lngInput.type = 'hidden';
+                                lngInput.name = 'longitude';
+                                form.appendChild(lngInput);
+                            }
+                            lngInput.value = lng;
+
+                            // Submit form asli
+                            form.submit();
+                        },
+                        function(error) {
+                            button.disabled = false;
+                            button.innerHTML = originalText;
+                            
+                            let errorMessage = 'Gagal memverifikasi lokasi GPS. ';
+                            switch(error.code) {
+                                case error.PERMISSION_DENIED:
+                                    errorMessage += 'Mohon izinkan akses lokasi (GPS) pada browser Anda.';
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    errorMessage += 'Informasi lokasi tidak tersedia.';
+                                    break;
+                                case error.TIMEOUT:
+                                    errorMessage += 'Waktu permintaan lokasi habis.';
+                                    break;
+                                default:
+                                    errorMessage += 'Terjadi kesalahan tidak dikenal.';
+                            }
+                            alert(errorMessage);
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                    );
+                } else {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                    alert('Browser Anda tidak mendukung deteksi lokasi GPS.');
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

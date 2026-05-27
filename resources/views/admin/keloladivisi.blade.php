@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
 
 <div class="flex min-h-screen">
     @include('layouts.sidebar')
@@ -28,8 +28,8 @@
             <!-- Maps -->
             <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 mb-6 overflow-hidden">
                 <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-white">
-                    <h3 class="font-extrabold text-xl flex items-center gap-2">📍 Peta Lokasi Absensi Divisi</h3>
-                    <p class="text-blue-100 text-sm mt-1">Titik pusat dan area radius absensi untuk masing-masing divisi yang telah diatur</p>
+                    <h3 class="font-extrabold text-xl flex items-center gap-2">📍 Peta Lokasi Absensi Kantor Pusat</h3>
+                    <p class="text-blue-100 text-sm mt-1">Titik pusat dan area radius absensi kantor pusat (berlaku untuk semua divisi)</p>
                 </div>
                 <div id="main-map" class="h-80 w-full"></div>
             </div>
@@ -152,7 +152,7 @@
     class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[650px] rounded-3xl shadow-2xl overflow-hidden border border-blue-100">
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between text-white">
-            <h2 class="text-3xl font-extrabold">Pengaturan Lokasi</h2>
+            <h2 class="text-3xl font-extrabold">Pengaturan Lokasi Kantor</h2>
             <button type="button" onclick="closeModalAturLokasi()" class="text-4xl leading-none">×</button>
         </div>
 
@@ -160,17 +160,7 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block text-lg font-bold text-slate-700 mb-3">Pilih Divisi</label>
-                <select name="divisi_id" required class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm font-semibold text-slate-700 focus:ring-2 focus:ring-blue-200">
-                    <option value="" disabled selected>-- Pilih Divisi --</option>
-                    @foreach ($data as $divisi)
-                        <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-xl font-bold text-slate-800 mb-3">Lokasi GPS</label>
+                <label class="block text-xl font-bold text-slate-800 mb-3">Lokasi GPS Kantor Pusat</label>
                 <div class="bg-slate-100 rounded-2xl overflow-hidden shadow-inner border border-blue-100">
                     <div id="map" class="rounded-2xl h-72"></div>
                 </div>
@@ -179,19 +169,19 @@
             <div class="grid grid-cols-3 gap-6 mt-6">
                 <div>
                     <label class="block text-lg font-bold text-slate-700 mb-3">Longitude</label>
-                    <input type="text" id="longitude" name="longitude"
+                    <input type="text" id="longitude" name="longitude" value="{{ $globalLongitude }}"
                         class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
                         required>
                 </div>
                 <div>
                     <label class="block text-lg font-bold text-slate-700 mb-3">Latitude</label>
-                    <input type="text" id="latitude" name="latitude"
+                    <input type="text" id="latitude" name="latitude" value="{{ $globalLatitude }}"
                         class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
                         required>
                 </div>
                 <div>
                     <label class="block text-lg font-bold text-slate-700 mb-3">Radius (Meter)</label>
-                    <input type="number" id="radius" name="radius" value="100" min="1"
+                    <input type="number" id="radius" name="radius" value="{{ $globalRadius }}" min="1"
                         class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
                         required>
                 </div>
@@ -213,7 +203,6 @@ let mainMap;
 let map;
 let marker;
 let circle;
-const divisiData = @json($data);
 
 // Fix Leaflet marker icon path issue globally
 delete L.Icon.Default.prototype._getIconUrl;
@@ -227,66 +216,48 @@ function initMainMap() {
     const mainMapElement = document.getElementById('main-map');
     if (!mainMapElement) return;
 
-    const divisionsWithLocation = divisiData.filter(d => d.latitude && d.longitude);
+    const lat = parseFloat("{{ $globalLatitude }}") || -6.200000;
+    const lng = parseFloat("{{ $globalLongitude }}") || 106.816666;
+    const radius = parseInt("{{ $globalRadius }}") || 100;
+    const defaultCenter = [lat, lng];
 
-    let defaultCenter = [-6.200000, 106.816666]; // Default Jakarta
-    let zoomLevel = 13;
-
-    if (divisionsWithLocation.length > 0) {
-        defaultCenter = [parseFloat(divisionsWithLocation[0].latitude), parseFloat(divisionsWithLocation[0].longitude)];
-        zoomLevel = 15;
-    }
-
-    mainMap = L.map('main-map').setView(defaultCenter, zoomLevel);
+    mainMap = L.map('main-map').setView(defaultCenter, 16);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(mainMap);
 
-    const bounds = [];
-
-    divisionsWithLocation.forEach(divisi => {
-        const lat = parseFloat(divisi.latitude);
-        const lng = parseFloat(divisi.longitude);
-        const radius = parseInt(divisi.radius) || 100;
-        const pos = [lat, lng];
-
-        bounds.push(pos);
-
-        // Add Marker
-        const m = L.marker(pos).addTo(mainMap);
-        m.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 14px; padding: 5px;">
-                <h4 style="margin: 0 0 8px 0; font-weight: 800; color: #2563eb; font-size: 15px;">🏢 Divisi: ${divisi.nama_divisi}</h4>
-                <div style="color: #475569; display: flex; flex-direction: column; gap: 4px;">
-                    <div><b>Latitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lat}</code></div>
-                    <div><b>Longitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lng}</code></div>
-                    <div><b>Radius:</b> <span style="font-weight: bold; color: #10b981;">${radius} meter</span></div>
-                </div>
+    // Add Marker
+    const m = L.marker(defaultCenter).addTo(mainMap);
+    m.bindPopup(`
+        <div style="font-family: sans-serif; font-size: 14px; padding: 5px;">
+            <h4 style="margin: 0 0 8px 0; font-weight: 800; color: #2563eb; font-size: 15px;">🏢 Lokasi Kantor Pusat</h4>
+            <div style="color: #475569; display: flex; flex-direction: column; gap: 4px;">
+                <div><b>Latitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lat}</code></div>
+                <div><b>Longitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lng}</code></div>
+                <div><b>Radius:</b> <span style="font-weight: bold; color: #10b981;">${radius} meter</span></div>
             </div>
-        `);
+        </div>
+    `);
 
-        // Add Circle
-        L.circle(pos, {
-            color: '#2563eb',
-            fillColor: '#3b82f6',
-            fillOpacity: 0.25,
-            radius: radius
-        }).addTo(mainMap);
-    });
-
-    if (bounds.length > 1) {
-        mainMap.fitBounds(bounds, { padding: [50, 50] });
-    }
+    // Add Circle
+    L.circle(defaultCenter, {
+        color: '#2563eb',
+        fillColor: '#3b82f6',
+        fillOpacity: 0.25,
+        radius: radius
+    }).addTo(mainMap);
 }
 
 function initMap() {
-    const defaultLocation = [-6.200000, 106.816666];
+    const lat = parseFloat(document.getElementById('latitude').value) || -6.200000;
+    const lng = parseFloat(document.getElementById('longitude').value) || 106.816666;
+    const defaultLocation = [lat, lng];
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
 
-    map = L.map('map').setView(defaultLocation, 15);
+    map = L.map('map').setView(defaultLocation, 16);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -378,28 +349,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('radius')?.addEventListener('input', function() {
         if (circle) {
             circle.setRadius(parseInt(this.value) || 100);
-        }
-    });
-
-    document.querySelector('select[name="divisi_id"]')?.addEventListener('change', function() {
-        const selectedId = this.value;
-        const divisi = divisiData.find(d => d.id == selectedId);
-        if (divisi && divisi.latitude && divisi.longitude) {
-            const pos = [parseFloat(divisi.latitude), parseFloat(divisi.longitude)];
-            const rad = parseInt(divisi.radius) || 100;
-            
-            document.getElementById('latitude').value = pos[0].toFixed(6);
-            document.getElementById('longitude').value = pos[1].toFixed(6);
-            document.getElementById('radius').value = rad;
-            
-            if (marker && map) {
-                marker.setLatLng(pos);
-                if (circle) {
-                    circle.setLatLng(pos);
-                    circle.setRadius(rad);
-                }
-                map.setView(pos, 16);
-            }
         }
     });
 });
