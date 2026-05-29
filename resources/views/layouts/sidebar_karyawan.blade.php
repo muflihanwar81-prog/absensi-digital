@@ -1,20 +1,23 @@
 <aside id="sidebarKaryawan"
-    class="w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col justify-between shadow-2xl border-r border-slate-700 transition-all duration-300 h-screen">
+    class="w-72 bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen">
 
     {{-- HEADER --}}
     <div>
-        <div class="p-5 border-b border-slate-700">
+        <div class="p-6 border-b border-slate-800">
             <div class="flex items-center justify-between">
-                <div id="sidebarTitle">
-                    <h1 class="text-3xl font-extrabold tracking-tight mt-1">
-                        CODIA
+                <div id="sidebarTitle" class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">
+                        C
+                    </div>
+                    <h1 class="text-2xl font-bold tracking-tight text-white">
+                        CODIA<span class="text-blue-500">.</span>
                     </h1>
                 </div>
 
                 <button onclick="toggleSidebarKaryawan()"
-                    class="bg-slate-700/80 hover:bg-slate-600 p-2.5 rounded-xl transition duration-300 shadow-lg">
+                    class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-lg transition duration-200 shadow-sm border border-slate-700/50">
                     <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-6 h-6 text-white"
+                        class="w-5 h-5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -29,38 +32,53 @@
 
         {{-- NAVIGATION --}}
         <nav class="px-4 py-6">
-            <ul class="space-y-2">
+            <ul class="space-y-1.5">
 
                 {{-- DASHBOARD --}}
                 <li>
                     <a href="{{ url('/dashboard_karyawan') }}"
-                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
                         {{ request()->is('dashboard_karyawan')
-                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
-                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="menu-text font-medium">Dashboard</span>
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 font-semibold'
+                            : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100' }}">
+                        <i class="fa-solid fa-chart-line text-lg w-5 text-center"></i>
+                        <span class="menu-text font-medium text-sm">Dashboard</span>
                     </a>
                 </li>
 
                 {{-- DATA KEHADIRAN --}}
                 <li>
                     <a href="{{ url('/karyawan_absen') }}"
-                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
                         {{ request()->is('karyawan_absen')
-                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
-                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="menu-text font-medium">Data Kehadiran</span>
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 font-semibold'
+                            : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100' }}">
+                        <i class="fa-solid fa-calendar-check text-lg w-5 text-center"></i>
+                        <span class="menu-text font-medium text-sm">Data Kehadiran</span>
                     </a>
                 </li>
 
                 {{-- PENGAJUAN IZIN --}}
                 <li>
                     <a href="{{ url('/izin') }}"
-                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
                         {{ request()->is('izin')
-                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
-                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
-                        <span class="menu-text font-medium">Pengajuan Izin</span>
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 font-semibold'
+                            : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100' }}">
+                        <i class="fa-solid fa-file-signature text-lg w-5 text-center"></i>
+                        <span class="menu-text font-medium text-sm">Pengajuan Izin</span>
+                    </a>
+                </li>
+
+                {{-- PROFIL --}}
+                <li>
+                    <a href="{{ url('/profile') }}"
+                        class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
+                        {{ request()->is('profile')
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 font-semibold'
+                            : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100' }}">
+                        <i class="fa-solid fa-user text-lg w-5 text-center"></i>
+                        <span class="menu-text font-medium text-sm">Profil</span>
                     </a>
                 </li>
 
@@ -69,30 +87,31 @@
     </div>
 
     {{-- FOOTER PROFILE --}}
-    <div class="p-4 border-t border-slate-700 bg-slate-800/70 backdrop-blur-sm">
+    <div class="p-4 border-t border-slate-800 bg-slate-900/60 backdrop-blur-sm">
 
         {{-- USER INFO --}}
-        <div class="flex items-center gap-3 mb-4 px-2">
+        <a href="{{ url('/profile') }}" class="flex items-center gap-3 mb-4 px-2 hover:bg-slate-800/50 py-2 rounded-xl transition duration-200 group">
             <div
-                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-200 shrink-0">
                 {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 2)) }}
             </div>
 
-            <div class="menu-text">
-                <p class="font-bold text-white truncate">
+            <div class="menu-text min-w-0">
+                <p class="font-bold text-slate-100 text-sm truncate group-hover:text-blue-400 transition-colors">
                     {{ session('karyawan_nama', 'Karyawan') }}
                 </p>
-                <p class="text-xs text-slate-400">
+                <p class="text-xs text-slate-450 truncate">
                     Karyawan Aktif
                 </p>
             </div>
-        </div>
+        </a>
 
         {{-- LOGOUT --}}
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"
-                class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition duration-300">
+                class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white font-semibold border border-rose-500/20 hover:border-transparent transition duration-200 text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i>
                 <span class="menu-text">Logout</span>
             </button>
         </form>
@@ -105,16 +124,13 @@ function toggleSidebarKaryawan() {
     const texts = document.querySelectorAll('#sidebarKaryawan .menu-text');
     const title = document.getElementById('sidebarTitle');
 
-    // Toggle lebar sidebar
     sidebar.classList.toggle('w-72');
-    sidebar.classList.toggle('w-24');
+    sidebar.classList.toggle('w-20');
 
-    // Toggle semua teks
     texts.forEach(text => {
         text.classList.toggle('hidden');
     });
 
-    // Toggle judul
     title.classList.toggle('hidden');
 }
 </script>

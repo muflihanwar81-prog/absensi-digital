@@ -105,6 +105,12 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
     Route::get('/laporan-admin', [AdminLaporanController::class, 'index'])
         ->name('laporan');
 
+    Route::get('/laporan-admin/excel', [AdminLaporanController::class, 'exportExcel'])
+        ->name('laporan.excel');
+
+    Route::get('/laporan-admin/pdf', [AdminLaporanController::class, 'exportPdf'])
+        ->name('laporan.pdf');
+
     Route::get('/keloladivisi', [AdminKelolaDivisiController::class, 'index'])
         ->name('keloladivisi');
 
@@ -149,6 +155,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan', [DivisiDashboardController::class, 'laporan'])
         ->name('divisi.laporan');
 
+    Route::get('/laporan/excel', [DivisiDashboardController::class, 'exportExcel'])
+        ->name('divisi.laporan.excel');
+
+    Route::get('/laporan/pdf', [DivisiDashboardController::class, 'exportPdf'])
+        ->name('divisi.laporan.pdf');
+
     Route::post('/divisi/absensi/masuk', [DivisiDashboardController::class, 'absenMasuk'])
         ->name('divisi.absensi.masuk');
 
@@ -190,6 +202,12 @@ Route::middleware(['karyawan.auth'])->group(function () {
 
     Route::get('/profile', [KaryawanDashboardController::class, 'profile'])
         ->name('karyawan.profile');
+
+    Route::put('/profile', [KaryawanDashboardController::class, 'updateProfile'])
+        ->name('karyawan.profile.update');
+
+    Route::put('/profile/password', [KaryawanDashboardController::class, 'updatePassword'])
+        ->name('karyawan.profile.password');
 
     Route::get('/absensi/pdf', [AbsensiController::class, 'exportPdf'])
         ->name('absensi.pdf');

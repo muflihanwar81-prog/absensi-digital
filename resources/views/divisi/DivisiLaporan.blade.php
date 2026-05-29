@@ -48,13 +48,13 @@
 
                     <!-- Right Section: Export Buttons -->
                     <div class="flex items-center gap-3">
-                        <button class="px-8 py-3 bg-green-600 hover:bg-green-700 rounded-xl font-bold text-sm text-white shadow-sm transition uppercase">
+                        <a href="{{ route('divisi.laporan.excel') }}" class="px-8 py-3 bg-green-600 hover:bg-green-700 rounded-xl font-bold text-sm text-white shadow-sm transition uppercase">
                             Excel
-                        </button>
+                        </a>
 
-                        <button class="px-8 py-3 bg-red-600 hover:bg-red-700 rounded-xl font-bold text-sm text-white shadow-sm transition uppercase">
+                        <a href="{{ route('divisi.laporan.pdf') }}" class="px-8 py-3 bg-red-600 hover:bg-red-700 rounded-xl font-bold text-sm text-white shadow-sm transition uppercase">
                             PDF
-                        </button>
+                        </a>
                     </div>
                 </div>
 

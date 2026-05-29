@@ -9,6 +9,7 @@ use App\Models\Izin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DivisiDashboardController extends Controller
 {
@@ -321,5 +322,69 @@ class DivisiDashboardController extends Controller
             'absensi',
             'izins'
         ));
+    }
+
+    public function exportExcel()
+    {
+        $user       = Auth::user();
+        $namaDivisi = $user->name;
+
+        $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
+
+        $data = Absensi::with('karyawan')
+            ->whereIn('karyawan_id', $karyawanIds)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $filename = "laporan_absensi_divisi_" . $namaDivisi . "_" . date('Ymd_His') . ".csv";
+
+        $headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        );
+
+        $columns = ['No', 'NIP', 'Nama', 'Divisi', 'Jabatan', 'Jam Masuk', 'Jam Keluar', 'Tanggal'];
+
+        $callback = function() use($data, $columns, $namaDivisi) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            $no = 1;
+            foreach ($data as $item) {
+                fputcsv($file, [
+                    $no++,
+                    optional($item->karyawan)->nip ?? '-',
+                    optional($item->karyawan)->nama ?? '-',
+                    optional($item->karyawan)->divisi ?? $namaDivisi,
+                    optional($item->karyawan)->jabatan ?? '-',
+                    $item->jam_masuk ?? '-',
+                    $item->jam_keluar ?? '-',
+                    Carbon::parse($item->tanggal)->format('d-m-Y')
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportPdf()
+    {
+        $user       = Auth::user();
+        $namaDivisi = $user->name;
+
+        $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
+
+        $data = Absensi::with('karyawan')
+            ->whereIn('karyawan_id', $karyawanIds)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.laporan_pdf', compact('data'));
+        return $pdf->download("laporan_absensi_divisi_" . $namaDivisi . "_" . date('Ymd_His') . ".pdf");
     }
 }

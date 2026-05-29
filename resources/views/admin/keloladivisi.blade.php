@@ -6,85 +6,100 @@
     <title>Kelola Divisi</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    
+    <!-- Google Fonts Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
+<body class="bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
 
 <div class="flex min-h-screen">
     @include('layouts.sidebar')
 
-    <div class="flex-1">
+    <div class="flex-1 min-w-0">
         <!-- Header -->
         @include('components.header_admin')
 
         <!-- Judul -->
-        <div class="bg-white border-b border-blue-100 px-6 py-6 shadow-sm">
-            <p class="text-blue-600 font-semibold uppercase tracking-widest text-sm mb-2">Manajemen Divisi</p>
-            <h1 class="text-5xl font-extrabold text-slate-800 tracking-tight">Kelola Divisi</h1>
-            <p class="text-slate-500 mt-2 text-lg">Atur divisi, jam kerja, dan lokasi absensi perusahaan.</p>
+        <div class="px-6 pt-6">
+            <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm">
+                <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">Manajemen Divisi</p>
+                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Kelola Divisi</h1>
+                <p class="text-slate-500 mt-1.5 text-sm">Atur divisi, jam kerja, dan lokasi absensi perusahaan.</p>
+            </div>
         </div>
 
         <div class="p-6">
             <!-- Maps -->
-            <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 mb-6 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-white">
-                    <h3 class="font-extrabold text-xl flex items-center gap-2">📍 Peta Lokasi Absensi Kantor Pusat</h3>
-                    <p class="text-blue-100 text-sm mt-1">Titik pusat dan area radius absensi kantor pusat (berlaku untuk semua divisi)</p>
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 mb-6 overflow-hidden">
+                <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 text-slate-800">
+                    <h3 class="font-extrabold text-base flex items-center gap-2">📍 Peta Lokasi Absensi Kantor Pusat</h3>
+                    <p class="text-slate-500 text-xs mt-1">Titik pusat dan area radius absensi kantor pusat (berlaku untuk semua divisi)</p>
                 </div>
                 <div id="main-map" class="h-80 w-full"></div>
             </div>
 
             <!-- Filter dan Button -->
-            <div class="flex flex-wrap gap-5 items-center mb-6">
+            <div class="flex flex-wrap gap-4 items-center mb-6">
                 <input type="text" placeholder="Pencarian..."
-                    class="bg-white border border-blue-100 shadow-lg px-5 py-3 rounded-2xl w-72 outline-none text-slate-700 placeholder-slate-400">
+                    class="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-sm outline-none text-slate-700 placeholder-slate-400 focus:border-blue-500 transition-all duration-200 w-72">
 
                 <button
-                    class="bg-white border border-blue-100 shadow-lg px-8 py-3 rounded-2xl text-xl font-bold text-slate-700 hover:shadow-xl transition">
+                    class="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition">
                     Filter
                 </button>
 
-                <div class="ml-auto flex gap-5">
+                <div class="ml-auto flex gap-3">
                     <button type="button" onclick="openModalTambahDivisi()"
-                        class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-2xl shadow-xl text-xl font-bold hover:shadow-2xl transition">
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm shadow-blue-500/10 hover:scale-[1.02] transition-all">
                         + Tambah Divisi
                     </button>
 
                     <button type="button" onclick="openModalAturLokasi()"
-                        class="bg-white border border-blue-100 shadow-lg px-8 py-3 rounded-2xl text-xl font-bold text-slate-700 hover:shadow-xl transition">
+                        class="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition">
                         Atur Lokasi
                     </button>
                 </div>
             </div>
 
             <!-- Table -->
-            <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-blue-100">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80">
                 <table class="w-full border-collapse">
-                    <thead class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold">
+                    <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                         <tr>
-                            <th class="px-4 py-4 text-left">No</th>
-                            <th class="px-4 py-4 text-left">Nama Divisi</th>
-                            <th class="px-4 py-4 text-left">Jam Masuk</th>
-                            <th class="px-4 py-4 text-left">Jam Keluar</th>
-                            <th class="px-4 py-4 text-left">Aksi</th>
+                            <th class="px-6 py-3.5 text-left font-semibold">No</th>
+                            <th class="px-6 py-3.5 text-left font-semibold">Nama Divisi</th>
+                            <th class="px-6 py-3.5 text-left font-semibold">Jam Masuk</th>
+                            <th class="px-6 py-3.5 text-left font-semibold">Jam Keluar</th>
+                            <th class="px-6 py-3.5 text-center font-semibold">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($data as $item)
-                        <tr class="border-t border-slate-100 hover:bg-blue-50 transition">
-                            <td class="px-4 py-4">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-4 font-semibold text-slate-800">{{ $item->nama_divisi }}</td>
-                            <td class="px-4 py-4 text-slate-700">{{ $item->jam_masuk }}</td>
-                            <td class="px-4 py-4 text-slate-700">{{ $item->jam_keluar }}</td>
-                            <td class="px-4 py-4">
-                                <div class="flex gap-3">
-                                    <button class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl font-semibold">Edit</button>
+                        <tr class="border-t border-slate-100 hover:bg-slate-50/70 text-slate-700 text-sm transition duration-150">
+                            <td class="px-6 py-4 font-mono font-medium text-slate-500">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-4 font-bold text-slate-800">{{ $item->nama_divisi }}</td>
+                            <td class="px-6 py-4 font-mono font-medium text-slate-650">{{ $item->jam_masuk }}</td>
+                            <td class="px-6 py-4 font-mono font-medium text-slate-650">{{ $item->jam_keluar }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center gap-3.5">
+                                    <button class="bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">Edit</button>
                                     <form action="{{ route('admin.keloladivisi.destroy', $item->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus divisi ini?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="bg-red-100 text-red-700 px-4 py-2 rounded-xl font-semibold">
+                                            class="bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">
                                             Hapus
                                         </button>
                                     </form>
@@ -93,7 +108,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-20 text-slate-400 italic text-xl">
+                            <td colspan="5" class="text-center py-20 text-slate-400 italic text-sm">
                                 Data divisi kosong
                             </td>
                         </tr>
@@ -107,40 +122,37 @@
 
 <!-- Modal Tambah Divisi -->
 <div id="modalTambahDivisi"
-    class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-[9999]" style="z-index: 9999;">
-    <div class="bg-white w-[600px] rounded-3xl shadow-2xl overflow-hidden border border-blue-100">
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-white">
-            <h2 class="text-3xl font-extrabold">Tambah Divisi</h2>
+    class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
+    <div class="bg-white w-[500px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-800 tracking-tight">Tambah Divisi</h2>
+            <button type="button" onclick="closeModalTambahDivisi()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
         </div>
 
-        <form action="{{ route('admin.divisi.store') }}" method="POST" class="p-8">
+        <form action="{{ route('admin.divisi.store') }}" method="POST" class="p-6">
             @csrf
-            <div class="space-y-6">
+            <div class="space-y-4">
                 <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="font-bold text-slate-700">Nama Divisi</label>
-                    <input type="text" name="nama_divisi" required
-                        class="col-span-3 bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 outline-none">
+                    <label class="font-bold text-slate-600 text-xs uppercase tracking-wider col-span-1">Nama Divisi</label>
+                    <input type="text" name="nama_divisi" required placeholder="Contoh: IT"
+                        class="col-span-3 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none shadow-sm">
                 </div>
                 <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="font-bold text-slate-700">Jam Masuk</label>
+                    <label class="font-bold text-slate-600 text-xs uppercase tracking-wider col-span-1">Jam Masuk</label>
                     <input type="time" name="jam_masuk" required
-                        class="col-span-3 bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 outline-none">
+                        class="col-span-3 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none shadow-sm text-slate-600">
                 </div>
                 <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="font-bold text-slate-700">Jam Keluar</label>
+                    <label class="font-bold text-slate-600 text-xs uppercase tracking-wider col-span-1">Jam Keluar</label>
                     <input type="time" name="jam_keluar" required
-                        class="col-span-3 bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 outline-none">
+                        class="col-span-3 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none shadow-sm text-slate-600">
                 </div>
             </div>
 
-            <div class="border-t border-slate-200 mt-8 pt-6 flex gap-4">
+            <div class="border-t border-slate-200/60 mt-6 pt-4.5 flex gap-3">
                 <button type="submit"
-                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-2xl font-bold text-xl">
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-sm transition shadow-sm shadow-blue-500/10">
                     Simpan Divisi
-                </button>
-                <button type="button" onclick="closeModalTambahDivisi()"
-                    class="bg-red-500 text-white px-6 rounded-2xl font-bold">
-                    X
                 </button>
             </div>
         </form>
@@ -149,47 +161,47 @@
 
 <!-- Modal Atur Lokasi -->
 <div id="modalAturLokasi"
-    class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-[9999]" style="z-index: 9999;">
-    <div class="bg-white w-[650px] rounded-3xl shadow-2xl overflow-hidden border border-blue-100">
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between text-white">
-            <h2 class="text-3xl font-extrabold">Pengaturan Lokasi Kantor</h2>
-            <button type="button" onclick="closeModalAturLokasi()" class="text-4xl leading-none">×</button>
+    class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
+    <div class="bg-white w-[650px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 flex items-center justify-between text-slate-800">
+            <h2 class="text-base font-bold text-slate-800 tracking-tight">Pengaturan Lokasi Kantor</h2>
+            <button type="button" onclick="closeModalAturLokasi()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
         </div>
 
         <form action="{{ route('admin.divisi.lokasi') }}" method="POST" class="p-6">
             @csrf
 
             <div class="mb-4">
-                <label class="block text-xl font-bold text-slate-800 mb-3">Lokasi GPS Kantor Pusat</label>
-                <div class="bg-slate-100 rounded-2xl overflow-hidden shadow-inner border border-blue-100">
-                    <div id="map" class="rounded-2xl h-72"></div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">Lokasi GPS Kantor Pusat</label>
+                <div class="bg-slate-100 rounded-xl overflow-hidden border border-slate-200">
+                    <div id="map" class="rounded-xl h-72"></div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-6 mt-6">
+            <div class="grid grid-cols-3 gap-4 mt-4.5">
                 <div>
-                    <label class="block text-lg font-bold text-slate-700 mb-3">Longitude</label>
+                    <label class="block text-xxs font-bold text-slate-500 uppercase tracking-wider mb-2">Longitude</label>
                     <input type="text" id="longitude" name="longitude" value="{{ $globalLongitude }}"
-                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none shadow-sm focus:border-blue-500"
                         required>
                 </div>
                 <div>
-                    <label class="block text-lg font-bold text-slate-700 mb-3">Latitude</label>
+                    <label class="block text-xxs font-bold text-slate-500 uppercase tracking-wider mb-2">Latitude</label>
                     <input type="text" id="latitude" name="latitude" value="{{ $globalLatitude }}"
-                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none shadow-sm focus:border-blue-500"
                         required>
                 </div>
                 <div>
-                    <label class="block text-lg font-bold text-slate-700 mb-3">Radius (Meter)</label>
+                    <label class="block text-xxs font-bold text-slate-500 uppercase tracking-wider mb-2">Radius (Meter)</label>
                     <input type="number" id="radius" name="radius" value="{{ $globalRadius }}" min="1"
-                        class="w-full bg-slate-100 border border-blue-100 rounded-2xl px-4 py-3 text-lg outline-none shadow-sm"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none shadow-sm focus:border-blue-500"
                         required>
                 </div>
             </div>
 
-            <div class="border-t border-slate-200 mt-8 pt-6">
+            <div class="border-t border-slate-200/60 mt-6 pt-4.5">
                 <button type="submit"
-                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-2xl shadow-xl font-bold text-xl hover:shadow-2xl transition">
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl shadow-sm shadow-blue-500/10 font-semibold text-sm hover:shadow-md transition">
                     Simpan Data
                 </button>
             </div>
@@ -312,6 +324,19 @@ function openModalTambahDivisi() {
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 }
+
+// Close Modal with backdrop
+document.addEventListener('click', function (e) {
+    const modalTambah = document.getElementById('modalTambahDivisi');
+    const modalAtur    = document.getElementById('modalAturLokasi');
+    if (modalTambah && e.target === modalTambah) closeModalTambahDivisi();
+    if (modalAtur    && e.target === modalAtur)    closeModalAturLokasi();
+});
+
+// Close Modal with ESC
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeModalTambahDivisi(); closeModalAturLokasi(); }
+});
 
 function closeModalTambahDivisi() {
     const modal = document.getElementById('modalTambahDivisi');

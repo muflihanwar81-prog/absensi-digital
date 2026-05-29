@@ -8,10 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karyawan Dashboard - CODIA SYNC</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    
+    <!-- Google Fonts Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 font-sans">
+<body class="bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
 
     <div class="flex min-h-screen">
 
@@ -29,71 +42,71 @@
 
                 {{-- WELCOME CARD --}}
                 <div
-                    class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-8 mb-6 flex justify-between items-center">
+                    class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:shadow-md transition-shadow duration-300">
                     <div>
-                        <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold mb-2">
+                        <p class="text-blue-600 font-semibold mb-2.5 uppercase tracking-wider text-xs">
                             selamat datang kembali
                         </p>
 
-                        <h2 class="text-5xl font-extrabold text-slate-800 tracking-tight">
+                        <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">
                             Selamat Datang Karyawan
                         </h2>
 
-                        <p class="text-slate-500 text-lg mt-3">
+                        <p class="text-slate-500 text-sm mt-1.5">
                             Dashboard presensi dan aktivitas harian Anda.
                         </p>
                     </div>
 
                     <div
-                        class="px-6 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl">
-                        <p class="text-sm uppercase tracking-widest opacity-80">
+                        class="px-5 py-3.5 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-sm shadow-blue-500/10">
+                        <p class="text-xxs uppercase tracking-wider opacity-85">
                             Divisi
                         </p>
-                        <p class="text-2xl font-bold mt-1">
+                        <p class="text-lg font-bold mt-0.5">
                             {{ session('karyawan_divisi', 'Divisi') }}
                         </p>
                     </div>
                 </div>
 
                 {{-- STATISTICS --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+                <div class="grid grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
 
                     {{-- HADIR --}}
-                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
-                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                        <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Hadir
                         </p>
-                        <p class="text-6xl font-extrabold text-emerald-600 text-center">
+                        <p class="text-5xl font-extrabold text-emerald-600 tracking-tight font-mono">
                             {{ $hadir ?? 0 }}
                         </p>
                     </div>
 
                     {{-- TERLAMBAT --}}
-                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
-                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                        <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Terlambat
                         </p>
-                        <p class="text-6xl font-extrabold text-amber-500 text-center">
+                        <p class="text-5xl font-extrabold text-amber-500 tracking-tight font-mono">
                             {{ $terlambat ?? 0 }}
                         </p>
                     </div>
 
                     {{-- TIDAK HADIR --}}
-                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
-                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                        <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Tidak Hadir
                         </p>
-                        <p class="text-6xl font-extrabold text-red-500 text-center">
+                        <p class="text-5xl font-extrabold text-rose-500 tracking-tight font-mono">
                             {{ $tidakHadir ?? 0 }}
                         </p>
                     </div>
 
                     {{-- IZIN --}}
-                    <div class="bg-white rounded-3xl shadow-xl border border-blue-100 p-6">
-                        <p class="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                        <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Izin
                         </p>
-                        <p class="text-6xl font-extrabold text-blue-600 text-center">
+                        <p class="text-5xl font-extrabold text-blue-600 tracking-tight font-mono">
                             {{ $izin ?? 0 }}
                         </p>
                     </div>
@@ -101,46 +114,46 @@
                 </div>
 
                 {{-- PROFILE + CLOCK CARD --}}
-                <div class="bg-white rounded-3xl shadow-2xl border border-blue-100 p-8 mb-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6">
 
                     <div class="flex flex-col xl:flex-row justify-between gap-8">
 
                         {{-- PROFILE --}}
-                        <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-5">
                             <div
-                                class="w-28 h-28 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-4xl font-extrabold text-white shadow-xl">
+                                class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-50 to-indigo-600 flex items-center justify-center text-2xl font-extrabold text-white shadow-md ring-2 ring-white/10 shrink-0">
                                 {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 3)) }}
                             </div>
 
                             <div>
-                                <p class="text-sm uppercase tracking-[0.25em] text-slate-500 font-semibold mb-2">
-                                    Karyawan profil
+                                <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-1">
+                                    Karyawan Profil
                                 </p>
 
-                                <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight">
+                                <h3 class="text-2xl font-extrabold text-slate-800 tracking-tight">
                                     {{ session('karyawan_nama', 'Karyawan') }}
                                 </h3>
 
-                                <p class="text-2xl text-slate-500 mt-2">
+                                <p class="text-base text-slate-500 mt-1 font-medium">
                                     {{ session('karyawan_jabatan', 'Karyawan') }}
                                 </p>
                             </div>
                         </div>
 
                         {{-- CLOCK --}}
-                        <div class="text-right">
-                            <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold mb-2">
+                        <div class="text-left xl:text-right">
+                            <p class="text-xxs uppercase tracking-wider text-blue-600 font-bold mb-1">
                                 Waktu Sekarang
                             </p>
 
                             <div id="clock"
-                                class="text-7xl font-extrabold text-slate-800 leading-none tracking-tight">
-                                08 : 57
+                                class="text-5xl font-extrabold text-slate-850 leading-none tracking-tight font-mono">
+                                00 : 00
                             </div>
 
                             <div id="date"
-                                class="text-lg text-slate-500 mt-3 font-medium">
-                                Kamis, 2 Nov 2026
+                                class="text-sm text-slate-400 mt-2 font-semibold">
+                                -
                             </div>
                         </div>
 
@@ -149,23 +162,23 @@
                     {{-- ACTION BUTTONS --}}
                     {{-- FLASH MESSAGES --}}
                     @if(session('success'))
-                        <div class="mt-6 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-700 text-lg font-semibold shadow-sm">
-                            ✅ {{ session('success') }}
+                        <div class="mt-6 p-4 bg-emerald-50 border border-emerald-250 rounded-xl text-emerald-700 text-sm font-semibold shadow-sm flex items-center gap-2">
+                            <span>✅</span> <span>{{ session('success') }}</span>
                         </div>
                     @endif
                     @if(session('error'))
-                        <div class="mt-6 p-4 bg-rose-50 border border-rose-200 rounded-2xl text-rose-700 text-lg font-semibold shadow-sm">
-                            ❌ {{ session('error') }}
+                        <div class="mt-6 p-4 bg-rose-50 border border-rose-250 rounded-xl text-rose-700 text-sm font-semibold shadow-sm flex items-center gap-2">
+                            <span>❌</span> <span>{{ session('error') }}</span>
                         </div>
                     @endif
 
-                    <div class="flex justify-end gap-4 mt-8">
+                    <div class="flex justify-end gap-4 mt-8 flex-wrap">
 
                         {{-- Tombol Masuk --}}
                         <form action="{{ route('karyawan.absensi.masuk') }}" method="POST" class="absensi-form">
                             @csrf
                             <button type="submit"
-                                class="w-48 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-2xl font-bold text-xl shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300">
+                                class="w-48 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold text-sm shadow-sm shadow-blue-500/10 hover:scale-[1.02] transition-all">
                                 Masuk
                             </button>
                         </form>
@@ -174,7 +187,7 @@
                         <form action="{{ route('karyawan.absensi.pulang') }}" method="POST" class="absensi-form">
                             @csrf
                             <button type="submit"
-                                class="w-48 bg-white border border-blue-100 text-slate-700 py-4 rounded-2xl font-bold text-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-300">
+                                class="w-48 bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-semibold text-sm shadow-sm hover:bg-slate-50 transition-all">
                                 Pulang
                             </button>
                         </form>
@@ -186,35 +199,33 @@
                 {{-- ACTIVITY SECTION --}}
                 <div>
                     <div class="mb-4">
-                        <p class="text-sm uppercase tracking-[0.25em] text-blue-600 font-semibold mb-2">
+                        <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">
                             Daily Activity
                         </p>
-                        <h3 class="text-3xl font-extrabold text-slate-800">
+                        <h3 class="text-xl font-bold text-slate-800 tracking-tight">
                             Aktivitas Hari Ini
                         </h3>
                     </div>
 
                     {{-- TABLE CARD --}}
                     <div
-                        class="bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
+                        class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden mb-6">
 
                         <div class="overflow-x-auto">
                             <table class="w-full border-collapse">
 
                                 {{-- TABLE HEADER --}}
                                 <thead
-                                    class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                                    class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                                     <tr>
-                                        <th class="px-6 py-4 text-left font-bold">No</th>
-                                        <th class="px-6 py-4 text-left font-bold">Nama Karyawan</th>
-                                        <th class="px-6 py-4 text-left font-bold">Tanggal</th>
-                                        <th class="px-6 py-4 text-left font-bold">jam masuk</th>
-                                        <th class="px-6 py-4 text-left font-bold">jam pulang</th>
-                                        <th class="px-6 py-4 text-left font-bold">Keterangan</th>
+                                        <th class="px-6 py-3.5 text-left font-semibold">No</th>
+                                        <th class="px-6 py-3.5 text-left font-semibold">Nama Karyawan</th>
+                                        <th class="px-6 py-3.5 text-left font-semibold">Tanggal</th>
+                                        <th class="px-6 py-3.5 text-left font-semibold">jam masuk</th>
+                                        <th class="px-6 py-3.5 text-left font-semibold">jam pulang</th>
+                                        <th class="px-6 py-3.5 text-left font-semibold">Keterangan</th>
                                     </tr>
                                 </thead>
-
-                                {{-- GANTI BAGIAN TBODY PADA ACTIVITY SECTION MENJADI INI --}}
 
                                 <tbody>
                                     @php
@@ -223,46 +234,46 @@
 
                                     @forelse($aktivitas as $item)
                                     <tr
-                                        class="border-b border-slate-100 hover:bg-blue-50 transition duration-200">
+                                        class="border-t border-slate-100 hover:bg-slate-50/70 text-slate-700 text-sm transition duration-150">
 
                                         {{-- NO --}}
-                                        <td class="px-6 py-4 font-medium text-slate-700">
+                                        <td class="px-6 py-4 font-mono font-medium text-slate-500">
                                             {{ $loop->iteration }}
                                         </td>
 
                                         {{-- NAMA --}}
-                                        <td class="px-6 py-4 font-semibold text-slate-800">
+                                        <td class="px-6 py-4 font-bold text-slate-800">
                                             {{ session('karyawan_nama') }}
                                         </td>
 
                                         {{-- TANGGAL --}}
-                                        <td class="px-6 py-4 text-slate-600">
+                                        <td class="px-6 py-4 font-mono text-slate-600 text-xs">
                                             {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
                                         </td>
 
                                         {{-- JAM MASUK --}}
-                                        <td class="px-6 py-4 font-semibold text-green-600">
+                                        <td class="px-6 py-4 font-semibold text-emerald-600 font-mono">
                                             {{ $item->jam_masuk ?? '-' }}
                                         </td>
 
                                         {{-- JAM PULANG --}}
-                                        <td class="px-6 py-4 font-semibold text-red-500">
+                                        <td class="px-6 py-4 font-semibold text-rose-500 font-mono">
                                             {{ $item->jam_keluar ?? '-' }}
                                         </td>
 
                                         {{-- STATUS --}}
                                         <td class="px-6 py-4">
                                             <span
-                                                class="px-3 py-1 rounded-full text-sm font-semibold
-                    @if(($item->status ?? '-') == 'Hadir')
-                        bg-green-100 text-green-700
-                    @elseif(($item->status ?? '-') == 'Terlambat')
-                        bg-yellow-100 text-yellow-700
-                    @elseif(($item->status ?? '-') == 'Izin')
-                        bg-blue-100 text-blue-700
-                    @else
-                        bg-red-100 text-red-700
-                    @endif">
+                                                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
+                                                    @if(($item->status ?? '-') == 'Hadir')
+                                                        bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20
+                                                    @elseif(($item->status ?? '-') == 'Terlambat')
+                                                        bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20
+                                                    @elseif(($item->status ?? '-') == 'Izin')
+                                                        bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20
+                                                    @else
+                                                        bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20
+                                                    @endif">
 
                                                 {{ $item->status ?? '-' }}
 
@@ -273,7 +284,7 @@
                                     @empty
                                     <tr>
                                         <td colspan="6"
-                                            class="py-16 text-center text-slate-400 italic text-lg">
+                                            class="py-16 text-center text-slate-400 italic text-sm">
                                             Belum ada aktivitas hari ini.
                                         </td>
                                     </tr>
@@ -292,7 +303,7 @@
 
     </div>
 
-    {{-- CLOCK SCRIPT (TIDAK DIUBAH) --}}
+    {{-- CLOCK SCRIPT --}}
     <script>
         function updateClock() {
             const now = new Date();
@@ -329,7 +340,7 @@
                     const button = form.querySelector('button[type="submit"]');
                     const originalText = button.innerHTML;
                     button.disabled = true;
-                    button.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span>Mendapatkan GPS...';
+                    button.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span>GPS...';
 
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(

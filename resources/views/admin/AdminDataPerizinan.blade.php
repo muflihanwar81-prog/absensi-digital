@@ -4,11 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Perizinan - CODIA-SYNC</title>
-<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    
+    <!-- Google Fonts Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 flex font-sans h-screen overflow-hidden">
+<body class="bg-slate-50 text-slate-900 flex font-sans h-screen overflow-hidden">
 
     {{-- Sidebar --}}
     @include('layouts.sidebar')
@@ -23,26 +36,26 @@
             <div class="w-full mx-auto px-4 lg:px-6">
 
                 {{-- HEADER CARD --}}
-                <div class="bg-white rounded-3xl p-8 mb-6 shadow-2xl border border-blue-100">
-                    <div class="flex justify-between items-start">
+                <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
+                    <div class="flex justify-between items-center flex-wrap gap-4">
                         <div>
-                            <p class="text-blue-600 font-semibold uppercase tracking-widest text-sm mb-2">
+                            <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">
                                 Manajemen Data
                             </p>
-                            <h1 class="text-5xl font-extrabold text-slate-800 tracking-tight">
+                            <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">
                                 Data Perizinan
                             </h1>
-                            <p class="text-slate-500 mt-3 text-lg">
+                            <p class="text-slate-500 mt-1.5 text-sm">
                                 Kelola seluruh pengajuan izin karyawan secara terpusat.
                             </p>
                         </div>
 
                         <div
-                            class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-3xl px-8 py-6 shadow-lg text-center min-w-[220px]">
-                            <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                            class="bg-slate-50 border border-slate-200/60 rounded-xl px-5 py-3 shadow-sm text-center min-w-[160px]">
+                            <p class="text-xxs font-bold uppercase tracking-wider text-slate-400 mb-1">
                                 Total Perizinan
                             </p>
-                            <h2 class="text-5xl font-extrabold text-blue-700">
+                            <h2 class="text-2xl font-extrabold text-slate-800 font-mono">
                                 {{ $perizinan->count() }}
                             </h2>
                         </div>
@@ -53,10 +66,10 @@
                 <div class="mb-6">
                     <form action="{{ route('admin.perizinan.index') }}" method="GET">
                         <div
-                            class="bg-white border border-blue-100 rounded-2xl px-5 py-3 flex items-center gap-4 shadow-lg w-full max-w-md">
+                            class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-200 w-full max-w-md">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
-                                class="w-6 h-6 text-blue-600"
+                                class="w-5 h-5 text-slate-400"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -71,30 +84,30 @@
                                 name="search"
                                 value="{{ request('search') }}"
                                 placeholder="Cari NIP, nama, atau jenis izin..."
-                                class="w-full bg-transparent outline-none text-lg font-medium text-slate-700 placeholder-slate-400">
+                                class="w-full bg-transparent outline-none text-sm font-medium text-slate-700 placeholder-slate-400">
                         </div>
                     </form>
                 </div>
 
                 {{-- TABLE CONTAINER --}}
-                <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-blue-100 min-h-[500px]">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px]">
 
                     <table class="w-full border-collapse">
 
                         {{-- TABLE HEADER --}}
                         <thead
-                            class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm uppercase tracking-wide">
+                            class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                             <tr>
                                 <th class="px-4 py-4 w-12 text-center">
                                     <input type="checkbox"
-                                        class="rounded border-white/50 bg-white/20 text-white focus:ring-white">
+                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
                                 </th>
-                                <th class="px-4 py-4 text-left">NIP</th>
-                                <th class="px-4 py-4 text-left">Nama</th>
-                                <th class="px-4 py-4 text-left">Jenis Izin</th>
-                                <th class="px-4 py-4 text-left">Tanggal</th>
-                                <th class="px-4 py-4 text-center">Status</th>
-                                <th class="px-4 py-4 text-center">Aksi</th>
+                                <th class="px-4 py-4 text-left font-semibold">NIP</th>
+                                <th class="px-4 py-4 text-left font-semibold">Nama</th>
+                                <th class="px-4 py-4 text-left font-semibold">Jenis Izin</th>
+                                <th class="px-4 py-4 text-left font-semibold">Tanggal</th>
+                                <th class="px-4 py-4 text-center font-semibold">Status</th>
+                                <th class="px-4 py-4 text-center font-semibold">Aksi</th>
                             </tr>
                         </thead>
 
@@ -102,14 +115,14 @@
                         <tbody>
                             @forelse($perizinan as $p)
                                 <tr
-                                    class="border-t border-slate-100 hover:bg-blue-50 transition duration-200 text-sm text-slate-700">
+                                    class="border-t border-slate-100 hover:bg-slate-50/70 transition duration-150 text-sm text-slate-700">
 
                                     <td class="px-4 py-4 text-center">
                                         <input type="checkbox"
-                                            class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                                            class="rounded border-slate-350 text-blue-650 focus:ring-blue-500">
                                     </td>
 
-                                    <td class="px-4 py-4 font-mono font-semibold uppercase text-slate-700">
+                                    <td class="px-4 py-4 font-mono font-semibold uppercase text-slate-800">
                                         {{ $p->nip }}
                                     </td>
 
@@ -121,22 +134,22 @@
                                         {{ $p->kategori }}
                                     </td>
 
-                                    <td class="px-4 py-4 text-slate-600">
+                                    <td class="px-4 py-4 text-slate-500 font-mono text-xs">
                                         {{ $p->created_at ? $p->created_at->format('d-m-Y') : '-' }}
                                     </td>
 
                                     <td class="px-4 py-4 text-center">
-                                        <span class="px-3 py-1 rounded-full text-xs font-bold
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
                                             {{ $p->status == 'Disetujui'
-                                                ? 'bg-green-100 text-green-700'
-                                                : 'bg-yellow-100 text-yellow-700' }}">
+                                                ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20'
+                                                : 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20' }}">
                                             {{ $p->status }}
                                         </span>
                                     </td>
 
                                     <td class="px-4 py-4 text-center">
                                         <a href="#"
-                                            class="inline-flex items-center px-4 py-2 rounded-xl bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200 transition">
+                                            class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs transition hover:bg-blue-100">
                                             Detail
                                         </a>
                                     </td>
@@ -144,7 +157,7 @@
                             @empty
                                 <tr>
                                     <td colspan="7"
-                                        class="h-[400px] text-center text-slate-400 italic text-xl">
+                                        class="h-[400px] text-center text-slate-400 italic text-sm">
                                         Belum ada data perizinan masuk.
                                     </td>
                                 </tr>

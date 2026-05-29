@@ -68,12 +68,20 @@ class AdminDataKaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip'      => 'required|unique:karyawans,nip',
-            'nama'     => 'required',
-            'email'    => 'required|email|unique:karyawans,email',
-            'password' => 'required|min:6',
-            'divisi'   => 'required|exists:divisis,nama_divisi',
-            'jabatan'  => 'required',
+            'nip'           => 'required|unique:karyawans,nip',
+            'nama'          => 'required',
+            'email'         => 'required|email|unique:karyawans,email',
+            'password'      => 'required|min:6',
+            'divisi'        => 'required|exists:divisis,nama_divisi',
+            'jabatan'       => 'required',
+            'username'      => 'nullable|unique:karyawans,username',
+            'tgl_lahir'     => 'nullable|date',
+            'jenis_kelamin' => 'nullable|string',
+            'alamat'        => 'nullable|string',
+            'tgl_bergabung' => 'nullable|date',
+            'no_hp'         => 'nullable|string',
+            'role'          => 'nullable|string',
+            'status'        => 'nullable|string',
         ]);
 
         $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
@@ -86,7 +94,14 @@ class AdminDataKaryawanController extends Controller
         $karyawan->divisi_id = $divisi ? $divisi->id : null;
         $karyawan->divisi = $request->divisi;
         $karyawan->jabatan = $request->jabatan;
-        $karyawan->status = 'Aktif';
+        $karyawan->username = $request->username;
+        $karyawan->tgl_lahir = $request->tgl_lahir;
+        $karyawan->jenis_kelamin = $request->jenis_kelamin;
+        $karyawan->alamat = $request->alamat;
+        $karyawan->tgl_bergabung = $request->tgl_bergabung;
+        $karyawan->no_hp = $request->no_hp;
+        $karyawan->role = $request->role;
+        $karyawan->status = $request->status ?? 'Aktif';
 
         if ($divisi) {
             $karyawan->jam_masuk = $divisi->jam_masuk;
@@ -95,7 +110,8 @@ class AdminDataKaryawanController extends Controller
 
         $karyawan->save();
 
-        // If Jabatan is 'Kepala Divisi', also create/update User record
+        // Sync to User table if applicable
+        $roleLower = strtolower($request->role);
         if ($request->jabatan === 'Kepala Divisi') {
             User::updateOrCreate(
                 ['email' => $request->email],
@@ -103,6 +119,16 @@ class AdminDataKaryawanController extends Controller
                     'name'     => $request->divisi,
                     'password' => Hash::make($request->password),
                     'role'     => 'kepala_divisi',
+                ]
+            );
+        } elseif (in_array($roleLower, ['admin', 'super_admin', 'super admin'])) {
+            $normalizedRole = $roleLower === 'super admin' ? 'super_admin' : $roleLower;
+            User::updateOrCreate(
+                ['email' => $request->email],
+                [
+                    'name'     => $request->nama,
+                    'password' => Hash::make($request->password),
+                    'role'     => $normalizedRole,
                 ]
             );
         }
@@ -122,29 +148,43 @@ class AdminDataKaryawanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nip'      => 'required|unique:karyawans,nip,' . $id,
-            'nama'     => 'required',
-            'email'    => 'required|email|unique:karyawans,email,' . $id,
-            'divisi'   => 'required|exists:divisis,nama_divisi',
-            'jabatan'  => 'required',
-            'status'   => 'nullable',
-            'password' => 'nullable|min:6',
+            'nip'           => 'required|unique:karyawans,nip,' . $id,
+            'nama'          => 'required',
+            'email'         => 'required|email|unique:karyawans,email,' . $id,
+            'divisi'        => 'required|exists:divisis,nama_divisi',
+            'jabatan'       => 'required',
+            'status'        => 'nullable|string',
+            'password'      => 'nullable|min:6',
+            'username'      => 'nullable|unique:karyawans,username,' . $id,
+            'tgl_lahir'     => 'nullable|date',
+            'jenis_kelamin' => 'nullable|string',
+            'alamat'        => 'nullable|string',
+            'tgl_bergabung' => 'nullable|date',
+            'no_hp'         => 'nullable|string',
+            'role'          => 'nullable|string',
         ]);
 
         $karyawan = Karyawan::findOrFail($id);
         $oldEmail = $karyawan->email;
         $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
 
-        $karyawan->nip = $request->nip;
-        $karyawan->nama = $request->nama;
-        $karyawan->email = $request->email;
-        $karyawan->divisi_id = $divisi ? $divisi->id : null;
-        $karyawan->divisi = $request->divisi;
-        $karyawan->jabatan = $request->jabatan;
-        $karyawan->status = $request->status ?? $karyawan->status;
+        $karyawan->nip            = $request->nip;
+        $karyawan->nama           = $request->nama;
+        $karyawan->email          = $request->email;
+        $karyawan->divisi_id      = $divisi ? $divisi->id : null;
+        $karyawan->divisi         = $request->divisi;
+        $karyawan->jabatan        = $request->jabatan;
+        $karyawan->status         = $request->status ?? $karyawan->status;
+        $karyawan->username       = $request->username;
+        $karyawan->tgl_lahir      = $request->tgl_lahir;
+        $karyawan->jenis_kelamin  = $request->jenis_kelamin;
+        $karyawan->alamat         = $request->alamat;
+        $karyawan->tgl_bergabung  = $request->tgl_bergabung;
+        $karyawan->no_hp          = $request->no_hp;
+        $karyawan->role           = $request->role;
 
         if ($divisi) {
-            $karyawan->jam_masuk = $divisi->jam_masuk;
+            $karyawan->jam_masuk  = $divisi->jam_masuk;
             $karyawan->jam_keluar = $divisi->jam_keluar;
         }
 

@@ -25,6 +25,13 @@ class Karyawan extends Authenticatable
         'jam_keluar',
         'email',
         'password',
+        'username',
+        'tgl_lahir',
+        'jenis_kelamin',
+        'alamat',
+        'tgl_bergabung',
+        'no_hp',
+        'role',
     ];
 
     protected $hidden = [

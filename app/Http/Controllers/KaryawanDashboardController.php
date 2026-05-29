@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use App\Models\Izin;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class KaryawanDashboardController extends Controller
@@ -247,6 +248,79 @@ class KaryawanDashboardController extends Controller
 
         $karyawan = Karyawan::with('divisi')->findOrFail($karyawanId);
 
-        return view('karyawan.dashboard', compact('karyawan'));
+        return view('karyawan.profile', compact('karyawan'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $karyawanId = session('karyawan_id');
+
+        if (!$karyawanId) {
+            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $karyawan = Karyawan::findOrFail($karyawanId);
+
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'username' => 'nullable|string|max:255|unique:karyawans,username,' . $karyawanId,
+            'email' => 'required|email|max:255|unique:karyawans,email,' . $karyawanId,
+            'no_hp' => 'nullable|string|max:20',
+            'tgl_lahir' => 'nullable|date',
+            'jenis_kelamin' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
+        ], [
+            'nama.required' => 'Nama Karyawan wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan oleh karyawan lain.',
+            'username.unique' => 'Username sudah digunakan oleh karyawan lain.',
+        ]);
+
+        $karyawan->update([
+            'nama' => $request->nama,
+            'username' => $request->username,
+            'email' => $request->email,
+            'no_hp' => $request->no_hp,
+            'tgl_lahir' => $request->tgl_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'alamat' => $request->alamat,
+        ]);
+
+        // Update session name
+        session(['karyawan_nama' => $karyawan->nama]);
+
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $karyawanId = session('karyawan_id');
+
+        if (!$karyawanId) {
+            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $request->validate([
+            'password_lama' => 'required',
+            'password_baru' => 'required|min:6|confirmed',
+        ], [
+            'password_lama.required' => 'Password lama wajib diisi.',
+            'password_baru.required' => 'Password baru wajib diisi.',
+            'password_baru.min' => 'Password baru minimal 6 karakter.',
+            'password_baru.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        $karyawan = Karyawan::findOrFail($karyawanId);
+
+        if (!Hash::check($request->password_lama, $karyawan->password)) {
+            return redirect()->back()->with('error', 'Password lama salah.');
+        }
+
+        $karyawan->update([
+            'password' => Hash::make($request->password_baru),
+        ]);
+
+        return redirect()->back()->with('success', 'Password berhasil diperbarui.');
     }
 }
