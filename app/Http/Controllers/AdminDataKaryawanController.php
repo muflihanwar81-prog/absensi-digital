@@ -10,6 +10,8 @@ use App\Models\Absensi;
 use App\Models\Izin;
 use App\Models\Perizinan;
 use App\Models\User;
+use App\Models\AdminActivity;
+
 class AdminDataKaryawanController extends Controller
 {
     public function index(Request $request)
@@ -133,6 +135,13 @@ class AdminDataKaryawanController extends Controller
             );
         }
 
+        // Catat aktivitas
+        AdminActivity::log(
+            'karyawan_tambah',
+            'Menambahkan Karyawan Baru',
+            $karyawan->nama . ' - ' . $karyawan->divisi
+        );
+
         return redirect()
             ->route('admin.karyawan')
             ->with('success', 'Data karyawan berhasil ditambahkan.');
@@ -215,32 +224,48 @@ class AdminDataKaryawanController extends Controller
             User::where('email', $oldEmail)->orWhere('email', $request->email)->where('role', 'kepala_divisi')->delete();
         }
 
+        // Catat aktivitas
+        AdminActivity::log(
+            'karyawan_edit',
+            'Memperbarui Data Karyawan',
+            $karyawan->nama . ' - ' . $karyawan->divisi
+        );
+
         return redirect()
             ->route('admin.karyawan')
             ->with('success', 'Data karyawan berhasil diperbarui.');
     }
 
     public function destroy($id)
-{
-    $karyawan = Karyawan::findOrFail($id);
+    {
+        $karyawan = Karyawan::findOrFail($id);
+        $namaKaryawan = $karyawan->nama;
+        $divisiKaryawan = $karyawan->divisi;
 
-    // Remove user if they were a division head
-    User::where('email', $karyawan->email)->where('role', 'kepala_divisi')->delete();
+        // Remove user if they were a division head
+        User::where('email', $karyawan->email)->where('role', 'kepala_divisi')->delete();
 
-    // hapus seluruh absensi milik karyawan
-    Absensi::where('karyawan_id', $id)->delete();
+        // hapus seluruh absensi milik karyawan
+        Absensi::where('karyawan_id', $id)->delete();
 
-    // hapus data izin jika ada
-    Izin::where('karyawan_id', $id)->delete();
+        // hapus data izin jika ada
+        Izin::where('karyawan_id', $id)->delete();
 
-    // hapus data perizinan jika ada
-    Perizinan::where('karyawan_id', $id)->delete();
+        // hapus data perizinan jika ada
+        Perizinan::where('karyawan_id', $id)->delete();
 
-    // hapus karyawan
-    $karyawan->delete();
+        // hapus karyawan
+        $karyawan->delete();
 
-    return redirect()
-        ->route('admin.karyawan')
-        ->with('success', 'Data karyawan berhasil dihapus.');
-}
+        // Catat aktivitas
+        AdminActivity::log(
+            'karyawan_hapus',
+            'Menghapus Data Karyawan',
+            $namaKaryawan . ' - ' . $divisiKaryawan
+        );
+
+        return redirect()
+            ->route('admin.karyawan')
+            ->with('success', 'Data karyawan berhasil dihapus.');
+    }
 }

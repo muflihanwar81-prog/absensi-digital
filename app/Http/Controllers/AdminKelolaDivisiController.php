@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Divisi;
+use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 
 class AdminKelolaDivisiController extends Controller
@@ -31,6 +32,13 @@ class AdminKelolaDivisiController extends Controller
             'jam_masuk'   => $request->jam_masuk,
             'jam_keluar'  => $request->jam_keluar,
         ]);
+
+        // Catat aktivitas
+        AdminActivity::log(
+            'divisi_tambah',
+            'Menambahkan Divisi Baru',
+            $request->nama_divisi
+        );
 
         return redirect()
             ->route('admin.keloladivisi')
@@ -66,35 +74,51 @@ class AdminKelolaDivisiController extends Controller
             'divisi_id' => $divisi->id,
         ]);
 
+        // Catat aktivitas
+        AdminActivity::log(
+            'divisi_edit',
+            'Memperbarui Data Divisi',
+            $divisi->nama_divisi
+        );
+
         return redirect()
             ->route('admin.keloladivisi')
             ->with('success', 'Data divisi berhasil diperbarui.');
     }
 
     public function destroy($id)
-{
-    $divisi = Divisi::findOrFail($id);
+    {
+        $divisi = Divisi::findOrFail($id);
 
-    $jumlahKaryawan = \App\Models\Karyawan::where(
-        'divisi_id',
-        $divisi->id
-    )->count();
+        $jumlahKaryawan = \App\Models\Karyawan::where(
+            'divisi_id',
+            $divisi->id
+        )->count();
 
-    if ($jumlahKaryawan > 0) {
+        if ($jumlahKaryawan > 0) {
+            return redirect()
+                ->route('admin.keloladivisi')
+                ->with(
+                    'error',
+                    'Divisi tidak dapat dihapus karena masih digunakan oleh karyawan.'
+                );
+        }
+
+        $namaDivisi = $divisi->nama_divisi;
+        $divisi->delete();
+
+        // Catat aktivitas
+        AdminActivity::log(
+            'divisi_hapus',
+            'Menghapus Divisi',
+            $namaDivisi
+        );
+
         return redirect()
             ->route('admin.keloladivisi')
-            ->with(
-                'error',
-                'Divisi tidak dapat dihapus karena masih digunakan oleh karyawan.'
-            );
+            ->with('success', 'Data divisi berhasil dihapus.');
     }
 
-    $divisi->delete();
-
-    return redirect()
-        ->route('admin.keloladivisi')
-        ->with('success', 'Data divisi berhasil dihapus.');
-}
     public function updateLokasi(Request $request)
     {
         $request->validate([
@@ -107,21 +131,29 @@ class AdminKelolaDivisiController extends Controller
         \App\Models\Setting::set('longitude', $request->longitude);
         \App\Models\Setting::set('radius', $request->radius);
 
+        // Catat aktivitas
+        AdminActivity::log(
+            'lokasi_update',
+            'Memperbarui Lokasi Kantor',
+            'Lat: ' . $request->latitude . ', Long: ' . $request->longitude . ', Radius: ' . $request->radius . 'm'
+        );
+
         return redirect()
             ->route('admin.keloladivisi')
             ->with('success', 'Lokasi kantor berhasil disimpan.');
     }
-public function storeLokasi(Request $request)
-{
-    $request->validate([
-        'nama_lokasi' => 'required',
-        'latitude'    => 'required',
-        'longitude'   => 'required',
-        'radius'      => 'required',
-    ]);
 
-    return redirect()
-        ->route('admin.keloladivisi')
-        ->with('success', 'Lokasi berhasil disimpan.');
-}
+    public function storeLokasi(Request $request)
+    {
+        $request->validate([
+            'nama_lokasi' => 'required',
+            'latitude'    => 'required',
+            'longitude'   => 'required',
+            'radius'      => 'required',
+        ]);
+
+        return redirect()
+            ->route('admin.keloladivisi')
+            ->with('success', 'Lokasi berhasil disimpan.');
+    }
 }

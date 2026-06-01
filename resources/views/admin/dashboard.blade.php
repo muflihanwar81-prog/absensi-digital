@@ -169,49 +169,77 @@
                     <canvas id="absensiChart"></canvas>
                 </div>
 
-                <!-- SHORTCUT -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 min-w-0 flex flex-col justify-between">
+                <!-- AKTIFITAS ADMIN -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 min-w-0 flex flex-col h-[24rem]">
 
-                    <h2 class="text-lg font-bold mb-4 text-slate-800">
-                        Jalan Pintas
-                    </h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold text-slate-800">
+                            Aktifitas Admin
+                        </h2>
+                        <button class="text-blue-600 hover:text-blue-700 text-xs font-semibold">Lihat Semua</button>
+                    </div>
 
-                    <div class="grid grid-cols-2 gap-3.5 h-full">
+                    <div class="flex-1 overflow-y-auto pr-2 space-y-4">
+                        
+                        <!-- Aktifitas 1 -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-check text-emerald-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-700 leading-tight">Menyetujui Izin Karyawan</p>
+                                <p class="text-xs text-slate-500 mt-1">Budi Santoso - Sakit</p>
+                                <p class="text-[10px] text-slate-400 mt-1 font-mono">10 menit yang lalu</p>
+                            </div>
+                        </div>
 
-                        <!-- Kelola Divisi -->
-                        <a href="{{ route('admin.keloladivisi') }}"
-                           class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 flex flex-col items-center justify-center hover:bg-slate-100/80 hover:scale-[1.02] hover:shadow-sm transition-all duration-200 text-slate-800 text-center">
-                            <i class="fa-solid fa-building text-blue-500 text-xl mb-1.5"></i>
-                            <span class="text-xs font-semibold">Kelola Divisi</span>
-                        </a>
+                        <!-- Aktifitas 2 -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-user-plus text-blue-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-700 leading-tight">Menambahkan Karyawan Baru</p>
+                                <p class="text-xs text-slate-500 mt-1">Siti Aminah - Divisi IT</p>
+                                <p class="text-[10px] text-slate-400 mt-1 font-mono">1 jam yang lalu</p>
+                            </div>
+                        </div>
 
-                        <!-- Data Karyawan -->
-                        <a href="{{ route('admin.karyawan') }}"
-                           class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 flex flex-col items-center justify-center hover:bg-slate-100/80 hover:scale-[1.02] hover:shadow-sm transition-all duration-200 text-slate-800 text-center">
-                            <i class="fa-solid fa-users text-indigo-500 text-xl mb-1.5"></i>
-                            <span class="text-xs font-semibold">Data Karyawan</span>
-                        </a>
+                        <!-- Aktifitas 3 -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-pen-to-square text-amber-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-700 leading-tight">Memperbarui Data Divisi</p>
+                                <p class="text-xs text-slate-500 mt-1">Divisi Marketing</p>
+                                <p class="text-[10px] text-slate-400 mt-1 font-mono">3 jam yang lalu</p>
+                            </div>
+                        </div>
 
-                        <!-- Data Kehadiran -->
-                        <a href="{{ route('admin.absensi.index') }}"
-                           class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 flex flex-col items-center justify-center hover:bg-slate-100/80 hover:scale-[1.02] hover:shadow-sm transition-all duration-200 text-slate-800 text-center">
-                            <i class="fa-solid fa-calendar-days text-emerald-500 text-xl mb-1.5"></i>
-                            <span class="text-xs font-semibold">Kehadiran</span>
-                        </a>
-
-                        <!-- Data Perizinan -->
-                        <a href="{{ route('admin.perizinan.index') }}"
-                           class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 flex flex-col items-center justify-center hover:bg-slate-100/80 hover:scale-[1.02] hover:shadow-sm transition-all duration-200 text-slate-800 text-center">
-                            <i class="fa-solid fa-file-signature text-amber-500 text-xl mb-1.5"></i>
-                            <span class="text-xs font-semibold">Perizinan</span>
-                        </a>
-
-                        <!-- Laporan -->
-                        <a href="{{ route('admin.laporan') }}"
-                           class="bg-slate-50 border border-slate-200/60 rounded-xl p-3 flex flex-col items-center justify-center hover:bg-slate-100/80 hover:scale-[1.02] hover:shadow-sm transition-all duration-200 text-slate-850 col-span-2 text-center">
-                            <i class="fa-solid fa-file-invoice-dollar text-purple-500 text-xl mb-1.5"></i>
-                            <span class="text-xs font-semibold">Laporan</span>
-                        </a>
+                        <!-- Aktifitas 4 -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-file-pdf text-rose-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-700 leading-tight">Mengekspor Laporan PDF</p>
+                                <p class="text-xs text-slate-500 mt-1">Laporan Absensi Bulan Mei</p>
+                                <p class="text-[10px] text-slate-400 mt-1 font-mono">Kemarin, 15:30</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Aktifitas 5 -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-building text-purple-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-700 leading-tight">Menambahkan Divisi Baru</p>
+                                <p class="text-xs text-slate-500 mt-1">Divisi Research & Development</p>
+                                <p class="text-[10px] text-slate-400 mt-1 font-mono">Kemarin, 10:15</p>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

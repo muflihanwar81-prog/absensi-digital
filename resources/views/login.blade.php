@@ -138,7 +138,7 @@
                     </button>
                 </form>
 
-                <!-- Footer -->
+    <!-- Footer -->
                 <div class="mt-8 pt-6 border-t border-slate-100 text-center">
                     <p class="text-xs md:text-sm text-slate-400">
                         © {{ date('Y') }} CODIA-SYNC. All rights reserved.
