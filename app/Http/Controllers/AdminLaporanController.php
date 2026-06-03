@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -57,6 +58,12 @@ class AdminLaporanController extends Controller
             fclose($file);
         };
 
+        AdminActivity::log(
+            'laporan_excel',
+            'Ekspor Laporan Excel',
+            'Mengunduh laporan absensi format Excel/CSV'
+        );
+
         return response()->stream($callback, 200, $headers);
     }
 
@@ -65,6 +72,12 @@ class AdminLaporanController extends Controller
         $data = Absensi::with(['karyawan.divisi'])
             ->orderBy('tanggal', 'desc')
             ->get();
+
+        AdminActivity::log(
+            'laporan_pdf',
+            'Ekspor Laporan PDF',
+            'Mengunduh laporan absensi format PDF'
+        );
 
         $pdf = Pdf::loadView('admin.laporan_pdf', compact('data'));
         return $pdf->download("laporan_absensi_admin_" . date('Ymd_His') . ".pdf");

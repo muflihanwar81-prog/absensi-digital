@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Izin;
+use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 
 class AdminDataPerizinanController extends Controller
@@ -55,6 +56,20 @@ class AdminDataPerizinanController extends Controller
         $izin->status = $request->status;
         $izin->save();
 
+        if ($izin->status === 'Disetujui') {
+            AdminActivity::log(
+                'izin_setujui',
+                'Persetujuan Izin',
+                "Menyetujui izin {$izin->kategori} - {$izin->nama}"
+            );
+        } elseif ($izin->status === 'Ditolak') {
+            AdminActivity::log(
+                'izin_tolak',
+                'Penolakan Izin',
+                "Menolak izin {$izin->kategori} - {$izin->nama}"
+            );
+        }
+
         return redirect()
             ->route('admin.perizinan.index')
             ->with('success', 'Status perizinan berhasil diperbarui.');
@@ -63,7 +78,16 @@ class AdminDataPerizinanController extends Controller
     public function destroy($id)
     {
         $izin = Izin::findOrFail($id);
+        $namaKaryawan = $izin->nama;
+        $kategori = $izin->kategori;
+        
         $izin->delete();
+
+        AdminActivity::log(
+            'izin_hapus',
+            'Menghapus Izin',
+            "Menghapus data izin {$kategori} - {$namaKaryawan}"
+        );
 
         return redirect()
             ->route('admin.perizinan.index')

@@ -168,7 +168,6 @@
 
                     <canvas id="absensiChart"></canvas>
                 </div>
-
                 <!-- AKTIFITAS ADMIN -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 min-w-0 flex flex-col h-[24rem]">
 
@@ -176,71 +175,56 @@
                         <h2 class="text-lg font-bold text-slate-800">
                             Aktifitas Admin
                         </h2>
-                        <button class="text-blue-600 hover:text-blue-700 text-xs font-semibold">Lihat Semua</button>
+                        <a href="{{ route('admin.aktifitas') }}" class="text-blue-600 hover:text-blue-700 text-xs font-semibold">Lihat Semua</a>
                     </div>
 
                     <div class="flex-1 overflow-y-auto pr-2 space-y-4">
-                        
-                        <!-- Aktifitas 1 -->
-                        <div class="flex items-start gap-3">
-                            <div class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-check text-emerald-600 text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-700 leading-tight">Menyetujui Izin Karyawan</p>
-                                <p class="text-xs text-slate-500 mt-1">Budi Santoso - Sakit</p>
-                                <p class="text-[10px] text-slate-400 mt-1 font-mono">10 menit yang lalu</p>
-                            </div>
-                        </div>
+                        @php
+                            $bgColors = [
+                                'blue' => 'bg-blue-100',
+                                'amber' => 'bg-amber-100',
+                                'rose' => 'bg-rose-100',
+                                'purple' => 'bg-purple-100',
+                                'emerald' => 'bg-emerald-100',
+                                'cyan' => 'bg-cyan-100',
+                                'slate' => 'bg-slate-100',
+                            ];
+                            $textColors = [
+                                'blue' => 'text-blue-600',
+                                'amber' => 'text-amber-600',
+                                'rose' => 'text-rose-600',
+                                'purple' => 'text-purple-600',
+                                'emerald' => 'text-emerald-600',
+                                'cyan' => 'text-cyan-600',
+                                'slate' => 'text-slate-600',
+                            ];
+                        @endphp
 
-                        <!-- Aktifitas 2 -->
-                        <div class="flex items-start gap-3">
-                            <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-user-plus text-blue-600 text-sm"></i>
+                        @forelse($activities as $activity)
+                            @php
+                                $bgColor = $bgColors[$activity->warna] ?? 'bg-slate-100';
+                                $textColor = $textColors[$activity->warna] ?? 'text-slate-600';
+                            @endphp
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-full {{ $bgColor }} flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-{{ $activity->icon }} {{ $textColor }} text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-700 leading-tight">{{ $activity->judul }}</p>
+                                    @if($activity->deskripsi)
+                                        <p class="text-xs text-slate-500 mt-1">{{ $activity->deskripsi }}</p>
+                                    @endif
+                                    <p class="text-[10px] text-slate-400 mt-1 font-mono">
+                                        {{ $activity->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-700 leading-tight">Menambahkan Karyawan Baru</p>
-                                <p class="text-xs text-slate-500 mt-1">Siti Aminah - Divisi IT</p>
-                                <p class="text-[10px] text-slate-400 mt-1 font-mono">1 jam yang lalu</p>
+                        @empty
+                            <div class="text-center py-10 text-slate-400 text-sm">
+                                <i class="fa-solid fa-clock-rotate-left text-2xl mb-2 block"></i>
+                                Belum ada aktifitas hari ini.
                             </div>
-                        </div>
-
-                        <!-- Aktifitas 3 -->
-                        <div class="flex items-start gap-3">
-                            <div class="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-pen-to-square text-amber-600 text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-700 leading-tight">Memperbarui Data Divisi</p>
-                                <p class="text-xs text-slate-500 mt-1">Divisi Marketing</p>
-                                <p class="text-[10px] text-slate-400 mt-1 font-mono">3 jam yang lalu</p>
-                            </div>
-                        </div>
-
-                        <!-- Aktifitas 4 -->
-                        <div class="flex items-start gap-3">
-                            <div class="w-9 h-9 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-file-pdf text-rose-600 text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-700 leading-tight">Mengekspor Laporan PDF</p>
-                                <p class="text-xs text-slate-500 mt-1">Laporan Absensi Bulan Mei</p>
-                                <p class="text-[10px] text-slate-400 mt-1 font-mono">Kemarin, 15:30</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Aktifitas 5 -->
-                        <div class="flex items-start gap-3">
-                            <div class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-building text-purple-600 text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-700 leading-tight">Menambahkan Divisi Baru</p>
-                                <p class="text-xs text-slate-500 mt-1">Divisi Research & Development</p>
-                                <p class="text-[10px] text-slate-400 mt-1 font-mono">Kemarin, 10:15</p>
-                            </div>
-                        </div>
-
+                        @endforelse
                     </div>
                 </div>
 

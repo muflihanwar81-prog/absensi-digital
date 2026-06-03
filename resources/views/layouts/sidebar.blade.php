@@ -1,5 +1,8 @@
+<!-- Backdrop Overlay for Mobile -->
+<div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
 <aside id="sidebar"
-    class="w-72 bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen">
+    class="fixed lg:relative inset-y-0 left-0 z-50 w-72 bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen -translate-x-full lg:translate-x-0">
 
     {{-- HEADER --}}
     <div>
@@ -145,16 +148,27 @@
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
     const texts = document.querySelectorAll('.menu-text');
     const title = document.getElementById('sidebarTitle');
 
-    sidebar.classList.toggle('w-72');
-    sidebar.classList.toggle('w-20');
+    if (window.innerWidth < 1024) {
+        if (sidebar.classList.contains('-translate-x-full')) {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+    } else {
+        sidebar.classList.toggle('w-72');
+        sidebar.classList.toggle('w-20');
 
-    texts.forEach(text => {
-        text.classList.toggle('hidden');
-    });
+        texts.forEach(text => {
+            text.classList.toggle('hidden');
+        });
 
-    title.classList.toggle('hidden');
+        title.classList.toggle('hidden');
+    }
 }
 </script>

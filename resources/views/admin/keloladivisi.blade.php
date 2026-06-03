@@ -74,47 +74,49 @@
 
             <!-- Table -->
             <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80">
-                <table class="w-full border-collapse">
-                    <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
-                        <tr>
-                            <th class="px-6 py-3.5 text-left font-semibold">No</th>
-                            <th class="px-6 py-3.5 text-left font-semibold">Nama Divisi</th>
-                            <th class="px-6 py-3.5 text-left font-semibold">Jam Masuk</th>
-                            <th class="px-6 py-3.5 text-left font-semibold">Jam Keluar</th>
-                            <th class="px-6 py-3.5 text-center font-semibold">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($data as $item)
-                        <tr class="border-t border-slate-100 hover:bg-slate-50/70 text-slate-700 text-sm transition duration-150">
-                            <td class="px-6 py-4 font-mono font-medium text-slate-500">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4 font-bold text-slate-800">{{ $item->nama_divisi }}</td>
-                            <td class="px-6 py-4 font-mono font-medium text-slate-650">{{ $item->jam_masuk }}</td>
-                            <td class="px-6 py-4 font-mono font-medium text-slate-650">{{ $item->jam_keluar }}</td>
-                            <td class="px-6 py-4">
-                                <div class="flex justify-center gap-3.5">
-                                    <button class="bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">Edit</button>
-                                    <form action="{{ route('admin.keloladivisi.destroy', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus divisi ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="text-center py-20 text-slate-400 italic text-sm">
-                                Data divisi kosong
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-3.5 text-left font-semibold">No</th>
+                                <th class="px-6 py-3.5 text-left font-semibold">Nama Divisi</th>
+                                <th class="px-6 py-3.5 text-left font-semibold">Jam Masuk</th>
+                                <th class="px-6 py-3.5 text-left font-semibold">Jam Keluar</th>
+                                <th class="px-6 py-3.5 text-center font-semibold">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($data as $item)
+                            <tr class="border-t border-slate-100 hover:bg-slate-50/70 text-slate-700 text-sm transition duration-150">
+                                <td class="px-6 py-4 font-mono font-medium text-slate-500">{{ $loop->iteration }}</td>
+                                <td class="px-6 py-4 font-bold text-slate-800">{{ $item->nama_divisi }}</td>
+                                <td class="px-6 py-4 font-mono font-medium text-slate-650">{{ $item->jam_masuk }}</td>
+                                <td class="px-6 py-4 font-mono font-medium text-slate-650">{{ $item->jam_keluar }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex justify-center gap-3.5">
+                                        <button class="bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">Edit</button>
+                                        <form action="{{ route('admin.keloladivisi.destroy', $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus divisi ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-20 text-slate-400 italic text-sm">
+                                    Data divisi kosong
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -135,116 +135,118 @@
 
                 {{-- TABEL --}}
                 <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden min-h-[480px] shadow-sm">
-                    <table class="w-full border-collapse">
-                        <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
-                            <tr>
-                                <th class="px-4 py-4 text-left font-semibold">No</th>
-                                <th class="px-4 py-4 text-left font-semibold">NIP</th>
-                                <th class="px-4 py-4 text-left font-semibold">Nama Karyawan</th>
-                                <th class="px-4 py-4 text-left font-semibold">Divisi</th>
-                                <th class="px-4 py-4 text-left font-semibold">Jabatan</th>
-                                <th class="px-4 py-4 text-left font-semibold">Jenis Kelamin</th>
-                                <th class="px-4 py-4 text-left font-semibold">Status</th>
-                                <th class="px-4 py-4 text-center font-semibold">Aksi</th>
-                            </tr>
-                        </thead>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-4 py-4 text-left font-semibold">No</th>
+                                    <th class="px-4 py-4 text-left font-semibold">NIP</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Nama Karyawan</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Divisi</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Jabatan</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Jenis Kelamin</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Status</th>
+                                    <th class="px-4 py-4 text-center font-semibold">Aksi</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            @forelse($karyawans as $index => $k)
-                            <tr class="border-t border-slate-100 hover:bg-slate-50/70 text-slate-700 text-sm transition duration-150">
-                                <td class="px-4 py-4 font-medium text-slate-500 font-mono">{{ $index + 1 }}</td>
-                                <td class="px-4 py-4 font-semibold text-slate-800 font-mono">{{ $k->nip }}</td>
-                                <td class="px-4 py-4 font-semibold text-slate-800">{{ $k->nama }}</td>
-                                <td class="px-4 py-4">{{ $k->divisi }}</td>
-                                <td class="px-4 py-4">{{ $k->jabatan }}</td>
-                                <td class="px-4 py-4 text-slate-600">{{ $k->jenis_kelamin ?? '-' }}</td>
-                                <td class="px-4 py-4">
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
-                                        {{ $k->status == 'Aktif'
-                                            ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20'
-                                            : 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20' }}">
-                                        {{ $k->status }}
-                                    </span>
-                                </td>
+                            <tbody>
+                                @forelse($karyawans as $index => $k)
+                                <tr class="border-t border-slate-100 hover:bg-slate-50/70 text-slate-700 text-sm transition duration-150">
+                                    <td class="px-4 py-4 font-medium text-slate-500 font-mono">{{ $index + 1 }}</td>
+                                    <td class="px-4 py-4 font-semibold text-slate-800 font-mono">{{ $k->nip }}</td>
+                                    <td class="px-4 py-4 font-semibold text-slate-800">{{ $k->nama }}</td>
+                                    <td class="px-4 py-4">{{ $k->divisi }}</td>
+                                    <td class="px-4 py-4">{{ $k->jabatan }}</td>
+                                    <td class="px-4 py-4 text-slate-600">{{ $k->jenis_kelamin ?? '-' }}</td>
+                                    <td class="px-4 py-4">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
+                                            {{ $k->status == 'Aktif'
+                                                ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20'
+                                                : 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20' }}">
+                                            {{ $k->status }}
+                                        </span>
+                                    </td>
 
-                                <td class="px-4 py-4 text-center">
-                                    <div class="flex justify-center gap-3.5 text-base">
+                                    <td class="px-4 py-4 text-center">
+                                        <div class="flex justify-center gap-3.5 text-base">
 
-                                        <a href="#" class="text-slate-400 hover:text-blue-600 transition" title="Foto Presensi">
-                                            <i class="fa-solid fa-camera"></i>
-                                        </a>
+                                            <a href="#" class="text-slate-400 hover:text-blue-600 transition" title="Foto Presensi">
+                                                <i class="fa-solid fa-camera"></i>
+                                            </a>
 
-                                        {{-- TOMBOL DETAIL --}}
-                                        <button type="button"
-                                            onclick="openDetailModal(
-                                                '{{ $k->nip }}',
-                                                '{{ addslashes($k->nama) }}',
-                                                '{{ $k->divisi }}',
-                                                '{{ addslashes($k->jabatan) }}',
-                                                '{{ $k->tgl_lahir }}',
-                                                '{{ $k->jenis_kelamin }}',
-                                                '{{ addslashes($k->alamat) }}',
-                                                '{{ $k->username }}',
-                                                '{{ $k->tgl_bergabung }}',
-                                                '{{ $k->email }}',
-                                                '{{ $k->no_hp }}',
-                                                '{{ $k->role }}',
-                                                '{{ $k->status }}'
-                                            )"
-                                            class="text-blue-600 hover:text-blue-750 transition"
-                                            title="Lihat Detail">
-                                            <i class="fa-solid fa-circle-info"></i>
-                                        </button>
-
-                                        {{-- TOMBOL EDIT --}}
-                                        <button type="button"
-                                            onclick="openEditModal(
-                                                '{{ $k->id }}',
-                                                '{{ $k->nip }}',
-                                                '{{ addslashes($k->nama) }}',
-                                                '{{ $k->divisi }}',
-                                                '{{ addslashes($k->jabatan) }}',
-                                                '{{ $k->email }}',
-                                                '{{ $k->status }}',
-                                                '{{ $k->username }}',
-                                                '{{ $k->tgl_lahir }}',
-                                                '{{ $k->jenis_kelamin }}',
-                                                '{{ addslashes($k->alamat) }}',
-                                                '{{ $k->tgl_bergabung }}',
-                                                '{{ $k->no_hp }}',
-                                                '{{ $k->role }}'
-                                            )"
-                                            class="text-blue-600 hover:text-blue-750 transition"
-                                            title="Edit Data">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-
-                                        <form action="{{ route('admin.karyawan.destroy', $k->id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')"
-                                            class="inline">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit"
-                                                class="text-rose-500 hover:text-rose-600 transition"
-                                                title="Hapus Data">
-                                                <i class="fa-solid fa-trash"></i>
+                                            {{-- TOMBOL DETAIL --}}
+                                            <button type="button"
+                                                onclick="openDetailModal(
+                                                    '{{ $k->nip }}',
+                                                    '{{ addslashes($k->nama) }}',
+                                                    '{{ $k->divisi }}',
+                                                    '{{ addslashes($k->jabatan) }}',
+                                                    '{{ $k->tgl_lahir }}',
+                                                    '{{ $k->jenis_kelamin }}',
+                                                    '{{ addslashes($k->alamat) }}',
+                                                    '{{ $k->username }}',
+                                                    '{{ $k->tgl_bergabung }}',
+                                                    '{{ $k->email }}',
+                                                    '{{ $k->no_hp }}',
+                                                    '{{ $k->role }}',
+                                                    '{{ $k->status }}'
+                                                )"
+                                                class="text-blue-600 hover:text-blue-750 transition"
+                                                title="Lihat Detail">
+                                                <i class="fa-solid fa-circle-info"></i>
                                             </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="8"
-                                    class="h-[400px] text-center text-gray-400 italic text-xl">
-                                    Belum ada data tersedia
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+
+                                            {{-- TOMBOL EDIT --}}
+                                            <button type="button"
+                                                onclick="openEditModal(
+                                                    '{{ $k->id }}',
+                                                    '{{ $k->nip }}',
+                                                    '{{ addslashes($k->nama) }}',
+                                                    '{{ $k->divisi }}',
+                                                    '{{ addslashes($k->jabatan) }}',
+                                                    '{{ $k->email }}',
+                                                    '{{ $k->status }}',
+                                                    '{{ $k->username }}',
+                                                    '{{ $k->tgl_lahir }}',
+                                                    '{{ $k->jenis_kelamin }}',
+                                                    '{{ addslashes($k->alamat) }}',
+                                                    '{{ $k->tgl_bergabung }}',
+                                                    '{{ $k->no_hp }}',
+                                                    '{{ $k->role }}'
+                                                )"
+                                                class="text-blue-600 hover:text-blue-750 transition"
+                                                title="Edit Data">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+
+                                            <form action="{{ route('admin.karyawan.destroy', $k->id) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')"
+                                                class="inline">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                    class="text-rose-500 hover:text-rose-600 transition"
+                                                    title="Hapus Data">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="8"
+                                        class="h-[400px] text-center text-gray-400 italic text-xl">
+                                        Belum ada data tersedia
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>

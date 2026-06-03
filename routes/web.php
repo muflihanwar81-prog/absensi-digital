@@ -7,6 +7,7 @@ use App\Models\Divisi;
 use App\Models\Karyawan;
 use App\Models\Absensi;
 use App\Models\Perizinan;
+use App\Models\AdminActivity;
 
 use App\Http\Controllers\{
     HomeController,
@@ -62,6 +63,9 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         $totalIzin = Absensi::where('status', 'Izin')->count();
         $totalSakit = Absensi::where('status', 'Sakit')->count();
 
+        // Fetch latest 5 activities
+        $activities = AdminActivity::latest()->take(5)->get();
+
         return view('admin.dashboard', compact(
             'totalDivisi',
             'totalKaryawan',
@@ -71,9 +75,15 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
             'totalTerlambat',
             'totalAlpha',
             'totalIzin',
-            'totalSakit'
+            'totalSakit',
+            'activities'
         ));
     })->name('dashboard');
+
+    Route::get('/aktifitas', function () {
+        $activities = AdminActivity::latest()->paginate(15);
+        return view('admin.aktifitas', compact('activities'));
+    })->name('aktifitas');
 
     Route::get('/karyawan', [AdminDataKaryawanController::class, 'index'])
         ->name('karyawan');

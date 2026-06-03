@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Karyawan;
+use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 
 class AdminDataAbsensiController extends Controller
@@ -76,8 +77,17 @@ class AdminDataAbsensiController extends Controller
 
     public function destroy($id)
     {
-        $absensi = Absensi::findOrFail($id);
+        $absensi = Absensi::with('karyawan')->findOrFail($id);
+        $namaKaryawan = $absensi->karyawan ? $absensi->karyawan->nama : 'Tidak diketahui';
+        $tanggal = $absensi->tanggal;
+        
         $absensi->delete();
+
+        AdminActivity::log(
+            'absensi_hapus',
+            'Menghapus Absensi',
+            "Menghapus absensi {$namaKaryawan} pada tanggal {$tanggal}"
+        );
 
         return redirect()
             ->route('admin.absensi.index')

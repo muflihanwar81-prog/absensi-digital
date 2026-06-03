@@ -91,81 +91,82 @@
 
                 {{-- TABLE CONTAINER --}}
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px]">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
 
-                    <table class="w-full border-collapse">
-
-                        {{-- TABLE HEADER --}}
-                        <thead
-                            class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
-                            <tr>
-                                <th class="px-4 py-4 w-12 text-center">
-                                    <input type="checkbox"
-                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                                </th>
-                                <th class="px-4 py-4 text-left font-semibold">NIP</th>
-                                <th class="px-4 py-4 text-left font-semibold">Nama</th>
-                                <th class="px-4 py-4 text-left font-semibold">Jenis Izin</th>
-                                <th class="px-4 py-4 text-left font-semibold">Tanggal</th>
-                                <th class="px-4 py-4 text-center font-semibold">Status</th>
-                                <th class="px-4 py-4 text-center font-semibold">Aksi</th>
-                            </tr>
-                        </thead>
-
-                        {{-- TABLE BODY --}}
-                        <tbody>
-                            @forelse($perizinan as $p)
-                                <tr
-                                    class="border-t border-slate-100 hover:bg-slate-50/70 transition duration-150 text-sm text-slate-700">
-
-                                    <td class="px-4 py-4 text-center">
-                                        <input type="checkbox"
-                                            class="rounded border-slate-350 text-blue-650 focus:ring-blue-500">
-                                    </td>
-
-                                    <td class="px-4 py-4 font-mono font-semibold uppercase text-slate-800">
-                                        {{ $p->nip }}
-                                    </td>
-
-                                    <td class="px-4 py-4 uppercase font-semibold text-slate-800">
-                                        {{ $p->nama }}
-                                    </td>
-
-                                    <td class="px-4 py-4">
-                                        {{ $p->kategori }}
-                                    </td>
-
-                                    <td class="px-4 py-4 text-slate-500 font-mono text-xs">
-                                        {{ $p->created_at ? $p->created_at->format('d-m-Y') : '-' }}
-                                    </td>
-
-                                    <td class="px-4 py-4 text-center">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
-                                            {{ $p->status == 'Disetujui'
-                                                ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20'
-                                                : 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20' }}">
-                                            {{ $p->status }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-4 py-4 text-center">
-                                        <a href="#"
-                                            class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs transition hover:bg-blue-100">
-                                            Detail
-                                        </a>
-                                    </td>
-                                </tr>
-                            @empty
+                            {{-- TABLE HEADER --}}
+                            <thead
+                                class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                                 <tr>
-                                    <td colspan="7"
-                                        class="h-[400px] text-center text-slate-400 italic text-sm">
-                                        Belum ada data perizinan masuk.
-                                    </td>
+                                    <th class="px-4 py-4 w-12 text-center">
+                                        <input type="checkbox"
+                                            class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                                    </th>
+                                    <th class="px-4 py-4 text-left font-semibold">NIP</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Nama</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Jenis Izin</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Tanggal</th>
+                                    <th class="px-4 py-4 text-center font-semibold">Status</th>
+                                    <th class="px-4 py-4 text-center font-semibold">Aksi</th>
                                 </tr>
-                            @endforelse
-                        </tbody>
+                            </thead>
 
-                    </table>
+                            {{-- TABLE BODY --}}
+                            <tbody>
+                                @forelse($perizinan as $p)
+                                    <tr
+                                        class="border-t border-slate-100 hover:bg-slate-50/70 transition duration-150 text-sm text-slate-700">
 
+                                        <td class="px-4 py-4 text-center">
+                                            <input type="checkbox"
+                                                class="rounded border-slate-350 text-blue-650 focus:ring-blue-500">
+                                        </td>
+
+                                        <td class="px-4 py-4 font-mono font-semibold uppercase text-slate-800">
+                                            {{ $p->nip }}
+                                        </td>
+
+                                        <td class="px-4 py-4 uppercase font-semibold text-slate-800">
+                                            {{ $p->nama }}
+                                        </td>
+
+                                        <td class="px-4 py-4">
+                                            {{ $p->kategori }}
+                                        </td>
+
+                                        <td class="px-4 py-4 text-slate-500 font-mono text-xs">
+                                            {{ $p->created_at ? $p->created_at->format('d-m-Y') : '-' }}
+                                        </td>
+
+                                        <td class="px-4 py-4 text-center">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
+                                                {{ $p->status == 'Disetujui'
+                                                    ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20'
+                                                    : 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20' }}">
+                                                {{ $p->status }}
+                                            </span>
+                                        </td>
+
+                                        <td class="px-4 py-4 text-center">
+                                            <a href="#"
+                                                class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs transition hover:bg-blue-100">
+                                                Detail
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7"
+                                            class="h-[400px] text-center text-slate-400 italic text-sm">
+                                            Belum ada data perizinan masuk.
+                                        </td>
+
+                                    </tr>
+                                @endforelse
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
 
             </div>

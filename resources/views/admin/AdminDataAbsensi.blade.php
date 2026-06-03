@@ -104,90 +104,90 @@
 
                 {{-- TABEL DATA ABSENSI --}}
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px]">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
 
-                    <table class="w-full border-collapse">
-
-                        {{-- TABLE HEADER --}}
-                        <thead
-                            class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
-                            <tr>
-                                <th class="px-4 py-4 text-center w-16 font-semibold">No</th>
-                                <th class="px-4 py-4 text-left font-semibold">NIP</th>
-                                <th class="px-4 py-4 text-left font-semibold">Nama</th>
-                                <th class="px-4 py-4 text-left font-semibold">Divisi</th>
-                                <th class="px-4 py-4 text-left font-semibold">Jabatan</th>
-                                <th class="px-4 py-4 text-left font-semibold">Jam Masuk</th>
-                                <th class="px-4 py-4 text-left font-semibold">Jam Keluar</th>
-                                <th class="px-4 py-4 text-left font-semibold">Tanggal</th>
-                                <th class="px-4 py-4 text-center font-semibold">Aksi</th>
-                            </tr>
-                        </thead>
-
-                        {{-- TABLE BODY --}}
-                        <tbody>
-                            @forelse($absensi as $index => $a)
-                                <tr
-                                    class="border-t border-slate-100 hover:bg-slate-50/70 transition duration-150 text-sm text-slate-750">
-
-                                    <td class="px-4 py-4 text-center font-mono font-medium text-slate-500">
-                                        {{ $index + 1 }}
-                                    </td>
-
-                                    <td class="px-4 py-4 font-mono font-semibold text-slate-800">
-                                        {{ $a->nip }}
-                                    </td>
-
-                                    <td class="px-4 py-4 font-semibold text-slate-800">
-                                        {{ $a->nama }}
-                                    </td>
-
-                                    <td class="px-4 py-4">
-                                        {{ $a->divisi }}
-                                    </td>
-
-                                    <td class="px-4 py-4">
-                                        {{ $a->jabatan }}
-                                    </td>
-
-                                    <td class="px-4 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20 font-mono">
-                                            {{ $a->jam_masuk }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-4 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 font-mono">
-                                            {{ $a->jam_keluar }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-4 py-4 text-slate-500 font-mono text-xs">
-                                        {{ $a->tanggal }}
-                                    </td>
-
-                                    <td class="px-4 py-4 text-center">
-                                        <a
-                                            href="#"
-                                            class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs transition hover:bg-blue-100">
-                                            Detail
-                                        </a>
-                                    </td>
-                                </tr>
-                            @empty
+                            {{-- TABLE HEADER --}}
+                            <thead
+                                class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                                 <tr>
-                                    <td
-                                        colspan="9"
-                                        class="h-[400px] text-center text-slate-400 italic text-sm">
-                                        Data absensi tidak ditemukan
-                                    </td>
+                                    <th class="px-4 py-4 text-center w-16 font-semibold">No</th>
+                                    <th class="px-4 py-4 text-left font-semibold">NIP</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Nama</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Divisi</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Jabatan</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Jam Masuk</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Jam Keluar</th>
+                                    <th class="px-4 py-4 text-left font-semibold">Tanggal</th>
+                                    <th class="px-4 py-4 text-center font-semibold">Aksi</th>
                                 </tr>
-                            @endforelse
-                        </tbody>
+                            </thead>
 
-                    </table>
+                            {{-- TABLE BODY --}}
+                            <tbody>
+                                @forelse($absensi as $index => $a)
+                                    <tr
+                                        class="border-t border-slate-100 hover:bg-slate-50/70 transition duration-150 text-sm text-slate-750">
 
+                                        <td class="px-4 py-4 text-center font-mono font-medium text-slate-500">
+                                            {{ $index + 1 }}
+                                        </td>
+
+                                        <td class="px-4 py-4 font-mono font-semibold text-slate-800">
+                                            {{ $a->nip }}
+                                        </td>
+
+                                        <td class="px-4 py-4 font-semibold text-slate-800">
+                                            {{ $a->nama }}
+                                        </td>
+
+                                        <td class="px-4 py-4">
+                                            {{ $a->divisi }}
+                                        </td>
+
+                                        <td class="px-4 py-4">
+                                            {{ $a->jabatan }}
+                                        </td>
+
+                                        <td class="px-4 py-4">
+                                            <span
+                                                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20 font-mono">
+                                                {{ $a->jam_masuk }}
+                                            </span>
+                                        </td>
+
+                                        <td class="px-4 py-4">
+                                            <span
+                                                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 font-mono">
+                                                {{ $a->jam_keluar }}
+                                            </span>
+                                        </td>
+
+                                        <td class="px-4 py-4 text-slate-500 font-mono text-xs">
+                                            {{ $a->tanggal }}
+                                        </td>
+
+                                        <td class="px-4 py-4 text-center">
+                                            <a
+                                                href="#"
+                                                class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs transition hover:bg-blue-100">
+                                                Detail
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td
+                                            colspan="9"
+                                            class="h-[400px] text-center text-slate-400 italic text-sm">
+                                            Data absensi tidak ditemukan
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
 
             </div>
