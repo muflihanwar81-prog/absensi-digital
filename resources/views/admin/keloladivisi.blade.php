@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Divisi</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="https:
     
-    <!-- Google Fonts Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="preconnect" href="https:
+    <link rel="preconnect" href="https:
+    <link href="https:
+    <link rel="stylesheet" href="https:
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -27,10 +27,10 @@
     @include('layouts.sidebar')
 
     <div class="flex-1 min-w-0">
-        <!-- Header -->
+        
         @include('components.header_admin')
 
-        <!-- Judul -->
+        
         <div class="px-6 pt-6">
             <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm">
                 <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">Manajemen Divisi</p>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="p-6">
-            <!-- Maps -->
+            
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 mb-6 overflow-hidden">
                 <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 text-slate-800">
                     <h3 class="font-extrabold text-base flex items-center gap-2">📍 Peta Lokasi Absensi Kantor Pusat</h3>
@@ -49,7 +49,7 @@
                 <div id="main-map" class="h-80 w-full"></div>
             </div>
 
-            <!-- Filter dan Button -->
+            
             <div class="flex flex-wrap gap-4 items-center mb-6">
                 <input type="text" placeholder="Pencarian..."
                     class="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-sm outline-none text-slate-700 placeholder-slate-400 focus:border-blue-500 transition-all duration-200 w-72">
@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <!-- Table -->
+            
             <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80">
                 <table class="w-full border-collapse">
                     <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
@@ -120,7 +120,7 @@
     </div>
 </div>
 
-<!-- Modal Tambah Divisi -->
+
 <div id="modalTambahDivisi"
     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[500px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
@@ -159,7 +159,7 @@
     </div>
 </div>
 
-<!-- Modal Atur Lokasi -->
+
 <div id="modalAturLokasi"
     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[650px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
@@ -209,19 +209,19 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https:
 <script>
 let mainMap;
 let map;
 let marker;
 let circle;
 
-// Fix Leaflet marker icon path issue globally
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconRetinaUrl: 'https:
+    iconUrl: 'https:
+    shadowUrl: 'https:
 });
 
 function initMainMap() {
@@ -235,28 +235,28 @@ function initMainMap() {
 
     mainMap = L.map('main-map').setView(defaultCenter, 16);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https:
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(mainMap);
 
-    // Add Marker
+    
     const m = L.marker(defaultCenter).addTo(mainMap);
     m.bindPopup(`
         <div style="font-family: sans-serif; font-size: 14px; padding: 5px;">
-            <h4 style="margin: 0 0 8px 0; font-weight: 800; color: #2563eb; font-size: 15px;">🏢 Lokasi Kantor Pusat</h4>
-            <div style="color: #475569; display: flex; flex-direction: column; gap: 4px;">
-                <div><b>Latitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lat}</code></div>
-                <div><b>Longitude:</b> <code style="background: #f1f5f9; padding: 2px 4px; border-radius: 4px;">${lng}</code></div>
-                <div><b>Radius:</b> <span style="font-weight: bold; color: #10b981;">${radius} meter</span></div>
+            <h4 style="margin: 0 0 8px 0; font-weight: 800; color: 
+            <div style="color: 
+                <div><b>Latitude:</b> <code style="background: 
+                <div><b>Longitude:</b> <code style="background: 
+                <div><b>Radius:</b> <span style="font-weight: bold; color: 
             </div>
         </div>
     `);
 
-    // Add Circle
+    
     L.circle(defaultCenter, {
-        color: '#2563eb',
-        fillColor: '#3b82f6',
+        color: '
+        fillColor: '
         fillOpacity: 0.25,
         radius: radius
     }).addTo(mainMap);
@@ -271,7 +271,7 @@ function initMap() {
 
     map = L.map('map').setView(defaultLocation, 16);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https:
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(map);
@@ -282,8 +282,8 @@ function initMap() {
 
     const initialRadius = parseInt(document.getElementById('radius').value) || 100;
     circle = L.circle(defaultLocation, {
-        color: '#ef4444',
-        fillColor: '#ef4444',
+        color: '
+        fillColor: '
         fillOpacity: 0.2,
         radius: initialRadius
     }).addTo(map);
@@ -325,7 +325,7 @@ function openModalTambahDivisi() {
     modal.classList.add('flex');
 }
 
-// Close Modal with backdrop
+
 document.addEventListener('click', function (e) {
     const modalTambah = document.getElementById('modalTambahDivisi');
     const modalAtur    = document.getElementById('modalAturLokasi');
@@ -333,7 +333,7 @@ document.addEventListener('click', function (e) {
     if (modalAtur    && e.target === modalAtur)    closeModalAturLokasi();
 });
 
-// Close Modal with ESC
+
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeModalTambahDivisi(); closeModalAturLokasi(); }
 });
@@ -381,3 +381,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+

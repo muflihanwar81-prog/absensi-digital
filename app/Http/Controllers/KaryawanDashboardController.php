@@ -67,7 +67,7 @@ class KaryawanDashboardController extends Controller
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        // Validasi GPS
+        
         $gpsCheck = $this->validateGPSLocation($request);
         if (!$gpsCheck['status']) {
             return redirect()->back()->with('error', $gpsCheck['message']);
@@ -112,7 +112,7 @@ class KaryawanDashboardController extends Controller
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        // Validasi GPS
+        
         $gpsCheck = $this->validateGPSLocation($request);
         if (!$gpsCheck['status']) {
             return redirect()->back()->with('error', $gpsCheck['message']);
@@ -153,8 +153,8 @@ class KaryawanDashboardController extends Controller
         $latUser = doubleval($latUser);
         $lngUser = doubleval($lngUser);
 
-        // Haversine formula
-        $earthRadius = 6371000; // in meters
+        
+        $earthRadius = 6371000; 
         $latFrom = deg2rad($latOffice);
         $lonFrom = deg2rad($lngOffice);
         $latTo = deg2rad($latUser);
@@ -287,7 +287,7 @@ class KaryawanDashboardController extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        // Update session name
+        
         session(['karyawan_nama' => $karyawan->nama]);
 
         return redirect()->back()->with('success', 'Profil berhasil diperbarui.');

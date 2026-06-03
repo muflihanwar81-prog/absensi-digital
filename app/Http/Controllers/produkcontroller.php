@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class ProdukController extends Controller
 {
-    // Fungsi ambil data
+    
     public function getData()
     {
         $data = [
@@ -18,7 +18,7 @@ class ProdukController extends Controller
         return $data;
     }
 
-    // Fungsi tampilkan view
+    
     public function test()
 {
     $data = $this->getData();

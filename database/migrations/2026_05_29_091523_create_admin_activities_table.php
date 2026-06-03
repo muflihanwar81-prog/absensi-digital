@@ -6,27 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::create('admin_activities', function (Blueprint $table) {
             $table->id();
-            $table->string('type');           // jenis: karyawan_tambah, karyawan_edit, dll
-            $table->string('judul');          // judul aktivitas
-            $table->string('deskripsi')->nullable(); // detail: nama karyawan / divisi
-            $table->string('icon')->default('circle-check'); // font awesome icon
-            $table->string('warna')->default('emerald');     // warna badge
+            $table->string('type');           
+            $table->string('judul');          
+            $table->string('deskripsi')->nullable(); 
+            $table->string('icon')->default('circle-check'); 
+            $table->string('warna')->default('emerald');     
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('admin_activities');
     }
 };
+

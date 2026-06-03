@@ -1,4 +1,4 @@
-{{-- resources/views/karyawan/perizinan.blade.php --}}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,11 +9,11 @@
     <title>Pengajuan Izin</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     
-    <!-- Google Fonts Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="preconnect" href="https:
+    <link rel="preconnect" href="https:
+    <link href="https:
+    <link rel="stylesheet" href="https:
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -28,19 +28,19 @@
 
     <div class="flex min-h-screen w-full">
 
-        {{-- Sidebar Karyawan --}}
+        
         @include('layouts.sidebar_karyawan')
 
-        {{-- Main Content --}}
+        
         <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
 
-            {{-- HEADER --}}
+            
             @include('components.header')
 
-            {{-- CONTENT --}}
+            
             <main class="flex-1 p-6">
 
-                {{-- ALERT SUCCESS --}}
+                
                 @if (session('success'))
                     <div
                         class="mb-6 bg-emerald-50 border border-emerald-255 text-emerald-700 px-5 py-3.5 rounded-xl shadow-sm text-sm font-semibold flex items-center gap-2">
@@ -48,7 +48,7 @@
                     </div>
                 @endif
 
-                {{-- ALERT ERROR --}}
+                
                 @if ($errors->any())
                     <div
                         class="mb-6 bg-rose-50 border border-rose-255 text-rose-700 px-5 py-3.5 rounded-xl shadow-sm text-sm">
@@ -60,7 +60,7 @@
                     </div>
                 @endif
 
-                {{-- BUTTON TAMBAH IZIN --}}
+                
                 <div class="flex justify-end mb-6">
                     <button
                         onclick="openModal()"
@@ -69,10 +69,10 @@
                     </button>
                 </div>
 
-                {{-- CARD UTAMA --}}
+                
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
 
-                    {{-- HEADER CARD --}}
+                    
                     <div class="bg-slate-50 border-b border-slate-200/80 px-8 py-5 text-slate-800">
                         <p class="uppercase tracking-wider text-xxs font-bold text-slate-400 mb-1">
                             Permission Request
@@ -87,13 +87,13 @@
 
                     <div class="p-6">
 
-                        {{-- TABLE --}}
+                        
                         <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
 
                             <div class="overflow-x-auto">
                                 <table class="w-full border-collapse">
 
-                                    {{-- TABLE HEADER --}}
+                                    
                                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                                         <tr>
                                             <th class="px-6 py-3.5 text-left font-semibold">No</th>
@@ -107,7 +107,7 @@
                                         </tr>
                                     </thead>
 
-                                    {{-- TABLE BODY --}}
+                                    
                                     <tbody class="divide-y divide-slate-100">
                                         @forelse ($data as $item)
                                             <tr class="hover:bg-slate-50/70 text-slate-700 text-sm transition duration-150">
@@ -187,7 +187,7 @@
 
     </div>
 
-    {{-- MODAL AJUKAN IZIN --}}
+    
     <div
         id="modalIzin"
         class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-50 p-4">
@@ -195,7 +195,7 @@
         <div
             class="bg-white w-full max-w-lg rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
 
-            {{-- HEADER MODAL --}}
+            
             <div
                 class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 text-slate-800 flex justify-between items-center">
                 <div>
@@ -214,7 +214,7 @@
                 </button>
             </div>
 
-            {{-- FORM --}}
+            
             <form
                 action="{{ route('izin.store') }}"
                 method="POST"
@@ -306,7 +306,7 @@
         </div>
     </div>
 
-    {{-- SCRIPT MODAL --}}
+    
     <script>
         function openModal() {
             document.getElementById('modalIzin').classList.remove('hidden');
@@ -318,14 +318,14 @@
             document.getElementById('modalIzin').classList.remove('flex');
         }
 
-        // Tutup modal saat klik area gelap
+        
         document.getElementById('modalIzin').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
 
-        // Tutup dengan ESC
+        
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();

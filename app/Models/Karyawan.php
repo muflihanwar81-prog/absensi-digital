@@ -8,12 +8,16 @@ use App\Models\Absensi;
 use App\Models\User;
 use App\Models\Divisi;
 
+
 class Karyawan extends Authenticatable
 {
+    
     use HasFactory;
 
+    
     protected $table = 'karyawans';
 
+    
     protected $fillable = [
         'nip',
         'nama',
@@ -34,21 +38,25 @@ class Karyawan extends Authenticatable
         'role',
     ];
 
+    
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    
     public function divisi()
     {
         return $this->belongsTo(Divisi::class);
     }
 
+    
     public function absensi()
     {
         return $this->hasMany(Absensi::class);

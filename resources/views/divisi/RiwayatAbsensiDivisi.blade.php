@@ -13,15 +13,15 @@
 
         <div class="flex-1 flex flex-col min-h-screen">
 
-            <!-- Header -->
+            
             <div class="bg-gradient-to-r from-blue-600 to-blue-500 p-6 shadow-lg">
                 <h2 class="text-3xl font-bold text-white">Riwayat Absensi</h2>
             </div>
 
-            <!-- Content -->
+            
             <div class="p-8">
 
-                <!-- Filter -->
+                
                 <div class="flex flex-wrap items-center gap-4 mb-6">
                     <div class="flex-1 min-w-[300px]">
                         <input type="text"
@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <!-- Table -->
+                
                 <div class="bg-white border border-blue-200 rounded-xl overflow-hidden shadow-sm">
                     <table class="w-full text-left border-collapse">
                         <thead>

@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 class TAController extends Controller
 {
-    // Fungsi untuk mendapatkan data
+    
     public function getData()
     {
         $dataBarang = [
@@ -16,7 +16,7 @@ class TAController extends Controller
 
         return $dataBarang;
     }
-    // Fungsi untuk menampilkan view
+    
     public function tampilkan()
     {
         $data = $this->getData();

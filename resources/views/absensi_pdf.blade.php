@@ -6,7 +6,7 @@
     <style>
         body { font-family: sans-serif; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+        th, td { border: 1px solid 
     </style>
 </head>
 <body>

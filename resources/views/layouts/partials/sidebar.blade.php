@@ -1,8 +1,8 @@
 <aside id="sidebar"
-    class="w-64 bg-[#efefef] flex flex-col justify-between border-r transition-all duration-300 h-screen shrink-0">
+    class="w-64 bg-[
 
     <div>
-        <!-- Header -->
+        
         <div class="p-5 flex items-center justify-between">
             <h1 id="sidebarTitle" class="text-2xl font-bold text-gray-700 whitespace-nowrap">
                 CODIA
@@ -10,7 +10,7 @@
 
             <button onclick="toggleSidebar()"
                 class="bg-gray-300 p-2 rounded-lg hover:bg-gray-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg"
+                <svg xmlns="http:
                     class="w-6 h-6"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -23,7 +23,7 @@
             </button>
         </div>
 
-        <!-- Menu -->
+        
         <ul class="space-y-2 px-4">
             <li>
                 <a href="{{ route('admin.dashboard') }}"
@@ -75,7 +75,7 @@
         </ul>
     </div>
 
-    <!-- Footer -->
+    
     <div class="p-4 bg-gray-300">
         <div class="text-xl font-bold flex items-center gap-3 mb-3">
             <span>👤</span>
@@ -102,14 +102,14 @@ function toggleSidebar() {
     const isCollapsed = sidebar.classList.contains('w-24');
 
     if (isCollapsed) {
-        // Buka sidebar
+        
         sidebar.classList.remove('w-24');
         sidebar.classList.add('w-64');
 
         texts.forEach(text => text.classList.remove('hidden'));
         title.classList.remove('hidden');
     } else {
-        // Tutup sidebar
+        
         sidebar.classList.remove('w-64');
         sidebar.classList.add('w-24');
 

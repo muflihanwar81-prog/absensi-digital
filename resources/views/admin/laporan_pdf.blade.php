@@ -13,12 +13,12 @@
             margin-top: 20px;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #cccccc;
             padding: 8px;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #f0f4f8;
             font-weight: bold;
         }
         h2 {
@@ -61,3 +61,4 @@
 
 </body>
 </html>
+

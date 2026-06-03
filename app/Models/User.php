@@ -7,10 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+
 class User extends Authenticatable
 {
+    
     use HasFactory, Notifiable;
 
+    
     protected $fillable = [
         'name',
         'email',
@@ -18,11 +21,13 @@ class User extends Authenticatable
         'role',
     ];
 
+    
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    
     protected function casts(): array
     {
         return [
@@ -31,6 +36,7 @@ class User extends Authenticatable
         ];
     }
 
+    
     public function karyawan(): HasOne
     {
         return $this->hasOne(Karyawan::class);

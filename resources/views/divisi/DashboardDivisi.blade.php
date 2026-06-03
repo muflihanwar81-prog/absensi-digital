@@ -62,12 +62,12 @@
                     @endforeach
                 </div>
 
-                {{-- ABSENSI KEPALA DIVISI --}}
+                
                 <div class="bg-white p-8 rounded-xl shadow-sm border border-blue-200">
 
                     <div class="flex flex-col xl:flex-row justify-between gap-8">
 
-                        {{-- PROFILE --}}
+                        
                         <div class="flex items-center gap-6">
                             <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-3xl font-black text-white shadow-lg">
                                 {{ strtoupper(substr($nama_user, 0, 3)) }}
@@ -88,7 +88,7 @@
                             </div>
                         </div>
 
-                        {{-- STATUS ABSENSI HARI INI --}}
+                        
                         <div class="text-right">
                             <p class="text-[10px] uppercase tracking-[0.25em] text-blue-600 font-bold mb-2">
                                 Status Hari Ini
@@ -113,7 +113,7 @@
                         </div>
                     </div>
 
-                    {{-- FLASH MESSAGES --}}
+                    
                     @if(session('success'))
                         <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm font-semibold">
                             {{ session('success') }}
@@ -125,10 +125,10 @@
                         </div>
                     @endif
 
-                    {{-- ACTION BUTTONS --}}
+                    
                     <div class="flex justify-end gap-4 mt-6">
 
-                        {{-- Tombol Masuk --}}
+                        
                         @if(!$absensiHariIni)
                             <form action="{{ route('divisi.absensi.masuk') }}" method="POST" class="absensi-form">
                                 @csrf
@@ -144,7 +144,7 @@
                             </button>
                         @endif
 
-                        {{-- Tombol Pulang --}}
+                        
                         @if($absensiHariIni && !$absensiHariIni->jam_keluar)
                             <form action="{{ route('divisi.absensi.keluar') }}" method="POST" class="absensi-form">
                                 @csrf
@@ -168,7 +168,7 @@
                     </div>
                 </div>
 
-                {{-- AKTIVITAS TERBARU --}}
+                
                 <div class="bg-white rounded-xl shadow-sm border border-blue-200 overflow-hidden">
                     <div class="p-6 border-b border-blue-100">
                         <h3 class="text-sm font-black uppercase tracking-widest text-blue-700">
@@ -264,16 +264,16 @@
     function updateDateTime() {
         const now = new Date();
 
-        // Format jam
+        
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
 
-        // Tampilkan jam
+        
         document.getElementById('clock').innerHTML =
             `${hours} : ${minutes} <span id="seconds" class="text-2xl align-top">${seconds}</span>`;
 
-        // Nama hari dan bulan dalam Bahasa Indonesia
+        
         const hari = [
             'Minggu', 'Senin', 'Selasa', 'Rabu',
             'Kamis', 'Jumat', 'Sabtu'
@@ -285,21 +285,21 @@
             'September', 'Oktober', 'November', 'Desember'
         ];
 
-        // Format tanggal
+        
         const tanggal = `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
 
-        // Tampilkan tanggal
+        
         document.getElementById('date').textContent = tanggal;
     }
 
-    // Jalankan pertama kali
+    
     updateDateTime();
 
-    // Update setiap 1 detik
+    
     setInterval(updateDateTime, 1000);
 </script>
 
-{{-- GPS GEOLOCATION SCRIPT --}}
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const forms = document.querySelectorAll('.absensi-form');
@@ -319,7 +319,7 @@
                             const lat = position.coords.latitude;
                             const lng = position.coords.longitude;
 
-                            // Buat input tersembunyi
+                            
                             let latInput = form.querySelector('input[name="latitude"]');
                             if (!latInput) {
                                 latInput = document.createElement('input');
@@ -338,7 +338,7 @@
                             }
                             lngInput.value = lng;
 
-                            // Submit form asli
+                            
                             form.submit();
                         },
                         function(error) {

@@ -9,7 +9,7 @@
 
 <body class="bg-gray-100">
 
-    <!-- NAVBAR -->
+    
     <nav class="bg-white border-b shadow-sm px-6 py-3 flex justify-between items-center">
         <h1 class="text-xl font-bold text-gray-800">Absensi Digital</h1>
 
@@ -21,7 +21,7 @@
             <div id="dropdown" class="hidden absolute right-0 mt-2 bg-white rounded-lg shadow w-40">
                 <ul class="py-2 text-sm text-gray-700">
                     <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+                        <a href="
                     </li>
                     <li>
                         <form method="POST" action="{{ url('/logout') }}">
@@ -38,7 +38,7 @@
 
     <div class="flex">
 
-        <!-- SIDEBAR -->
+        
         <aside class="w-64 h-screen bg-white shadow-md p-5">
             <ul class="space-y-4">
                 <li>
@@ -68,14 +68,14 @@
             </ul>
         </aside>
 
-        <!-- CONTENT -->
+        
         <main class="flex-1 p-6">
 
             <h2 class="text-2xl font-bold mb-6">Absensi</h2>
 
             <div class="bg-white p-6 rounded-2xl shadow">
 
-                <!-- FILTER -->
+                
                 <form method="GET" action="{{ url('/absensi') }}" class="mb-4 flex gap-2">
                     <input type="date" name="dari" value="{{ request('dari') }}" class="border p-2 rounded">
                     <input type="date" name="sampai" value="{{ request('sampai') }}" class="border p-2 rounded">
@@ -84,7 +84,7 @@
                     </button>
                 </form>
 
-                <!-- TABLE -->
+                
                 <table class="w-full text-sm border">
                     <thead class="bg-gray-100 text-left">
                         <tr>
@@ -130,7 +130,7 @@
         </main>
     </div>
 
-    <!-- SCRIPT DROPDOWN -->
+    
     <script>
         function toggleDropdown() {
             document.getElementById('dropdown').classList.toggle('hidden');
