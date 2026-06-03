@@ -8,7 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class KaryawanAuth
 {
-    
+    /**
+     * Handle an incoming request.
+     *
+     * @param  Closure(Request): (Response)  $next
+     */
     public function handle($request, Closure $next)
 {
     if (!session()->has('karyawan_id')) {
@@ -19,4 +23,3 @@ class KaryawanAuth
     return $next($request);
 }
 }
-

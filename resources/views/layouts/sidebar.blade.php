@@ -1,7 +1,7 @@
 <aside id="sidebar"
     class="w-72 bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen">
 
-    
+    {{-- HEADER --}}
     <div>
         <div class="p-6 border-b border-slate-800">
             <div class="flex items-center justify-between">
@@ -16,7 +16,7 @@
 
                 <button onclick="toggleSidebar()"
                     class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-lg transition duration-200 shadow-sm border border-slate-700/50">
-                    <svg xmlns="http:
+                    <svg xmlns="http://www.w3.org/2000/svg"
                         class="w-5 h-5"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -30,11 +30,11 @@
             </div>
         </div>
 
-        
+        {{-- NAVIGATION --}}
         <nav class="px-4 py-6">
             <ul class="space-y-1.5">
 
-                
+                {{-- DASHBOARD --}}
                 <li>
                     <a href="{{ route('admin.dashboard') }}"
                         class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
@@ -46,7 +46,7 @@
                     </a>
                 </li>
 
-                
+                {{-- KELOLA DIVISI --}}
                 <li>
                     <a href="{{ route('admin.keloladivisi') }}"
                         class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
@@ -58,7 +58,7 @@
                     </a>
                 </li>
 
-                
+                {{-- DATA KARYAWAN --}}
                 <li>
                     <a href="{{ route('admin.karyawan') }}"
                         class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
@@ -70,7 +70,7 @@
                     </a>
                 </li>
 
-                
+                {{-- DATA KEHADIRAN --}}
                 <li>
                     <a href="{{ route('admin.absensi.index') }}"
                         class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
@@ -82,7 +82,7 @@
                     </a>
                 </li>
 
-                
+                {{-- DATA PERIZINAN --}}
                 <li>
                     <a href="{{ route('admin.perizinan.index') }}"
                         class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
@@ -94,7 +94,7 @@
                     </a>
                 </li>
 
-                
+                {{-- LAPORAN --}}
                 <li>
                     <a href="{{ route('admin.laporan') }}"
                         class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
@@ -110,10 +110,10 @@
         </nav>
     </div>
 
-    
+    {{-- FOOTER PROFILE --}}
     <div class="p-4 border-t border-slate-800 bg-slate-900/60 backdrop-blur-sm">
 
-        
+        {{-- USER INFO --}}
         <div class="flex items-center gap-3 mb-4 px-2">
             <div
                 class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10">
@@ -130,7 +130,7 @@
             </div>
         </div>
 
-        
+        {{-- LOGOUT --}}
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"

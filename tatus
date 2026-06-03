@@ -1,0 +1,41 @@
+[33m838f5b3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: pull origin main --rebase (finish): returning to refs/heads/main
+[33m838f5b3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{1}: pull origin main --rebase (pick): revisi
+[33m9672515[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{2}: pull origin main --rebase (start): checkout 9672515c91adab3621268ba0fca95752bf5e5f91
+[33m5d5972e[m HEAD@{3}: commit: revisi
+[33m694ee9a[m HEAD@{4}: reset: moving to 694ee9a2462fe1265ccd2f2848d7a1faa5008892
+[33m9672515[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{5}: commit: revisi
+[33m694ee9a[m HEAD@{6}: commit: Add admin activity logging and migration updates
+[33m1419dd2[m HEAD@{7}: reset: moving to HEAD
+[33m1419dd2[m HEAD@{8}: commit: up
+[33m1738a26[m HEAD@{9}: commit: up
+[33mb45509f[m HEAD@{10}: pull: Fast-forward
+[33m1ccfd93[m HEAD@{11}: commit: backend
+[33ma878b88[m HEAD@{12}: commit: backend
+[33m98e40b2[m HEAD@{13}: commit: upto
+[33m5e14794[m HEAD@{14}: commit: up
+[33m2ed05e0[m HEAD@{15}: commit: up
+[33me4c5e1f[m HEAD@{16}: commit: up
+[33m6d10037[m HEAD@{17}: commit: up divisi
+[33m1b4e268[m HEAD@{18}: commit: origin main
+[33m2e35a6e[m HEAD@{19}: commit: up desain
+[33m0172b89[m HEAD@{20}: commit: up inlucde
+[33m6b732fb[m HEAD@{21}: commit: up desain
+[33m6570712[m HEAD@{22}: commit: up desain
+[33m032fea3[m HEAD@{23}: commit: desain
+[33m414794b[m HEAD@{24}: commit: up
+[33mc763514[m HEAD@{25}: commit (merge): Resolve merge conflicts
+[33mdd1cc5e[m HEAD@{26}: commit: admin1
+[33mc3450c4[m HEAD@{27}: commit: admin
+[33m40bb4c1[m HEAD@{28}: commit (merge): admin
+[33me59c3bb[m HEAD@{29}: commit: p
+[33m9ba34b4[m HEAD@{30}: commit: admin
+[33mc58f4e2[m HEAD@{31}: commit: upp
+[33mf28c1ae[m HEAD@{32}: commit: upp
+[33m5c4aaff[m HEAD@{33}: commit: up
+[33mc2f0c8a[m HEAD@{34}: commit: up
+[33m64e6404[m HEAD@{35}: commit: up
+[33m5ef3680[m HEAD@{36}: commit (merge): p
+[33m22edbe9[m HEAD@{37}: commit: up
+[33mad054fd[m HEAD@{38}: commit (merge): Resolve merge
+[33mcd945a7[m HEAD@{39}: Branch: renamed refs/heads/master to refs/heads/main
+[33mcd945a7[m HEAD@{41}: commit (initial): Initial commit

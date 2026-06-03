@@ -10,4 +10,3 @@
         Hallo, Dio Kurniawan
     </div>
 </div>
-@include('components.idle-timeout')

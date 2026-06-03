@@ -9,20 +9,20 @@
 <body class="bg-blue-50 antialiased font-sans">
 
     <div class="flex">
-        
+        <!-- Sidebar -->
         @include('layouts.partials.sidebar-divisi')
 
         <div class="flex-1 flex flex-col min-h-screen">
 
-            
+            <!-- Judul Halaman -->
             <div class="bg-gradient-to-r from-blue-600 to-blue-500 p-6 shadow-lg">
                 <h2 class="text-3xl font-bold text-white">Data Perizinan</h2>
             </div>
 
-            
+            <!-- Konten -->
             <div class="p-8">
 
-                
+                <!-- Alert Success / Error -->
                 @if (session('success'))
                     <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-xl shadow-sm font-semibold text-sm">
                         {{ session('success') }}
@@ -34,7 +34,7 @@
                     </div>
                 @endif
 
-                
+                <!-- Filter -->
                 <div class="flex flex-wrap items-center gap-4 mb-6">
                     <div class="flex-1 min-w-[300px]">
                         <input type="text"
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                
+                <!-- Tabel Perizinan -->
                 <div class="bg-white border border-blue-200 rounded-xl overflow-hidden shadow-sm">
                     <table class="w-full text-left border-collapse">
                         <thead>

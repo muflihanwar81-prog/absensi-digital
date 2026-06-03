@@ -13,12 +13,18 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class DivisiDashboardController extends Controller
 {
-    
-    
+    /**
+     * Dashboard Divisi
+     * Nama divisi diambil dari field 'name' user kepala_divisi.
+     * Pastikan user kepala_divisi dibuat dengan name = nama divisinya.
+     */
+    /**
+     * Cari karyawan record milik kepala divisi yang login
+     */
     private function getKaryawanKepala()
     {
         $user = Auth::user();
-        
+        // Cari karyawan berdasarkan email user
         return Karyawan::where('email', $user->email)->first();
     }
 
@@ -30,7 +36,7 @@ class DivisiDashboardController extends Controller
         $namaDivisi = $user->name;
         $divisi     = $namaDivisi;
 
-        
+        // Ambil ID karyawan yang ada di divisi ini
         $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
 
         $total_karyawan = $karyawanIds->count();
@@ -55,7 +61,7 @@ class DivisiDashboardController extends Controller
             ->where('kategori', 'Sakit')
             ->count();
 
-        
+        // Absensi kepala divisi hari ini
         $karyawanKepala = $this->getKaryawanKepala();
         $absensiHariIni = null;
         $aktivitas = collect();
@@ -95,7 +101,7 @@ class DivisiDashboardController extends Controller
                 ->with('error', 'Data karyawan kepala divisi tidak ditemukan.');
         }
 
-        
+        // Validasi GPS
         $gpsCheck = $this->validateGPSLocation($request);
         if (!$gpsCheck['status']) {
             return redirect()->back()->with('error', $gpsCheck['message']);
@@ -110,7 +116,7 @@ class DivisiDashboardController extends Controller
         if (!$absensi) {
             $jamSekarang = Carbon::now('Asia/Jakarta');
 
-            
+            // Cek jam masuk divisi
             $divisi = Divisi::where('nama_divisi', $karyawan->divisi)->first();
             $status = 'Hadir';
 
@@ -141,7 +147,7 @@ class DivisiDashboardController extends Controller
                 ->with('error', 'Data karyawan kepala divisi tidak ditemukan.');
         }
 
-        
+        // Validasi GPS
         $gpsCheck = $this->validateGPSLocation($request);
         if (!$gpsCheck['status']) {
             return redirect()->back()->with('error', $gpsCheck['message']);
@@ -182,8 +188,8 @@ class DivisiDashboardController extends Controller
         $latUser = doubleval($latUser);
         $lngUser = doubleval($lngUser);
 
-        
-        $earthRadius = 6371000; 
+        // Haversine formula
+        $earthRadius = 6371000; // in meters
         $latFrom = deg2rad($latOffice);
         $lonFrom = deg2rad($lngOffice);
         $latTo = deg2rad($latUser);
@@ -223,7 +229,7 @@ class DivisiDashboardController extends Controller
         $user       = Auth::user();
         $namaDivisi = $user->name;
 
-        
+        // Ambil ID karyawan di divisi ini
         $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
 
         $absensi = Absensi::with('karyawan')
@@ -252,10 +258,10 @@ class DivisiDashboardController extends Controller
         $izin->status = 'Disetujui';
         $izin->save();
 
-        
+        // Sync with Absensi table
         $tanggal = \Carbon\Carbon::parse($izin->created_at)->toDateString();
 
-        
+        // Map kategori to valid absensis status ('Cuti' -> 'Izin')
         $statusAbsensi = $izin->kategori === 'Cuti' ? 'Izin' : $izin->kategori;
 
         $absensi = Absensi::where('karyawan_id', $izin->karyawan_id)
@@ -286,7 +292,7 @@ class DivisiDashboardController extends Controller
         $izin->status = 'Ditolak';
         $izin->save();
 
-        
+        // Sync with Absensi table - delete if it exists
         $tanggal = \Carbon\Carbon::parse($izin->created_at)->toDateString();
         Absensi::where('karyawan_id', $izin->karyawan_id)
             ->whereDate('tanggal', $tanggal)

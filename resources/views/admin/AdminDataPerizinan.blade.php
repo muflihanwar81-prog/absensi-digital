@@ -6,11 +6,11 @@
     <title>Data Perizinan - CODIA-SYNC</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     
-    
-    <link rel="preconnect" href="https:
-    <link rel="preconnect" href="https:
-    <link href="https:
-    <link rel="stylesheet" href="https:
+    <!-- Google Fonts Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -23,19 +23,19 @@
 
 <body class="bg-slate-50 text-slate-900 flex font-sans h-screen overflow-hidden">
 
-    
+    {{-- Sidebar --}}
     @include('layouts.sidebar')
 
-    
+    {{-- MAIN CONTENT --}}
     <main class="flex-1 h-screen overflow-y-auto">
 
-        
+        {{-- Header --}}
         @include('components.header_admin')
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">
 
-                
+                {{-- HEADER CARD --}}
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
                         <div>
@@ -62,13 +62,13 @@
                     </div>
                 </div>
 
-                
+                {{-- SEARCH BAR --}}
                 <div class="mb-6">
                     <form action="{{ route('admin.perizinan.index') }}" method="GET">
                         <div
                             class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-200 w-full max-w-md">
 
-                            <svg xmlns="http:
+                            <svg xmlns="http://www.w3.org/2000/svg"
                                 class="w-5 h-5 text-slate-400"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -89,12 +89,12 @@
                     </form>
                 </div>
 
-                
+                {{-- TABLE CONTAINER --}}
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px]">
 
                     <table class="w-full border-collapse">
 
-                        
+                        {{-- TABLE HEADER --}}
                         <thead
                             class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                             <tr>
@@ -111,7 +111,7 @@
                             </tr>
                         </thead>
 
-                        
+                        {{-- TABLE BODY --}}
                         <tbody>
                             @forelse($perizinan as $p)
                                 <tr
@@ -148,7 +148,7 @@
                                     </td>
 
                                     <td class="px-4 py-4 text-center">
-                                        <a href="
+                                        <a href="#"
                                             class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs transition hover:bg-blue-100">
                                             Detail
                                         </a>
@@ -175,4 +175,3 @@
 
 </body>
 </html>
-

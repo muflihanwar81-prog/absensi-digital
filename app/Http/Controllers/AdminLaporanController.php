@@ -70,4 +70,3 @@ class AdminLaporanController extends Controller
         return $pdf->download("laporan_absensi_admin_" . date('Ymd_His') . ".pdf");
     }
 }
-

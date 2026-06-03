@@ -9,21 +9,21 @@
 <body class="bg-blue-50 antialiased font-sans">
 
     <div class="flex">
-        
+        <!-- Sidebar -->
         @include('layouts.partials.sidebar-divisi')
 
         <div class="flex-1 flex flex-col min-h-screen">
-            
+            <!-- Judul Halaman -->
             <div class="bg-gradient-to-r from-blue-600 to-blue-500 p-6 shadow-lg">
                 <h2 class="text-3xl font-bold text-white">Laporan</h2>
             </div>
 
-            
+            <!-- Konten -->
             <div class="p-8">
-                
+                <!-- Toolbar Laporan -->
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
                     
-                    
+                    <!-- Left Section: Search & Date -->
                     <div class="flex items-center gap-3 flex-wrap">
                         <input type="text"
                                placeholder="Pencarian.."
@@ -46,7 +46,7 @@
                         </button>
                     </div>
 
-                    
+                    <!-- Right Section: Export Buttons -->
                     <div class="flex items-center gap-3">
                         <a href="{{ route('divisi.laporan.excel') }}" class="px-8 py-3 bg-green-600 hover:bg-green-700 rounded-xl font-bold text-sm text-white shadow-sm transition uppercase">
                             Excel
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                
+                <!-- Tabel Laporan -->
                 <div class="bg-white border border-blue-200 rounded-xl overflow-hidden shadow-sm">
                     <table class="w-full text-left border-collapse">
                         <thead>

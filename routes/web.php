@@ -55,14 +55,12 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         $totalAbsensi = Absensi::count();
         $totalPerizinan = Perizinan::count();
 
-        
+        // Attendance status counts
         $totalHadir = Absensi::where('status', 'Hadir')->count();
         $totalTerlambat = Absensi::where('status', 'Terlambat')->count();
         $totalAlpha = Absensi::where('status', 'Alpha')->count();
         $totalIzin = Absensi::where('status', 'Izin')->count();
         $totalSakit = Absensi::where('status', 'Sakit')->count();
-
-        $activities = \App\Models\AdminActivity::orderBy('created_at', 'desc')->take(10)->get();
 
         return view('admin.dashboard', compact(
             'totalDivisi',
@@ -73,8 +71,7 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
             'totalTerlambat',
             'totalAlpha',
             'totalIzin',
-            'totalSakit',
-            'activities'
+            'totalSakit'
         ));
     })->name('dashboard');
 

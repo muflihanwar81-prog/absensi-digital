@@ -7,7 +7,7 @@
 </head>
 <body class="bg-gray-100 h-screen flex flex-col overflow-hidden">
 
-
+{{-- Navbar --}}
 <nav class="bg-sky-400 px-6 py-3 flex justify-between items-center shadow z-10">
     <div class="flex items-center gap-2">
         <div class="w-8 h-8 rounded-full bg-white/30 flex items-center justify-center">
@@ -18,7 +18,7 @@
         <span class="text-white font-bold text-lg tracking-wide">CODIA-SYNC</span>
     </div>
 
-    
+    {{-- Dropdown User --}}
     <div class="relative">
         <button id="dropdownButton" data-dropdown-toggle="dropdown"
             class="flex items-center gap-2 text-sm bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition font-medium">
@@ -45,7 +45,7 @@
 
 <div class="flex flex-1 overflow-hidden">
 
-    
+    {{-- Sidebar --}}
     <aside class="w-52 bg-sky-400 flex flex-col justify-between py-4 shrink-0">
         <ul class="flex flex-col gap-1 px-3">
             <li>
@@ -74,7 +74,7 @@
             </li>
         </ul>
 
-        
+        {{-- User Badge --}}
         <div class="flex items-center gap-3 px-4 py-3">
             <div class="w-9 h-9 rounded-full bg-sky-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
@@ -83,7 +83,7 @@
         </div>
     </aside>
 
-    
+    {{-- Main Content --}}
     <main class="flex-1 overflow-y-auto bg-gray-50 p-8">
 
         <div class="flex items-center justify-between mb-1">
@@ -96,7 +96,7 @@
             </button>
         </div>
 
-        
+        {{-- Stat Cards --}}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
             <div class="bg-green-500 rounded-xl p-4 text-white shadow">
                 <p class="text-xs font-semibold uppercase tracking-wider opacity-80">Hadir</p>
@@ -117,7 +117,7 @@
         </div>
 
         <hr class="my-6 border-gray-200"/>
-        
+        {{-- Tombol Kehadiran --}}
         <div>
             <h3 class="text-base font-semibold text-gray-700 mb-3">Kehadiran</h3>
             <div class="grid grid-cols-2 gap-4">
@@ -138,7 +138,7 @@
             </div>
         </div>
         <hr class="my-6 border-gray-200"/>
-        
+        {{-- Tabel Riwayat --}}
         <div>
             <h3 class="text-base font-semibold text-gray-700 mb-4">Riwayat Kehadiran Hari ini</h3>
             <div class="bg-white rounded-2xl shadow overflow-hidden">

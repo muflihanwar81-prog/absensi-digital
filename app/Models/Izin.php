@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 class Izin extends Model
 {
-    
     protected $fillable = [
         'karyawan_id',
         'nip',

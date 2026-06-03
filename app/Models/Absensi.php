@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 class Absensi extends Model
 {
-    
     protected $fillable = [
         'karyawan_id',
         'tanggal',
@@ -16,7 +14,6 @@ class Absensi extends Model
         'status'
     ];
 
-    
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class);

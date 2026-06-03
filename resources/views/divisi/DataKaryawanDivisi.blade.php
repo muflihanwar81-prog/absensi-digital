@@ -13,27 +13,27 @@
 
         <div class="flex-1 flex flex-col min-h-screen">
 
-            
+            <!-- Header -->
             <div class="bg-gradient-to-r from-blue-600 to-blue-500 p-6 shadow-lg">
                 <h2 class="text-3xl font-bold text-white">Data Karyawan</h2>
             </div>
 
-            
+            <!-- Content -->
             <div class="p-8">
 
-                
+                <!-- Search Box -->
                 <div class="mb-6">
                     <input type="text"
                            placeholder="Pencarian.."
                            class="w-full md:w-1/3 p-3 bg-white rounded-xl border border-blue-200 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400 font-semibold text-sm text-blue-900">
                 </div>
 
-                
+                <!-- Table Container -->
                 <div class="bg-white border border-blue-200 rounded-xl overflow-hidden shadow-sm">
 
                     <table class="w-full text-left border-collapse">
 
-                        
+                        <!-- Table Header -->
                         <thead>
                             <tr class="bg-blue-100 border-b border-blue-200 text-sm font-bold text-blue-900">
                                 <th class="py-3 px-4 border-r border-blue-200 w-12 text-center">No</th>
@@ -46,7 +46,7 @@
                             </tr>
                         </thead>
 
-                        
+                        <!-- Table Body -->
                         <tbody>
                             @forelse($karyawans as $k)
                             <tr class="border-b border-blue-100 hover:bg-blue-50/50 transition">

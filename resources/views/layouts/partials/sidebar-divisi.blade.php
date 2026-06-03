@@ -1,7 +1,7 @@
 <aside id="sidebar"
     class="w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col justify-between shadow-2xl border-r border-slate-700 transition-all duration-300 h-screen">
 
-    
+    {{-- HEADER --}}
     <div>
         <div class="p-5 border-b border-slate-700">
             <div class="flex items-center justify-between">
@@ -16,7 +16,7 @@
 
                 <button onclick="toggleSidebar()"
                     class="bg-slate-700/80 hover:bg-slate-600 p-2.5 rounded-xl transition duration-300 shadow-lg">
-                    <svg xmlns="http:
+                    <svg xmlns="http://www.w3.org/2000/svg"
                         class="w-6 h-6 text-white"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -30,11 +30,11 @@
             </div>
         </div>
 
-        
+        {{-- NAVIGATION --}}
         <nav class="px-4 py-6">
             <ul class="space-y-2">
 
-                
+                {{-- DASHBOARD --}}
                 <li>
                     <a href="{{ route('divisi.dashboard') }}"
                         class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
@@ -45,7 +45,7 @@
                     </a>
                 </li>
 
-                
+                {{-- DATA KARYAWAN --}}
                 <li>
                     <a href="{{ route('divisi.karyawan') }}"
                         class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
@@ -56,7 +56,7 @@
                     </a>
                 </li>
 
-                
+                {{-- RIWAYAT ABSENSI --}}
                 <li>
                     <a href="{{ route('divisi.riwayat-absensi') }}"
                         class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
@@ -67,7 +67,7 @@
                     </a>
                 </li>
 
-                
+                {{-- DATA PERIZINAN --}}
                 <li>
                     <a href="{{ route('divisi.data-perizinan') }}"
                         class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
@@ -78,16 +78,16 @@
                     </a>
                 </li>
 
-                
+                {{-- LAPORAN --}}
 
             </ul>
         </nav>
     </div>
 
-    
+    {{-- FOOTER PROFILE --}}
     <div class="p-4 border-t border-slate-700 bg-slate-800/70 backdrop-blur-sm">
 
-        
+        {{-- USER INFO --}}
         <div class="flex items-center gap-3 mb-4 px-2">
             <div
                 class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
@@ -104,7 +104,7 @@
             </div>
         </div>
 
-        
+        {{-- LOGOUT --}}
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"
@@ -121,16 +121,16 @@ function toggleSidebar() {
     const texts = document.querySelectorAll('.menu-text');
     const title = document.getElementById('sidebarTitle');
 
-    
+    // Ubah lebar sidebar
     sidebar.classList.toggle('w-72');
     sidebar.classList.toggle('w-24');
 
-    
+    // Sembunyikan / tampilkan teks
     texts.forEach(text => {
         text.classList.toggle('hidden');
     });
 
-    
+    // Sembunyikan / tampilkan judul
     title.classList.toggle('hidden');
 }
 </script>

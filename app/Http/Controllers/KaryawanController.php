@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
-    
+    // 🔹 TAMPIL DATA
     public function index(Request $request)
     {
         $query = Karyawan::with('user');
 
-        
+        // SEARCH
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nip', 'like', '%' . $request->search . '%')
@@ -23,7 +23,7 @@ class KaryawanController extends Controller
             });
         }
 
-        
+        // FILTER DIVISI
         if ($request->filled('divisi')) {
             $query->where('divisi', $request->divisi);
         }
@@ -33,10 +33,10 @@ class KaryawanController extends Controller
         return view('data_karyawan', compact('karyawan'));
     }
 
-    
+    // 🔹 SIMPAN KARYAWAN + USER
     public function store(Request $request)
     {
-        
+        // ✅ VALIDASI
         $request->validate([
             'nip' => 'required|unique:karyawans,nip',
             'nama' => 'required',
@@ -49,10 +49,10 @@ class KaryawanController extends Controller
         DB::beginTransaction();
 
         try {
-            
-            
+            // 🔍 DEBUG DATA MASUK (aktifkan kalau perlu)
+            // dd($request->all());
 
-            
+            // ✅ 1. BUAT USER
             $user = User::create([
                 'name' => $request->nama,
                 'email' => $request->email,
@@ -60,7 +60,7 @@ class KaryawanController extends Controller
                 'role' => 'karyawan'
             ]);
 
-            
+            // ✅ 2. BUAT KARYAWAN
             Karyawan::create([
                 'nip' => $request->nip,
                 'nama' => $request->nama,
@@ -77,12 +77,12 @@ class KaryawanController extends Controller
 
             DB::rollBack();
 
-            
+            // 🔥 DEBUG ERROR ASLI (WAJIB saat troubleshooting)
             dd($e->getMessage());
         }
     }
 
-    
+    // 🔹 HAPUS
     public function destroy($id)
     {
         $karyawan = Karyawan::with('user')->findOrFail($id);
@@ -90,12 +90,12 @@ class KaryawanController extends Controller
         DB::beginTransaction();
 
         try {
-            
+            // hapus user
             if ($karyawan->user) {
                 $karyawan->user->delete();
             }
 
-            
+            // hapus karyawan
             $karyawan->delete();
 
             DB::commit();
@@ -110,7 +110,7 @@ class KaryawanController extends Controller
         }
     }
 
-    
+    // 🔹 DETAIL
     public function show($id)
     {
         $karyawan = Karyawan::with('user')->findOrFail($id);

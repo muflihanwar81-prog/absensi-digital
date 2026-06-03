@@ -9,7 +9,7 @@
 
 <body class="bg-gray-100">
 
-    
+    <!-- NAVBAR -->
     <nav class="bg-white border-b shadow-sm px-6 py-3 flex justify-between items-center">
         <h1 class="text-xl font-bold text-gray-800">Absensi Digital</h1>
 
@@ -21,9 +21,9 @@
 
             <div id="dropdown" class="hidden absolute right-0 mt-2 bg-white rounded-lg shadow w-40">
                 <ul class="py-2 text-sm text-gray-700">
-                    <li><a href="
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a></li>
 
-                    
+                    <!-- 🔥 FIX LOGOUT -->
                     <li>
                         <form action="/logout" method="POST">
                             @csrf
@@ -39,7 +39,7 @@
 
     <div class="flex">
 
-        
+        <!-- SIDEBAR -->
         <aside class="w-64 h-screen bg-white shadow-md p-5">
             <ul class="space-y-4">
                 <li><a href="/dashboard" class="p-2 block rounded-lg hover:bg-gray-200">Dashboard</a></li>
@@ -49,12 +49,12 @@
             </ul>
         </aside>
 
-        
+        <!-- MAIN -->
         <main class="flex-1 p-6">
 
             <h2 class="text-2xl font-bold mb-6">Data Karyawan</h2>
 
-            
+            <!-- NOTIF -->
             @if(session('success'))
                 <div class="bg-green-100 text-green-700 p-3 rounded mb-3">
                     {{ session('success') }}
@@ -69,7 +69,7 @@
 
             <div class="bg-white p-6 rounded-2xl shadow">
 
-                
+                <!-- ACTION -->
                 <div class="flex gap-3 mb-4">
 
                     <button onclick="openModal()" class="bg-green-500 text-white px-4 py-2 rounded-lg">
@@ -95,7 +95,7 @@
 
                 </div>
 
-                
+                <!-- TABLE -->
                 <table class="w-full text-sm">
                     <thead class="bg-gray-100 text-left">
                         <tr>
@@ -133,7 +133,7 @@
 
             </div>
 
-            
+            <!-- MODAL -->
             <div id="modal"
                 class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
 
