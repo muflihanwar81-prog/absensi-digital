@@ -1,5 +1,5 @@
 <aside id="sidebar"
-    class="w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col justify-between shadow-2xl border-r border-slate-700 transition-all duration-300 h-screen">
+    class="w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col justify-between shadow-2xl border-r border-slate-700 transition-all duration-300 min-h-screen sticky top-0">
 
     {{-- HEADER --}}
     <div>
@@ -79,13 +79,22 @@
                 </li>
 
                 {{-- LAPORAN --}}
+                <li>
+                    <a href="{{ route('divisi.DivisiLaporan') }}"
+                        class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300
+                        {{ request()->routeIs('divisi.DivisiLaporan')
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl font-semibold'
+                            : 'text-slate-200 hover:bg-slate-700/70 hover:text-white' }}">
+                        <span class="menu-text font-medium">Laporan</span>
+                    </a>
+                </li>
 
             </ul>
         </nav>
     </div>
 
     {{-- FOOTER PROFILE --}}
-    <div class="p-4 border-t border-slate-700 bg-slate-800/70 backdrop-blur-sm">
+    <div class="p-4 border-t border-slate-700 bg-slate-800/70 backdrop-blur-sm mt-auto">
 
         {{-- USER INFO --}}
         <div class="flex items-center gap-3 mb-4 px-2">
@@ -108,7 +117,8 @@
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"
-                class="w-full flex items-center justify-center gap-4 px-4 py-3 rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition duration-300">
+                class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white font-semibold border border-rose-500/20 hover:border-transparent transition duration-200 text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i>
                 <span class="menu-text">Logout</span>
             </button>
         </form>

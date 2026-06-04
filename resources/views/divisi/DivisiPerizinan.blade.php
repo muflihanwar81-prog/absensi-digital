@@ -9,20 +9,16 @@
 <body class="bg-blue-50 antialiased font-sans">
 
     <div class="flex">
-        <!-- Sidebar -->
         @include('layouts.partials.sidebar-divisi')
 
         <div class="flex-1 flex flex-col min-h-screen">
 
-            <!-- Judul Halaman -->
             <div class="bg-gradient-to-r from-blue-600 to-blue-500 p-6 shadow-lg">
                 <h2 class="text-3xl font-bold text-white">Data Perizinan</h2>
             </div>
 
-            <!-- Konten -->
             <div class="p-8">
 
-                <!-- Alert Success / Error -->
                 @if (session('success'))
                     <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-xl shadow-sm font-semibold text-sm">
                         {{ session('success') }}
@@ -34,7 +30,6 @@
                     </div>
                 @endif
 
-                <!-- Filter -->
                 <div class="flex flex-wrap items-center gap-4 mb-6">
                     <div class="flex-1 min-w-[300px]">
                         <input type="text"
@@ -55,7 +50,6 @@
                     </div>
                 </div>
 
-                <!-- Tabel Perizinan -->
                 <div class="bg-white border border-blue-200 rounded-xl overflow-hidden shadow-sm">
                     <table class="w-full text-left border-collapse">
                         <thead>
@@ -106,12 +100,12 @@
                                                     Setujui
                                                 </button>
                                             </form>
-                                            <form action="{{ route('divisi.perizinan.tolak', $i->id) }}" method="POST" onsubmit="return confirm('Tolak pengajuan izin ini?')">
-                                                @csrf
-                                                <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm hover:shadow">
-                                                    Tolak
-                                                </button>
-                                            </form>
+
+                                            <button type="button" 
+                                                    onclick="openRejectModal({{ $i->id }})" 
+                                                    class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm hover:shadow">
+                                                Tolak
+                                            </button>
                                         </div>
                                     @else
                                         <span class="text-slate-400 text-xs font-medium">-</span>
@@ -133,5 +127,71 @@
             </div>
         </div>
     </div>
+
+    <div id="rejectModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 transition-all">
+        <div class="bg-white rounded-2xl border border-blue-100 shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-all duration-300">
+            
+            <div class="bg-gradient-to-r from-rose-600 to-rose-500 p-4 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white">Alasan Penolakan</h3>
+                <button type="button" onclick="closeRejectModal()" class="text-white/80 hover:text-white font-bold text-xl">&times;</button>
+            </div>
+
+            <form id="rejectForm" method="POST" action="">
+                @csrf
+                <div class="p-6">
+                    <p class="text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider">Silakan masukkan alasan penolakan izin:</p>
+                    
+                    <textarea 
+                        name="alasan_tolak" 
+                        id="alasan_tolak" 
+                        rows="4" 
+                        required
+                        placeholder="Contoh: Kuota divisi penuh / Dokumen bukti tidak valid.." 
+                        class="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-inner focus:ring-2 focus:ring-rose-400 focus:outline-none placeholder-slate-400 font-medium text-sm text-slate-800 resize-none"></textarea>
+                </div>
+
+                <div class="bg-slate-50 p-4 flex justify-end gap-2 border-t border-slate-100">
+                    <button type="button" onclick="closeRejectModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-bold transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition shadow-sm">
+                        Kirim & Tolak
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openRejectModal(id) {
+            const modal = document.getElementById('rejectModal');
+            const form = document.getElementById('rejectForm');
+            const textarea = document.getElementById('alasan_tolak');
+            
+            // Mengubah action form target secara dinamis berdasarkan id baris data
+            form.action = `/perizinan/tolak/${id}`; 
+            
+            // Memunculkan modal ke layar
+            modal.classList.remove('hidden');
+            textarea.focus();
+        }
+
+        function closeRejectModal() {
+            const modal = document.getElementById('rejectModal');
+            const textarea = document.getElementById('alasan_tolak');
+            
+            // Menyembunyikan modal kembali
+            modal.classList.add('hidden');
+            textarea.value = '';
+        }
+
+        // Fitur penutup otomatis jika pengguna mengklik area luar modal (backdrop hitam)
+        window.onclick = function(event) {
+            const modal = document.getElementById('rejectModal');
+            if (event.target == modal) {
+                closeRejectModal();
+            }
+        }
+    </script>
 </body>
 </html>
