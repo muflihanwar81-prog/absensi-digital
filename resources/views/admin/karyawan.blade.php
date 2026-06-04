@@ -190,7 +190,8 @@
                                                     '{{ $k->email }}',
                                                     '{{ $k->no_hp }}',
                                                     '{{ $k->role }}',
-                                                    '{{ $k->status }}'
+                                                    '{{ $k->status }}',
+                                                    '{{ addslashes($k->komentar_nonaktif) }}'
                                                 )"
                                                 class="text-blue-600 hover:text-blue-750 transition"
                                                 title="Lihat Detail">
@@ -213,7 +214,8 @@
                                                     '{{ addslashes($k->alamat) }}',
                                                     '{{ $k->tgl_bergabung }}',
                                                     '{{ $k->no_hp }}',
-                                                    '{{ $k->role }}'
+                                                    '{{ $k->role }}',
+                                                    '{{ addslashes($k->komentar_nonaktif) }}'
                                                 )"
                                                 class="text-blue-600 hover:text-blue-750 transition"
                                                 title="Edit Data">
@@ -411,13 +413,22 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Status Karyawan</label>
                     <div class="relative">
-                        <select name="status"
+                        <select name="status" id="tambah_status" onchange="toggleKomentarTambah()"
                                 class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
                             <option value="Aktif">Aktif</option>
                             <option value="Nonaktif">Nonaktif</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xxs"></i>
                     </div>
+                </div>
+
+                <!-- KOMENTAR NONAKTIF (TAMBAH) -->
+                <div id="tambah_komentar_wrapper" class="md:col-span-2" style="display: none; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
+                        <i class="fa-solid fa-comment-dots text-amber-500 mr-1"></i>Alasan / Komentar Nonaktif
+                    </label>
+                    <textarea name="komentar_nonaktif" id="tambah_komentar_nonaktif" rows="3" placeholder="Tuliskan alasan karyawan dinonaktifkan..."
+                              class="w-full bg-amber-50/50 border border-amber-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none resize-none transition shadow-sm"></textarea>
                 </div>
 
             </div>
@@ -583,13 +594,22 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Status</label>
                     <div class="relative">
-                        <select id="edit_status" name="status"
+                        <select id="edit_status" name="status" onchange="toggleKomentarEdit()"
                                 class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
                             <option value="Aktif">Aktif</option>
                             <option value="Nonaktif">Nonaktif</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xxs"></i>
                     </div>
+                </div>
+
+                <!-- KOMENTAR NONAKTIF (EDIT) -->
+                <div id="edit_komentar_wrapper" class="md:col-span-2" style="display: none; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
+                        <i class="fa-solid fa-comment-dots text-amber-500 mr-1"></i>Alasan / Komentar Nonaktif
+                    </label>
+                    <textarea name="komentar_nonaktif" id="edit_komentar_nonaktif" rows="3" placeholder="Tuliskan alasan karyawan dinonaktifkan..."
+                              class="w-full bg-amber-50/50 border border-amber-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none resize-none transition shadow-sm"></textarea>
                 </div>
 
             </div>
@@ -627,7 +647,7 @@
 
     
     // MODAL EDIT KARYAWAN
-    function openEditModal(id, nip, nama, divisi, jabatan, email, status, username, tglLahir, jenisKelamin, alamat, tglBergabung, noHp, role) {
+    function openEditModal(id, nip, nama, divisi, jabatan, email, status, username, tglLahir, jenisKelamin, alamat, tglBergabung, noHp, role, komentarNonaktif) {
         document.getElementById('edit_nip').value       = nip       || '';
         document.getElementById('edit_nama').value      = nama      || '';
         document.getElementById('edit_jabatan').value   = jabatan   || '';
@@ -661,6 +681,10 @@
         if (editRole) {
             for (let o of editRole.options) o.selected = (o.value === role);
         }
+
+        // Komentar Nonaktif
+        document.getElementById('edit_komentar_nonaktif').value = komentarNonaktif || '';
+        toggleKomentarEdit();
 
         // Set action form update
         document.getElementById('formEdit').action = '/karyawan/' + id;
@@ -711,7 +735,7 @@
     
     // MODAL DETAIL KARYAWAN
     
-    function openDetailModal(nip, nama, divisi, jabatan, tglLahir, jenisKelamin, alamat, username, tglBergabung, email, noHp, role, status) {
+    function openDetailModal(nip, nama, divisi, jabatan, tglLahir, jenisKelamin, alamat, username, tglBergabung, email, noHp, role, status, komentarNonaktif) {
         document.getElementById('detail_nip').textContent           = nip           || '-';
         document.getElementById('detail_nama').textContent          = nama          || '-';
         document.getElementById('detail_divisi').textContent        = divisi        || '-';
@@ -725,6 +749,17 @@
         document.getElementById('detail_no_hp').textContent         = noHp          || '-';
         document.getElementById('detail_role').textContent          = role          || '-';
         document.getElementById('detail_status').textContent        = status        || '-';
+
+        // Komentar Nonaktif
+        const komentarWrapper = document.getElementById('detail_komentar_wrapper');
+        const komentarText = document.getElementById('detail_komentar_nonaktif');
+        if (status === 'Nonaktif' && komentarNonaktif) {
+            komentarText.textContent = komentarNonaktif;
+            komentarWrapper.style.display = 'block';
+        } else {
+            komentarWrapper.style.display = 'none';
+            komentarText.textContent = '-';
+        }
 
         const modalDetail = document.getElementById('modalDetail');
         if (modalDetail) {
@@ -746,6 +781,42 @@
         const modalDetail = document.getElementById('modalDetail');
         if (modalDetail && e.target === modalDetail) closeDetailModal();
     });
+
+    // Toggle komentar nonaktif visibility - TAMBAH modal
+    function toggleKomentarTambah() {
+        const status = document.getElementById('tambah_status').value;
+        const wrapper = document.getElementById('tambah_komentar_wrapper');
+        if (status === 'Nonaktif') {
+            wrapper.style.display = 'block';
+            requestAnimationFrame(() => {
+                wrapper.style.maxHeight = '200px';
+                wrapper.style.opacity = '1';
+            });
+        } else {
+            wrapper.style.maxHeight = '0';
+            wrapper.style.opacity = '0';
+            setTimeout(() => { wrapper.style.display = 'none'; }, 300);
+            document.getElementById('tambah_komentar_nonaktif').value = '';
+        }
+    }
+
+    // Toggle komentar nonaktif visibility - EDIT modal
+    function toggleKomentarEdit() {
+        const status = document.getElementById('edit_status').value;
+        const wrapper = document.getElementById('edit_komentar_wrapper');
+        if (status === 'Nonaktif') {
+            wrapper.style.display = 'block';
+            requestAnimationFrame(() => {
+                wrapper.style.maxHeight = '200px';
+                wrapper.style.opacity = '1';
+            });
+        } else {
+            wrapper.style.maxHeight = '0';
+            wrapper.style.opacity = '0';
+            setTimeout(() => { wrapper.style.display = 'none'; }, 300);
+            document.getElementById('edit_komentar_nonaktif').value = '';
+        }
+    }
 </script>
 
 {{-- MODAL DETAIL KARYAWAN --}}
@@ -828,6 +899,16 @@
                 <div class="md:col-span-2">
                     <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Alamat</label>
                     <p id="detail_alamat" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <!-- KOMENTAR NONAKTIF (DETAIL) -->
+                <div id="detail_komentar_wrapper" class="md:col-span-2" style="display: none;">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mt-1">
+                        <label class="block mb-1.5 font-bold text-amber-600 text-xxs uppercase tracking-wider">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>Alasan Nonaktif
+                        </label>
+                        <p id="detail_komentar_nonaktif" class="text-sm font-medium text-amber-800">-</p>
+                    </div>
                 </div>
 
             </div>

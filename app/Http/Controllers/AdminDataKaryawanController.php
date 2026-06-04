@@ -84,6 +84,7 @@ class AdminDataKaryawanController extends Controller
             'no_hp'         => 'nullable|string',
             'role'          => 'nullable|string',
             'status'        => 'nullable|string',
+            'komentar_nonaktif' => 'nullable|string',
         ]);
 
         $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
@@ -104,6 +105,7 @@ class AdminDataKaryawanController extends Controller
         $karyawan->no_hp = $request->no_hp;
         $karyawan->role = $request->role;
         $karyawan->status = $request->status ?? 'Aktif';
+        $karyawan->komentar_nonaktif = $request->status === 'Nonaktif' ? $request->komentar_nonaktif : null;
 
         if ($divisi) {
             $karyawan->jam_masuk = $divisi->jam_masuk;
@@ -171,6 +173,7 @@ class AdminDataKaryawanController extends Controller
             'tgl_bergabung' => 'nullable|date',
             'no_hp'         => 'nullable|string',
             'role'          => 'nullable|string',
+            'komentar_nonaktif' => 'nullable|string',
         ]);
 
         $karyawan = Karyawan::findOrFail($id);
@@ -184,6 +187,7 @@ class AdminDataKaryawanController extends Controller
         $karyawan->divisi         = $request->divisi;
         $karyawan->jabatan        = $request->jabatan;
         $karyawan->status         = $request->status ?? $karyawan->status;
+        $karyawan->komentar_nonaktif = $karyawan->status === 'Nonaktif' ? $request->komentar_nonaktif : null;
         $karyawan->username       = $request->username;
         $karyawan->tgl_lahir      = $request->tgl_lahir;
         $karyawan->jenis_kelamin  = $request->jenis_kelamin;

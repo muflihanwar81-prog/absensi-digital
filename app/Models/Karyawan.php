@@ -32,6 +32,7 @@ class Karyawan extends Authenticatable
         'tgl_bergabung',
         'no_hp',
         'role',
+        'komentar_nonaktif',
     ];
 
     protected $hidden = [
