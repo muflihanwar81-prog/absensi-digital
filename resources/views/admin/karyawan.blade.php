@@ -279,7 +279,7 @@
 
                 <!-- NIK -->
                 <div>
-                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nik / NIP</label>
+                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">NIK</label>
                     <input type="text" name="nip" required placeholder="Nomor Induk Karyawan"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
@@ -287,7 +287,7 @@
                 <!-- USERNAME -->
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Username</label>
-                    <input type="text" name="username" placeholder="Username untuk login"
+                    <input type="text" name="username" placeholder="Username"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
@@ -302,7 +302,7 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Password</label>
                     <div class="relative">
-                        <input type="password" name="password" id="tambah_password" required placeholder="••••••••••••"
+                        <input type="password" name="password" id="tambah_password" required placeholder="Mnimal 6 karakter"
                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-10 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                         <button type="button" onclick="togglePassword('tambah_password', 'tambah_eye')"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -351,8 +351,8 @@
 
                 <!-- G-MAIL -->
                 <div>
-                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Email (Gmail)</label>
-                    <input type="email" name="email" required placeholder="contoh@gmail.com"
+                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Email</label>
+                    <input type="email" name="email" 
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
@@ -368,7 +368,7 @@
                 <!-- NO HP -->
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nomor Handphone</label>
-                    <input type="text" name="no_hp" placeholder="08xxxxxxxxxx"
+                    <input type="text" name="no_hp" 
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
@@ -388,14 +388,12 @@
 
                 <!-- ROLE -->
                 <div>
-                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Hak Akses (Role)</label>
+                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Hak Akses</label>
                     <div class="relative">
                         <select name="role"
                                 class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
                             <option value="">Pilih Role</option>
                             <option value="karyawan">karyawan</option>
-                            <option value="admin">admin</option>
-                            <option value="super_admin">super admin</option>
                             <option value="kepala_divisi">kepala divisi</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xxs"></i>
@@ -428,7 +426,7 @@
             <div class="mt-6">
                 <button type="submit"
                         class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition duration-200 shadow-sm shadow-blue-500/10 hover:shadow-blue-500/25">
-                    Simpan Data
+                    Simpan
                 </button>
             </div>
         </form>
@@ -443,7 +441,7 @@
 
         <!-- Header -->
         <div class="bg-slate-50 border-b border-slate-200/80 rounded-t-2xl px-8 py-4.5 flex items-center justify-between flex-shrink-0">
-            <h2 class="text-lg font-bold text-slate-800 tracking-tight">Form Edit Data Karyawan &amp; Pengguna</h2>
+            <h2 class="text-lg font-bold text-slate-800 tracking-tight">Data Karyawan &amp; Pengguna</h2>
             <button type="button" onclick="closeEditModal()"
                     class="text-slate-400 hover:text-slate-650 text-2xl font-bold leading-none">&times;</button>
         </div>
@@ -479,9 +477,9 @@
 
                 <!-- PASSWORD -->
                 <div>
-                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Password Baru <span class="text-slate-400 font-normal normal-case">(kosongkan jika tidak diganti)</span></label>
+                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Password</label>
                     <div class="relative">
-                        <input type="password" name="password" id="edit_password"
+                        <input type="password" name="password" id="edit_password" placeholder="Kosongkan jika tidak ingin mengubah password"
                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-10 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                         <button type="button" onclick="togglePassword('edit_password', 'edit_eye')"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -527,7 +525,7 @@
 
                 <!-- G-MAIL -->
                 <div>
-                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">G-mail</label>
+                    <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Email</label>
                     <input type="email" id="edit_email" name="email" required
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
@@ -568,8 +566,6 @@
                                 class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
                             <option value="">Pilih Role</option>
                             <option value="karyawan">karyawan</option>
-                            <option value="admin">admin</option>
-                            <option value="super_admin">super admin</option>
                             <option value="kepala_divisi">kepala divisi</option>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xxs"></i>
@@ -602,7 +598,7 @@
             <div class="mt-6">
                 <button type="submit"
                         class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition duration-200 shadow-sm shadow-blue-500/10 hover:shadow-blue-500/25">
-                    Simpan Perubahan
+                    Simpan
                 </button>
             </div>
         </form>
@@ -610,9 +606,9 @@
     </div>
 </div>
 <script>
-    // =========================
+    
     // MODAL TAMBAH KARYAWAN
-    // =========================
+    
     function openModal() {
         const modalTambah = document.getElementById('modalTambah');
         if (modalTambah) {
@@ -629,9 +625,8 @@
         }
     }
 
-    // =========================
+    
     // MODAL EDIT KARYAWAN
-    // =========================
     function openEditModal(id, nip, nama, divisi, jabatan, email, status, username, tglLahir, jenisKelamin, alamat, tglBergabung, noHp, role) {
         document.getElementById('edit_nip').value       = nip       || '';
         document.getElementById('edit_nama').value      = nama      || '';
@@ -670,6 +665,7 @@
         // Set action form update
         document.getElementById('formEdit').action = '/karyawan/' + id;
 
+        
         // Show modal edit
         const modalEdit = document.getElementById('modalEdit');
         if (modalEdit) {
@@ -712,9 +708,9 @@
         if (e.key === 'Escape') { closeModal(); closeEditModal(); closeDetailModal(); }
     });
 
-    // =========================
+    
     // MODAL DETAIL KARYAWAN
-    // =========================
+    
     function openDetailModal(nip, nama, divisi, jabatan, tglLahir, jenisKelamin, alamat, username, tglBergabung, email, noHp, role, status) {
         document.getElementById('detail_nip').textContent           = nip           || '-';
         document.getElementById('detail_nama').textContent          = nama          || '-';
@@ -751,6 +747,7 @@
         if (modalDetail && e.target === modalDetail) closeDetailModal();
     });
 </script>
+
 {{-- MODAL DETAIL KARYAWAN --}}
 <div id="modalDetail"
      class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-50 p-4">
@@ -759,73 +756,78 @@
 
         <!-- Header -->
         <div class="bg-slate-50 border-b border-slate-200/80 rounded-t-2xl px-8 py-4.5 flex items-center justify-between flex-shrink-0">
-            <h2 class="text-lg font-bold text-slate-800 tracking-tight">Info Detail Data Karyawan &amp; Pengguna</h2>
+            <h2 class="text-lg font-bold text-slate-800 tracking-tight">Detail Karyawan</h2>
             <button type="button" onclick="closeDetailModal()"
                     class="text-slate-400 hover:text-slate-650 text-2xl font-bold leading-none">&times;</button>
         </div>
 
-        <!-- Body -->
+        <!-- Detail Body -->
         <div class="overflow-y-auto px-8 py-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
 
-                <!-- KOLOM KIRI -->
-                <div class="space-y-4">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Nik / NIP</span>
-                        <span id="detail_nip" class="text-sm font-semibold text-slate-800 font-mono"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Nama Karyawan</span>
-                        <span id="detail_nama" class="text-sm font-semibold text-slate-800"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Divisi</span>
-                        <span id="detail_divisi" class="text-sm font-medium text-slate-700"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Jabatan</span>
-                        <span id="detail_jabatan" class="text-sm font-medium text-slate-700"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Tgl, Lahir</span>
-                        <span id="detail_tgl_lahir" class="text-sm font-medium text-slate-650 font-mono"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Jenis Kelamin</span>
-                        <span id="detail_jenis_kelamin" class="text-sm font-medium text-slate-750"></span>
-                    </div>
-                    <div class="flex flex-col border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider mb-1">Alamat lengkap</span>
-                        <span id="detail_alamat" class="text-sm text-slate-700 whitespace-pre-line leading-relaxed"></span>
-                    </div>
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">NIK</label>
+                    <p id="detail_nip" class="text-sm font-semibold text-slate-800">-</p>
                 </div>
 
-                <!-- KOLOM KANAN -->
-                <div class="space-y-4">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Username</span>
-                        <span id="detail_username" class="text-sm font-semibold text-slate-800 font-mono"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Tgl, Bergabung</span>
-                        <span id="detail_tgl_bergabung" class="text-sm font-medium text-slate-650 font-mono"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">G-mail</span>
-                        <span id="detail_email" class="text-sm font-medium text-blue-600 hover:underline"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">No Hp</span>
-                        <span id="detail_no_hp" class="text-sm font-medium text-slate-800 font-mono"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Role</span>
-                        <span id="detail_role" class="text-sm font-semibold text-slate-700"></span>
-                    </div>
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <span class="font-bold text-slate-400 text-xxs uppercase tracking-wider">Status</span>
-                        <span id="detail_status" class="text-sm font-bold text-slate-800"></span>
-                    </div>
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Username</label>
+                    <p id="detail_username" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Nama Karyawan</label>
+                    <p id="detail_nama" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Email</label>
+                    <p id="detail_email" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Divisi</label>
+                    <p id="detail_divisi" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Jabatan</label>
+                    <p id="detail_jabatan" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Tanggal Lahir</label>
+                    <p id="detail_tgl_lahir" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Jenis Kelamin</label>
+                    <p id="detail_jenis_kelamin" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Tanggal Bergabung</label>
+                    <p id="detail_tgl_bergabung" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">No HP</label>
+                    <p id="detail_no_hp" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Role</label>
+                    <p id="detail_role" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Status</label>
+                    <p id="detail_status" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Alamat</label>
+                    <p id="detail_alamat" class="text-sm font-semibold text-slate-800">-</p>
                 </div>
 
             </div>
@@ -834,5 +836,4 @@
 </div>
 
 </body>
-
 </html>

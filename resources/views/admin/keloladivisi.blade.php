@@ -94,7 +94,9 @@
                                 <td class="px-6 py-4 font-mono font-medium text-slate-650">{{ $item->jam_keluar }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center gap-3.5">
-                                        <button class="bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">Edit</button>
+                                        <button type="button"
+                                            onclick="openModalEditDivisi('{{ $item->id }}', '{{ addslashes($item->nama_divisi) }}', '{{ $item->jam_masuk }}', '{{ $item->jam_keluar }}')"
+                                            class="bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs hover:bg-amber-100 transition">Edit</button>
                                         <form action="{{ route('admin.keloladivisi.destroy', $item->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin ingin menghapus divisi ini?')">
                                             @csrf
@@ -155,6 +157,46 @@
                 <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-sm transition shadow-sm shadow-blue-500/10">
                     Simpan Divisi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit Divisi -->
+<div id="modalEditDivisi"
+    class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
+    <div class="bg-white w-[500px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-800 tracking-tight">Edit Divisi</h2>
+            <button type="button" onclick="closeModalEditDivisi()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+        </div>
+
+        <form id="formEditDivisi" action="" method="POST" class="p-6">
+            @csrf
+            @method('PUT')
+            <div class="space-y-4">
+                <div class="grid grid-cols-4 items-center gap-4">
+                    <label class="font-bold text-slate-600 text-xs uppercase tracking-wider col-span-1">Nama Divisi</label>
+                    <input type="text" id="edit_nama_divisi" name="nama_divisi" required placeholder="Contoh: IT"
+                        class="col-span-3 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none shadow-sm">
+                </div>
+                <div class="grid grid-cols-4 items-center gap-4">
+                    <label class="font-bold text-slate-600 text-xs uppercase tracking-wider col-span-1">Jam Masuk</label>
+                    <input type="time" id="edit_jam_masuk" name="jam_masuk" required
+                        class="col-span-3 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none shadow-sm text-slate-600">
+                </div>
+                <div class="grid grid-cols-4 items-center gap-4">
+                    <label class="font-bold text-slate-600 text-xs uppercase tracking-wider col-span-1">Jam Keluar</label>
+                    <input type="time" id="edit_jam_keluar" name="jam_keluar" required
+                        class="col-span-3 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none shadow-sm text-slate-600">
+                </div>
+            </div>
+
+            <div class="border-t border-slate-200/60 mt-6 pt-4.5 flex gap-3">
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-sm transition shadow-sm shadow-blue-500/10">
+                    Simpan Perubahan
                 </button>
             </div>
         </form>
@@ -331,14 +373,36 @@ function openModalTambahDivisi() {
 document.addEventListener('click', function (e) {
     const modalTambah = document.getElementById('modalTambahDivisi');
     const modalAtur    = document.getElementById('modalAturLokasi');
+    const modalEdit    = document.getElementById('modalEditDivisi');
     if (modalTambah && e.target === modalTambah) closeModalTambahDivisi();
     if (modalAtur    && e.target === modalAtur)    closeModalAturLokasi();
+    if (modalEdit    && e.target === modalEdit)    closeModalEditDivisi();
 });
 
 // Close Modal with ESC
 document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { closeModalTambahDivisi(); closeModalAturLokasi(); }
+    if (e.key === 'Escape') { closeModalTambahDivisi(); closeModalAturLokasi(); closeModalEditDivisi(); }
 });
+
+// Edit Divisi Modal
+function openModalEditDivisi(id, namaDivisi, jamMasuk, jamKeluar) {
+    document.getElementById('edit_nama_divisi').value = namaDivisi || '';
+    document.getElementById('edit_jam_masuk').value    = jamMasuk   || '';
+    document.getElementById('edit_jam_keluar').value   = jamKeluar  || '';
+    document.getElementById('formEditDivisi').action   = '/keloladivisi/' + id;
+
+    const modal = document.getElementById('modalEditDivisi');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeModalEditDivisi() {
+    const modal = document.getElementById('modalEditDivisi');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+}
 
 function closeModalTambahDivisi() {
     const modal = document.getElementById('modalTambahDivisi');
