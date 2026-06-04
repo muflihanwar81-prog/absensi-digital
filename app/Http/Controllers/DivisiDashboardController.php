@@ -286,10 +286,18 @@ class DivisiDashboardController extends Controller
             ->with('success', 'Pengajuan izin berhasil disetujui.');
     }
 
-    public function tolak($id)
+   public function tolak(Request $request, $id)
     {
+        // 1. Validasi agar alasan penolakan wajib diisi
+        $request->validate([
+            'alasan_tolak' => 'required|string|max:255'
+        ]);
+
         $izin = Izin::findOrFail($id);
+        
+        // 2. Simpan status 'Ditolak' beserta alasannya ke model/tabel Izin
         $izin->status = 'Ditolak';
+        $izin->alasan_tolak = $request->alasan_tolak; // Pastikan kolom 'alasan_tolak' sudah ada di database Anda
         $izin->save();
 
         // Sync with Absensi table - delete if it exists

@@ -159,11 +159,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/perizinan/{id}/setujui', [DivisiDashboardController::class, 'setujui'])
         ->name('divisi.perizinan.setujui');
 
-    Route::post('/perizinan/{id}/tolak', [DivisiDashboardController::class, 'tolak'])
+    Route::post('/perizinan/tolak/{id}', [DivisiDashboardController::class, 'tolak'])
         ->name('divisi.perizinan.tolak');
 
     Route::get('/laporan', [DivisiDashboardController::class, 'laporan'])
-        ->name('divisi.laporan');
+        ->name('divisi.DivisiLaporan');
 
     Route::get('/laporan/excel', [DivisiDashboardController::class, 'exportExcel'])
         ->name('divisi.laporan.excel');
