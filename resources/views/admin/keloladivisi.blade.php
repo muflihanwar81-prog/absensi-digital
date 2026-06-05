@@ -7,7 +7,6 @@
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     
-    <!-- Google Fonts Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -35,7 +34,7 @@
             <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm">
                 <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">Manajemen Divisi</p>
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Kelola Divisi</h1>
-                <p class="text-slate-500 mt-1.5 text-sm">Atur divisi, jam kerja, dan lokasi absensi perusahaan.</p>
+                <p class="text-slate-500 mt-1.5 text-sm">Atur divisi, jam kerja, dan lokasi absensi perusahaan</p>
             </div>
         </div>
 

@@ -7,13 +7,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>Admin Dashboard</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    
-    <!-- Google Fonts Plus Jakarta Sans -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -23,7 +22,6 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* ===== DASHBOARD ANIMATIONS ===== */
 
         /* Fade in + slide up for cards */
         @keyframes fadeInUp {
@@ -31,6 +29,7 @@
                 opacity: 0;
                 transform: translateY(30px) scale(0.97);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -43,6 +42,7 @@
                 opacity: 0;
                 transform: translateX(-40px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -55,6 +55,7 @@
                 opacity: 0;
                 transform: translateX(40px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -67,9 +68,11 @@
                 opacity: 0;
                 transform: scale(0.5);
             }
+
             60% {
                 transform: scale(1.05);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -78,9 +81,12 @@
 
         /* Glow effect after counter finishes */
         @keyframes glowPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 text-shadow: 0 0 0px transparent;
             }
+
             50% {
                 text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
             }
@@ -88,8 +94,15 @@
 
         /* Chart section fade in */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Apply animations */
@@ -122,16 +135,45 @@
         }
 
         /* Stagger delays for cards */
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
-        .delay-500 { animation-delay: 0.5s; }
-        .delay-600 { animation-delay: 0.6s; }
-        .delay-700 { animation-delay: 0.7s; }
-        .delay-800 { animation-delay: 0.8s; }
-        .delay-900 { animation-delay: 0.9s; }
-        .delay-1000 { animation-delay: 1.0s; }
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-400 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-500 {
+            animation-delay: 0.5s;
+        }
+
+        .delay-600 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-700 {
+            animation-delay: 0.7s;
+        }
+
+        .delay-800 {
+            animation-delay: 0.8s;
+        }
+
+        .delay-900 {
+            animation-delay: 0.9s;
+        }
+
+        .delay-1000 {
+            animation-delay: 1.0s;
+        }
 
         /* Divisi Dropdown Styling */
         .divisi-select-wrapper {
@@ -165,11 +207,12 @@
         }
 
         .filter-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    margin-right: 6px;
-}
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-right: 6px;
+        }
+
         .divisi-select:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), 0 4px 12px rgba(37, 99, 235, 0.2);
@@ -194,9 +237,17 @@
 
         /* Loading shimmer for cards */
         @keyframes shimmer {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         .stats-loading .counter {
@@ -263,17 +314,17 @@
                     <div id="date" class="mt-3 text-slate-400 text-sm font-medium"></div>
 
                     <div class="divisi-select-wrapper mt-4">
-    <i class="fa-solid fa-filter text-blue-600 text-lg"></i>
-    <select id="divisiFilter" class="divisi-select">
-        <option value="">Semua Divisi</option>
-        @foreach($divisiList as $divisi)
-            <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
-        @endforeach
-    </select>
-    <span class="divisi-select-arrow">
-        <i class="fa-solid fa-chevron-down"></i>
-    </span>
-</div>
+                        <i class="fa-solid fa-filter text-blue-600 text-lg"></i>
+                        <select id="divisiFilter" class="divisi-select">
+                            <option value="">Semua Divisi</option>
+                            @foreach($divisiList as $divisi)
+                            <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
+                            @endforeach
+                        </select>
+                        <span class="divisi-select-arrow">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </span>
+                    </div>
                     <div id="divisiBadge" class="divisi-badge" style="display: none;">
                         <span class="filter-icon">
                             <i class="fa-solid fa-filter"></i>
@@ -374,12 +425,6 @@
                         <h2 class="text-lg font-bold text-slate-800">
                             Grafik Kehadiran Hari Ini
                         </h2>
-
-                        <span
-                            class="bg-emerald-50 text-emerald-700 border border-emerald-200/60 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Real-Time
-                        </span>
                     </div>
 
                     <canvas id="absensiChart"></canvas>
@@ -396,50 +441,50 @@
 
                     <div class="flex-1 overflow-y-auto pr-2 space-y-4">
                         @php
-                            $bgColors = [
-                                'blue' => 'bg-blue-100',
-                                'amber' => 'bg-amber-100',
-                                'rose' => 'bg-rose-100',
-                                'purple' => 'bg-purple-100',
-                                'emerald' => 'bg-emerald-100',
-                                'cyan' => 'bg-cyan-100',
-                                'slate' => 'bg-slate-100',
-                            ];
-                            $textColors = [
-                                'blue' => 'text-blue-600',
-                                'amber' => 'text-amber-600',
-                                'rose' => 'text-rose-600',
-                                'purple' => 'text-purple-600',
-                                'emerald' => 'text-emerald-600',
-                                'cyan' => 'text-cyan-600',
-                                'slate' => 'text-slate-600',
-                            ];
+                        $bgColors = [
+                        'blue' => 'bg-blue-100',
+                        'amber' => 'bg-amber-100',
+                        'rose' => 'bg-rose-100',
+                        'purple' => 'bg-purple-100',
+                        'emerald' => 'bg-emerald-100',
+                        'cyan' => 'bg-cyan-100',
+                        'slate' => 'bg-slate-100',
+                        ];
+                        $textColors = [
+                        'blue' => 'text-blue-600',
+                        'amber' => 'text-amber-600',
+                        'rose' => 'text-rose-600',
+                        'purple' => 'text-purple-600',
+                        'emerald' => 'text-emerald-600',
+                        'cyan' => 'text-cyan-600',
+                        'slate' => 'text-slate-600',
+                        ];
                         @endphp
 
                         @forelse($activities as $activity)
-                            @php
-                                $bgColor = $bgColors[$activity->warna] ?? 'bg-slate-100';
-                                $textColor = $textColors[$activity->warna] ?? 'text-slate-600';
-                            @endphp
-                            <div class="flex items-start gap-3">
-                                <div class="w-9 h-9 rounded-full {{ $bgColor }} flex items-center justify-center shrink-0">
-                                    <i class="fa-solid fa-{{ $activity->icon }} {{ $textColor }} text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-slate-700 leading-tight">{{ $activity->judul }}</p>
-                                    @if($activity->deskripsi)
-                                        <p class="text-xs text-slate-500 mt-1">{{ $activity->deskripsi }}</p>
-                                    @endif
-                                    <p class="text-[10px] text-slate-400 mt-1 font-mono">
-                                        {{ $activity->created_at->diffForHumans() }}
-                                    </p>
-                                </div>
+                        @php
+                        $bgColor = $bgColors[$activity->warna] ?? 'bg-slate-100';
+                        $textColor = $textColors[$activity->warna] ?? 'text-slate-600';
+                        @endphp
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-full {{ $bgColor }} flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-{{ $activity->icon }} {{ $textColor }} text-sm"></i>
                             </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-700 leading-tight">{{ $activity->judul }}</p>
+                                @if($activity->deskripsi)
+                                <p class="text-xs text-slate-500 mt-1">{{ $activity->deskripsi }}</p>
+                                @endif
+                                <p class="text-[10px] text-slate-400 mt-1 font-mono">
+                                    {{ $activity->created_at->diffForHumans() }}
+                                </p>
+                            </div>
+                        </div>
                         @empty
-                            <div class="text-center py-10 text-slate-400 text-sm">
-                                <i class="fa-solid fa-clock-rotate-left text-2xl mb-2 block"></i>
-                                Belum ada aktifitas hari ini.
-                            </div>
+                        <div class="text-center py-10 text-slate-400 text-sm">
+                            <i class="fa-solid fa-clock-rotate-left text-2xl mb-2 block"></i>
+                            Belum ada aktifitas hari ini.
+                        </div>
                         @endforelse
                     </div>
                 </div>
@@ -451,85 +496,94 @@
 
     <!-- CHART with animation -->
     <script>
-    const ctx = document.getElementById('absensiChart');
+        const ctx = document.getElementById('absensiChart');
 
-    let absensiChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [
-                'Hadir',
-                'Terlambat',
-                'Alpha',
-                'Izin',
-                'Sakit'
-            ],
-            datasets: [{
-                label: 'Jumlah Data',
-                data: [
-                    { $totalHadir },   
-                    { $totalTerlambat},    
-                    { $totalAlpha},    
-                    { $totalIzin },    
-                    { $totalSakit }      
+        let absensiChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Hadir',
+                    'Terlambat',
+                    'Alpha',
+                    'Izin',
+                    'Sakit'
                 ],
-                backgroundColor: [
-                    'rgba(16, 185, 129, 0.85)',   // Emerald
-                    'rgba(245, 158, 11, 0.85)',   // Amber
-                    'rgba(239, 68, 68, 0.85)',    // Rose/Red
-                    'rgba(6, 182, 212, 0.85)',    // Cyan
-                    'rgba(236, 72, 153, 0.85)'    // Pink
-                ],
-                borderRadius: 8,
-                borderWidth: 0,
-                barThickness: 45
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 1000,
-                easing: 'easeOutQuart',
-                delay: function(context) {
-                    // Stagger each bar animation
-                    return context.dataIndex * 200 + 800;
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#64748b',
-                        font: {
-                            family: 'Plus Jakarta Sans',
-                            weight: '600',
-                            size: 11
+                datasets: [{
+                    label: 'Jumlah Data',
+                    data: [{
+                            $totalHadir
+                        },
+                        {
+                            $totalTerlambat
+                        },
+                        {
+                            $totalAlpha
+                        },
+                        {
+                            $totalIzin
+                        },
+                        {
+                            $totalSakit
                         }
-                    },
-                    grid: {
+                    ],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.85)', // Emerald
+                        'rgba(245, 158, 11, 0.85)', // Amber
+                        'rgba(239, 68, 68, 0.85)', // Rose/Red
+                        'rgba(6, 182, 212, 0.85)', // Cyan
+                        'rgba(236, 72, 153, 0.85)' // Pink
+                    ],
+                    borderRadius: 8,
+                    borderWidth: 0,
+                    barThickness: 45
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart',
+                    delay: function(context) {
+                        // Stagger each bar animation
+                        return context.dataIndex * 200 + 800;
+                    }
+                },
+                plugins: {
+                    legend: {
                         display: false
                     }
                 },
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: '#64748b',
-                        font: {
-                            family: 'Plus Jakarta Sans',
-                            size: 11
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#64748b',
+                            font: {
+                                family: 'Plus Jakarta Sans',
+                                weight: '600',
+                                size: 11
+                            }
+                        },
+                        grid: {
+                            display: false
                         }
                     },
-                    grid: {
-                        color: 'rgba(226, 232, 240, 0.6)'
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#64748b',
+                            font: {
+                                family: 'Plus Jakarta Sans',
+                                size: 11
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(226, 232, 240, 0.6)'
+                        }
                     }
                 }
             }
-        }
-    });
+        });
     </script>
 
     <!-- CLOCK -->
@@ -568,12 +622,12 @@
          */
         function animateCounters() {
             const counters = document.querySelectorAll('.counter');
-            
+
             counters.forEach((counter, index) => {
                 const target = parseInt(counter.getAttribute('data-target')) || 0;
-                const duration = 2000; 
-                const startDelay = index * 10; 
-                
+                const duration = 2000;
+                const startDelay = index * 10;
+
                 if (target === 0) {
                     counter.textContent = '0';
                     return;
@@ -581,7 +635,7 @@
 
                 setTimeout(() => {
                     let startTime = null;
-                    
+
                     function easeOutExpo(t) {
                         return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
                     }
@@ -590,13 +644,13 @@
                         if (!startTime) startTime = currentTime;
                         const elapsed = currentTime - startTime;
                         const progress = Math.min(elapsed / duration, 1);
-                        
+
                         // Apply easing
                         const easedProgress = easeOutExpo(progress);
                         const currentValue = Math.floor(easedProgress * target);
-                        
+
                         counter.textContent = currentValue.toLocaleString('id-ID');
-                        
+
                         if (progress < 1) {
                             requestAnimationFrame(updateCounter);
                         } else {
@@ -605,7 +659,7 @@
                             counter.classList.add('counter-done');
                         }
                     }
-                    
+
                     requestAnimationFrame(updateCounter);
                 }, startDelay);
             });
@@ -647,10 +701,10 @@
 
                 try {
                     // Fetch filtered stats
-                    const url = divisiId 
-                        ? `/dashboard/stats?divisi_id=${divisiId}` 
-                        : `/dashboard/stats`;
-                    
+                    const url = divisiId ?
+                        `/dashboard/stats?divisi_id=${divisiId}` :
+                        `/dashboard/stats`;
+
                     const response = await fetch(url, {
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
@@ -660,7 +714,7 @@
                     });
 
                     if (!response.ok) throw new Error('Network error');
-                    
+
                     const data = await response.json();
 
                     // Update counter targets and re-animate
