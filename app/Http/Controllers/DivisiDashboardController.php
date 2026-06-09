@@ -13,14 +13,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class DivisiDashboardController extends Controller
 {
-    /**
-     * Dashboard Divisi
-     * Nama divisi diambil dari field 'name' user kepala_divisi.
-     * Pastikan user kepala_divisi dibuat dengan name = nama divisinya.
-     */
-    /**
-     * Cari karyawan record milik kepala divisi yang login
-     */
     private function getKaryawanKepala()
     {
         $user = Auth::user();
