@@ -24,18 +24,18 @@
 
 <body class="bg-slate-50 text-slate-900 flex font-sans overflow-hidden">
 
-    {{-- Sidebar --}}
+    {{-- Sidebar navigasi admin --}}
     @include('layouts.sidebar')
 
     <main class="flex-1 h-screen overflow-y-auto">
 
-        {{-- Header --}}
+        {{-- Header atas halaman admin --}}
         @include('components.header_admin')
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">
 
-                {{-- HEADER CARD --}}
+                {{-- HEADER CARD: Judul halaman + total absensi --}}
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
                         <div>
@@ -50,26 +50,28 @@
                             </p>
                         </div>
 
+                        {{-- Badge counter: menampilkan jumlah total record absensi --}}
                         <div
                             class="bg-slate-50 border border-slate-200/60 rounded-xl px-5 py-3 shadow-sm text-center min-w-[160px]">
                             <p class="text-xxs font-bold uppercase tracking-wider text-slate-400 mb-1">
                                 Total Absensi
                             </p>
                             <h2 class="text-2xl font-extrabold text-slate-800 font-mono">
-                                {{ $absensi->count() }}
+                                {{ $absensi->count() }} {{-- Hitung total absensi dari collection --}}
                             </h2>
                         </div>
                     </div>
                 </div>
 
-                {{-- SEARCH & FILTER --}}
+                {{-- SEARCH & FILTER: Form pencarian data absensi --}}
                 <div class="flex gap-4 items-center mb-6">
+                    {{-- Form GET → dikirim ke controller index() untuk filter data --}}
                     <form
                         action="{{ route('admin.absensi.index') }}"
                         method="GET"
                         class="flex-1 flex gap-4 items-center">
 
-                        {{-- SEARCH --}}
+                        {{-- Input pencarian: NIP, nama, divisi, atau jabatan --}}
                         <div class="flex-1">
                             <div
                                 class="bg-white border border-slate-250 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-205">
@@ -87,13 +89,13 @@
                                 <input
                                     type="text"
                                     name="search"
-                                    value="{{ request('search') }}"
+                                    value="{{ request('search') }}" {{-- Pertahankan nilai search setelah submit --}}
                                     placeholder="Cari NIP, nama, divisi, atau jabatan..."
                                     class="w-full bg-transparent outline-none text-sm font-medium text-slate-700 placeholder-slate-400">
                             </div>
                         </div>
 
-                        {{-- BUTTON FILTER --}}
+                        {{-- Tombol submit filter --}}
                         <button
                             type="submit"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-sm shadow-blue-500/10 hover:scale-[1.02] transition-all duration-200">
@@ -102,12 +104,12 @@
                     </form>
                 </div>
 
-                {{-- TABEL DATA ABSENSI --}}
+                {{-- TABEL DATA ABSENSI: Tampilkan hasil query dari controller --}}
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px]">
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
 
-                            {{-- TABLE HEADER --}}
+                            {{-- Kolom header tabel --}}
                             <thead
                                 class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                                 <tr>
@@ -123,7 +125,7 @@
                                 </tr>
                             </thead>
 
-                            {{-- TABLE BODY --}}
+                            {{-- Baris data: loop $absensi dari controller, tampilkan kosong jika tidak ada --}}
                             <tbody>
                                 @forelse($absensi as $index => $a)
                                     <tr

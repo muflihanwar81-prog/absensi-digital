@@ -37,8 +37,9 @@ class IzinController extends Controller
 
         $request->validate([
             'kategori' => 'required|string|max:255',
-            'file_tambahan' => 'nullable|file|mimes:pdf,docx,docx,jpg,jpeg,png|max:10240',
-
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'file_tambahan' => 'nullable|file|mimes:pdf,docx,jpg,jpeg,png|max:10240',
         ]);
 
         $karyawan = Karyawan::findOrFail($karyawanId);
@@ -51,14 +52,16 @@ class IzinController extends Controller
         }
 
         Izin::create([
-            'karyawan_id'   => $karyawan->id,
-            'nip'           => $karyawan->nip,
-            'nama'          => $karyawan->nama,
-            'divisi'        => $karyawan->divisi,
-            'jabatan'       => $karyawan->jabatan,
-            'kategori'      => $request->kategori,
-            'file_tambahan' => $namaFile,
-            'status'        => 'Menunggu',
+            'karyawan_id'     => $karyawan->id,
+            'nip'             => $karyawan->nip,
+            'nama'            => $karyawan->nama,
+            'divisi'          => $karyawan->divisi,
+            'jabatan'         => $karyawan->jabatan,
+            'kategori'        => $request->kategori,
+            'tanggal_mulai'   => $request->tanggal_mulai,
+            'tanggal_selesai' => $request->tanggal_selesai,
+            'file_tambahan'   => $namaFile,
+            'status'          => 'Menunggu',
         ]);
 
         return redirect()

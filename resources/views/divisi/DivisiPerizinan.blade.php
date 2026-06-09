@@ -85,7 +85,17 @@
                                         <span class="text-slate-400 text-xs">-</span>
                                     @endif
                                 </td>
-                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-xs font-semibold">{{ $i->created_at->format('d-m-Y') }}</td>
+                                <td class="py-3 px-3 border-r border-blue-200 text-blue-900 text-xs font-semibold">
+                                    @if($i->tanggal_mulai && $i->tanggal_selesai)
+                                        {{ \Carbon\Carbon::parse($i->tanggal_mulai)->format('d-m-Y') }}
+                                        @if($i->tanggal_mulai !== $i->tanggal_selesai)
+                                            <br><span class="text-[10px] text-blue-600 font-bold">s/d</span><br>
+                                            {{ \Carbon\Carbon::parse($i->tanggal_selesai)->format('d-m-Y') }}
+                                        @endif
+                                    @else
+                                        {{ $i->created_at->format('d-m-Y') }}
+                                    @endif
+                                </td>
                                 <td class="py-3 px-3 border-r border-blue-200 text-center">
                                     <span class="px-2.5 py-1 rounded-full text-xs font-bold {{ $i->status === 'Disetujui' ? 'bg-green-100 text-green-700' : ($i->status === 'Ditolak' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700') }}">
                                         {{ $i->status ?? 'Menunggu' }}

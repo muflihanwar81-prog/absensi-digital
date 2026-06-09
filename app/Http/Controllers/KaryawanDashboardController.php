@@ -23,7 +23,7 @@ class KaryawanDashboardController extends Controller
         $karyawan = Karyawan::findOrFail($karyawanId);
 
         $hadir = Absensi::where('karyawan_id', $karyawanId)
-            ->where('status', 'Hadir')
+            ->whereIn('status', ['Hadir', 'Terlambat'])
             ->count();
 
         $terlambat = Absensi::where('karyawan_id', $karyawanId)

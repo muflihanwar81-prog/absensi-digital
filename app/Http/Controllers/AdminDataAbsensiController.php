@@ -9,10 +9,16 @@ use Illuminate\Http\Request;
 
 class AdminDataAbsensiController extends Controller
 {
+    /**
+     * Tampilkan semua data absensi karyawan.
+     * Support filter: search (NIP/nama/divisi/jabatan), rentang tanggal, dan status.
+     */
     public function index(Request $request)
     {
+        // Mulai query dengan eager load relasi karyawan
         $query = Absensi::with('karyawan');
 
+        // Filter pencarian berdasarkan NIP, nama, divisi, atau jabatan karyawan
         if ($request->filled('search')) {
             $search = $request->search;
             $query->whereHas('karyawan', function ($q) use ($search) {
@@ -23,21 +29,25 @@ class AdminDataAbsensiController extends Controller
             });
         }
 
+        // Filter tanggal mulai
         if ($request->filled('tanggal_awal')) {
             $query->whereDate('tanggal', '>=', $request->tanggal_awal);
         }
 
+        // Filter tanggal akhir
         if ($request->filled('tanggal_akhir')) {
             $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
         }
 
+        // Filter berdasarkan status (Hadir, Terlambat, dll)
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
+        // Ambil data urut terbaru
         $absensi = $query->orderBy('tanggal', 'desc')->get();
 
-        // Map karyawan data onto each absensi record
+        // Tambahkan field karyawan langsung ke tiap record absensi agar mudah diakses di view
         $absensi->transform(function ($item) {
             $item->nip     = optional($item->karyawan)->nip ?? '-';
             $item->nama    = optional($item->karyawan)->nama ?? '-';
@@ -49,40 +59,65 @@ class AdminDataAbsensiController extends Controller
         return view('admin.AdminDataAbsensi', compact('absensi'));
     }
 
+    /**
+     * Tidak digunakan — admin tidak boleh buat absensi manual.
+     * Redirect balik ke halaman index.
+     */
     public function create()
     {
         return redirect()->route('admin.absensi.index');
     }
 
+    /**
+     * Tidak digunakan — admin tidak boleh buat absensi manual.
+     */
     public function store(Request $request)
     {
         return redirect()->route('admin.absensi.index');
     }
 
+    /**
+     * Tidak digunakan — tidak ada halaman detail absensi saat ini.
+     */
     public function show($id)
     {
         $item = Absensi::with('karyawan')->findOrFail($id);
         return redirect()->route('admin.absensi.index');
     }
 
+    /**
+     * Tidak digunakan — admin tidak bisa edit absensi.
+     */
     public function edit($id)
     {
         return redirect()->route('admin.absensi.index');
     }
 
+    /**
+     * Tidak digunakan — admin tidak bisa edit absensi.
+     */
     public function update(Request $request, $id)
     {
         return redirect()->route('admin.absensi.index');
     }
 
+    /**
+     * Hapus satu record absensi berdasarkan ID.
+     * Catat aksi ini ke log aktivitas admin.
+     */
     public function destroy($id)
     {
+        // Cari data absensi beserta relasi karyawannya
         $absensi = Absensi::with('karyawan')->findOrFail($id);
+
+        // Simpan info untuk keperluan log
         $namaKaryawan = $absensi->karyawan ? $absensi->karyawan->nama : 'Tidak diketahui';
         $tanggal = $absensi->tanggal;
-        
+
+        // Hapus record absensi dari database
         $absensi->delete();
 
+        // Catat aktivitas hapus ke tabel admin_activities
         AdminActivity::log(
             'absensi_hapus',
             'Menghapus Absensi',

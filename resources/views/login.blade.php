@@ -34,25 +34,6 @@
                 <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-4">
                     CODIA<span class="text-cyan-400">SYNC</span>
                 </h1>
-
-                <p class="text-slate-300 text-base md:text-lg leading-relaxed">
-                    Sistem Manajemen Absensi Karyawan Modern
-                    untuk memantau kehadiran, izin, dan laporan
-                    secara efisien dan terintegrasi.
-                </p>
-
-                <!-- Feature Pills -->
-                <div class="mt-8 flex flex-wrap justify-center gap-3">
-                    <span class="px-4 py-2 rounded-full bg-white/10 text-slate-200 text-sm backdrop-blur-sm">
-                        Presensi Digital
-                    </span>
-                    <span class="px-4 py-2 rounded-full bg-white/10 text-slate-200 text-sm backdrop-blur-sm">
-                        Monitoring Real-Time
-                    </span>
-                    <span class="px-4 py-2 rounded-full bg-white/10 text-slate-200 text-sm backdrop-blur-sm">
-                        Laporan Otomatis
-                    </span>
-                </div>
             </div>
         </div>
 
