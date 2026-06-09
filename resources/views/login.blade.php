@@ -45,11 +45,9 @@
 
                 <!-- Header -->
                 <div class="mb-8">
-
                     <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-2">
                         Login Pengguna
                     </h2>
-
                     <p class="text-slate-500 text-sm md:text-base leading-relaxed">
                         Masuk menggunakan akun terdaftar untuk mengakses sistem CODIA-SYNC.
                     </p>
@@ -57,8 +55,7 @@
 
                 <!-- Error Message -->
                 @if(session('error'))
-                <div
-                    class="mb-6 flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl">
+                <div class="mb-6 flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl">
                     <span class="text-sm font-medium">
                         {{ session('error') }}
                     </span>
@@ -74,15 +71,13 @@
                         <label class="block mb-2 text-sm md:text-base font-semibold text-slate-700">
                             Email
                         </label>
-
                         <div class="relative">
-
                             <input
                                 type="email"
                                 name="email"
                                 placeholder="Masukkan email"
                                 required
-                                class="w-full pr-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 transition">
+                                class="w-full pr-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition">
                         </div>
                     </div>
 
@@ -91,23 +86,14 @@
                         <label class="block mb-2 text-sm md:text-base font-semibold text-slate-700">
                             Password
                         </label>
-
                         <div class="relative">
-
                             <input
                                 type="password"
                                 id="password"
                                 name="password"
                                 placeholder="Masukkan password"
                                 required
-                                class="w-full pr-12 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 transition">
-
-                            <button
-                                type="button"
-                                onclick="togglePassword()"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition">
-                                👁️
-                            </button>
+                                class="w-full pr-12 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition">
                         </div>
                     </div>
 
@@ -119,7 +105,7 @@
                     </button>
                 </form>
 
-    <!-- Footer -->
+                <!-- Footer -->
                 <div class="mt-8 pt-6 border-t border-slate-100 text-center">
                     <p class="text-xs md:text-sm text-slate-400">
                         © {{ date('Y') }} CODIA-SYNC. All rights reserved.

@@ -511,14 +511,14 @@
                 datasets: [{
                     label: 'Jumlah Data',
                     data: [
-                        {{ $totalHadir }},
-                        {{ $totalTerlambat }},
-                        {{ $totalBelumAbsen }},
-                        {{ $totalIzin }},
-                        {{ $totalSakit }}
+                        { $totalHadir },
+                        { $totalTerlambat},
+                        { $totalBelumAbsen },
+                        { $totalIzin },
+                        { $totalSakit }
                     ],
                     backgroundColor: [
-                        'rgba(16, 185, 129, 0.85)', // Emerald
+                        'rgba(59, 130, 246, 0.85)', // Blue
                         'rgba(245, 158, 11, 0.85)', // Amber
                         'rgba(239, 68, 68, 0.85)',  // Rose/Red
                         'rgba(6, 182, 212, 0.85)',  // Cyan

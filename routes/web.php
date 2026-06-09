@@ -173,12 +173,6 @@ Route::middleware(['karyawan.auth'])->group(function () {
     Route::delete('/izin/{id}', [IzinController::class, 'destroy'])
         ->name('izin.destroy');
 
-    Route::post('/absen-masuk', [KaryawanDashboardController::class, 'absenMasuk'])
-        ->name('karyawan.absen-masuk');
-
-    Route::post('/tidak-hadir', [KaryawanDashboardController::class, 'tidakHadir'])
-        ->name('karyawan.tidak-hadir');
-
     Route::get('/riwayat', [KaryawanDashboardController::class, 'riwayat'])
         ->name('karyawan.riwayat');
 
