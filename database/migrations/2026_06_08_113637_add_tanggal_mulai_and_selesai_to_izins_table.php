@@ -6,19 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('izins', function (Blueprint $table) {
-            // ⬇️ MASUKKAN KODE ANDA DI SINI
-            $table->string('alasan_tolak')->nullable()->after('status');
+            $table->date('tanggal_mulai')->nullable()->after('tanggal');
+            $table->date('tanggal_selesai')->nullable()->after('tanggal_mulai');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('izins', function (Blueprint $table) {
-            // Hapus kolom jika migration di-rollback
-            $table->dropColumn('alasan_tolak');
+            $table->dropColumn(['tanggal_mulai', 'tanggal_selesai']);
         });
     }
 };

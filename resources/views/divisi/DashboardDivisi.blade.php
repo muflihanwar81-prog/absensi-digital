@@ -282,7 +282,7 @@
                 datasets: [{
                     label: 'Jumlah Data',
                     data: [
-                        {{ $hadir }},
+                        {{ max(0, $hadir - $terlambat) }},
                         {{ $terlambat }},
                         {{ $alpha }},
                         {{ $izin }},

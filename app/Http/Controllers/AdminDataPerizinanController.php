@@ -8,10 +8,15 @@ use Illuminate\Http\Request;
 
 class AdminDataPerizinanController extends Controller
 {
+    /**
+     * Tampilkan semua data pengajuan izin karyawan.
+     * Support filter pencarian berdasarkan NIP, nama, atau kategori izin.
+     */
     public function index(Request $request)
     {
         $query = Izin::query();
 
+        // Filter pencarian: NIP, nama karyawan, atau jenis/kategori izin
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -21,41 +26,61 @@ class AdminDataPerizinanController extends Controller
             });
         }
 
+        // Ambil data urut terbaru
         $perizinan = $query->latest()->get();
 
         return view('admin.AdminDataPerizinan', compact('perizinan'));
     }
 
+    /**
+     * Tidak digunakan — admin tidak membuat izin secara manual.
+     */
     public function create()
     {
         return redirect()->route('admin.perizinan.index');
     }
 
+    /**
+     * Tidak digunakan — pengajuan izin hanya dari karyawan.
+     */
     public function store(Request $request)
     {
         return redirect()->route('admin.perizinan.index');
     }
 
+    /**
+     * Tidak digunakan — halaman detail perizinan belum diimplementasi.
+     */
     public function show($id)
     {
         return redirect()->route('admin.perizinan.index');
     }
 
+    /**
+     * Tidak digunakan — admin tidak edit data izin secara langsung.
+     */
     public function edit($id)
     {
         return redirect()->route('admin.perizinan.index');
     }
 
+    /**
+     * Update status pengajuan izin (Menunggu / Disetujui / Ditolak).
+     * Catat ke log aktivitas sesuai keputusan admin.
+     */
     public function update(Request $request, $id)
     {
+        // Validasi nilai status yang diperbolehkan
         $request->validate([
             'status' => 'required|in:Menunggu,Disetujui,Ditolak',
         ]);
 
+        // Cari data izin dan update statusnya
         $izin = Izin::findOrFail($id);
         $izin->status = $request->status;
         $izin->save();
 
+        // Catat log berbeda tergantung keputusan (setujui atau tolak)
         if ($izin->status === 'Disetujui') {
             AdminActivity::log(
                 'izin_setujui',
@@ -75,14 +100,22 @@ class AdminDataPerizinanController extends Controller
             ->with('success', 'Status perizinan berhasil diperbarui.');
     }
 
+    /**
+     * Hapus data izin berdasarkan ID.
+     * Catat ke log aktivitas admin.
+     */
     public function destroy($id)
     {
         $izin = Izin::findOrFail($id);
+
+        // Simpan info sebelum dihapus untuk keperluan log
         $namaKaryawan = $izin->nama;
-        $kategori = $izin->kategori;
-        
+        $kategori     = $izin->kategori;
+
+        // Hapus record izin dari database
         $izin->delete();
 
+        // Catat aktivitas hapus izin ke log admin
         AdminActivity::log(
             'izin_hapus',
             'Menghapus Izin',

@@ -367,7 +367,7 @@
                             Total Hadir
                         </p>
                         <h1 class="text-5xl font-extrabold mt-3 text-emerald-600 tracking-tight font-mono">
-                            <span class="counter" data-target="{{ $totalHadir }}" data-key="totalHadir">0</span>
+                            <span class="counter" data-target="{{ $totalMasuk }}" data-key="totalHadir">0</span>
                         </h1>
                     </div>
 
@@ -384,10 +384,10 @@
                     <div
                         class="bg-white rounded-2xl p-6 text-center shadow-sm border border-slate-200/80 hover:shadow-md hover:scale-[1.01] transition-all duration-200 flex flex-col justify-center animate-card delay-600">
                         <p class="font-semibold text-sm text-slate-500 uppercase tracking-wider">
-                            Total Alpha
+                            Belum Absen
                         </p>
                         <h1 class="text-5xl font-extrabold mt-3 text-rose-500 tracking-tight font-mono">
-                            <span class="counter" data-target="{{ $totalAlpha }}" data-key="totalAlpha">0</span>
+                            <span class="counter" data-target="{{ $totalBelumAbsen }}" data-key="totalAlpha">0</span>
                         </h1>
                     </div>
 
@@ -504,34 +504,25 @@
                 labels: [
                     'Hadir',
                     'Terlambat',
-                    'Alpha',
+                    'Belum Absen',
                     'Izin',
                     'Sakit'
                 ],
                 datasets: [{
                     label: 'Jumlah Data',
-                    data: [{
-                            $totalHadir
-                        },
-                        {
-                            $totalTerlambat
-                        },
-                        {
-                            $totalAlpha
-                        },
-                        {
-                            $totalIzin
-                        },
-                        {
-                            $totalSakit
-                        }
+                    data: [
+                        {{ $totalHadir }},
+                        {{ $totalTerlambat }},
+                        {{ $totalBelumAbsen }},
+                        {{ $totalIzin }},
+                        {{ $totalSakit }}
                     ],
                     backgroundColor: [
                         'rgba(16, 185, 129, 0.85)', // Emerald
                         'rgba(245, 158, 11, 0.85)', // Amber
-                        'rgba(239, 68, 68, 0.85)', // Rose/Red
-                        'rgba(6, 182, 212, 0.85)', // Cyan
-                        'rgba(236, 72, 153, 0.85)' // Pink
+                        'rgba(239, 68, 68, 0.85)',  // Rose/Red
+                        'rgba(6, 182, 212, 0.85)',  // Cyan
+                        'rgba(236, 72, 153, 0.85)'  // Pink
                     ],
                     borderRadius: 8,
                     borderWidth: 0,
@@ -545,7 +536,6 @@
                     duration: 1000,
                     easing: 'easeOutQuart',
                     delay: function(context) {
-                        // Stagger each bar animation
                         return context.dataIndex * 200 + 800;
                     }
                 },
@@ -575,7 +565,9 @@
                             font: {
                                 family: 'Plus Jakarta Sans',
                                 size: 11
-                            }
+                            },
+                            stepSize: 1,
+                            precision: 0
                         },
                         grid: {
                             color: 'rgba(226, 232, 240, 0.6)'
@@ -700,7 +692,6 @@
                 }
 
                 try {
-                    // Fetch filtered stats
                     const url = divisiId ?
                         `/dashboard/stats?divisi_id=${divisiId}` :
                         `/dashboard/stats`;
@@ -719,12 +710,12 @@
 
                     // Update counter targets and re-animate
                     const counterMap = {
-                        'totalKaryawan': data.totalKaryawan,
-                        'totalHadir': data.totalHadir,
+                        'totalKaryawan':  data.totalKaryawan,
+                        'totalHadir':     data.totalMasuk,
                         'totalTerlambat': data.totalTerlambat,
-                        'totalAlpha': data.totalAlpha,
-                        'totalIzin': data.totalIzin,
-                        'totalSakit': data.totalSakit,
+                        'totalAlpha':     data.totalBelumAbsen,
+                        'totalIzin':      data.totalIzin,
+                        'totalSakit':     data.totalSakit,
                     };
 
                     // Animate each counter to new value
@@ -794,23 +785,13 @@
         function updateChart(data) {
             if (typeof absensiChart === 'undefined') return;
 
-            // Update data
             absensiChart.data.datasets[0].data = [
-                data.totalHadir,
-                data.totalTerlambat,
-                data.totalAlpha,
-                data.totalIzin,
-                data.totalSakit
+                data.totalHadir      || 0,
+                data.totalTerlambat  || 0,
+                data.totalBelumAbsen || 0,
+                data.totalIzin       || 0,
+                data.totalSakit      || 0
             ];
-
-            // Re-animate chart
-            absensiChart.options.animation = {
-                duration: 800,
-                easing: 'easeOutQuart',
-                delay: function(context) {
-                    return context.dataIndex * 100;
-                }
-            };
 
             absensiChart.update();
         }

@@ -42,23 +42,28 @@ class DivisiDashboardController extends Controller
         $total_karyawan = $karyawanIds->count();
 
         $hadir = Absensi::whereIn('karyawan_id', $karyawanIds)
-            ->where('status', 'Hadir')
+            ->whereIn('status', ['Hadir', 'Terlambat'])
+            ->whereDate('tanggal', Carbon::today())
             ->count();
 
         $terlambat = Absensi::whereIn('karyawan_id', $karyawanIds)
             ->where('status', 'Terlambat')
+            ->whereDate('tanggal', Carbon::today())
             ->count();
 
         $alpha = Absensi::whereIn('karyawan_id', $karyawanIds)
             ->whereIn('status', ['Alpha', 'Tidak Hadir'])
+            ->whereDate('tanggal', Carbon::today())
             ->count();
 
-        $izin = Izin::where('divisi', $namaDivisi)
-            ->whereIn('kategori', ['Izin', 'Cuti'])
+        $izin = Absensi::whereIn('karyawan_id', $karyawanIds)
+            ->where('status', 'Izin')
+            ->whereDate('tanggal', Carbon::today())
             ->count();
 
-        $sakit = Izin::where('divisi', $namaDivisi)
-            ->where('kategori', 'Sakit')
+        $sakit = Absensi::whereIn('karyawan_id', $karyawanIds)
+            ->where('status', 'Sakit')
+            ->whereDate('tanggal', Carbon::today())
             ->count();
 
         // Absensi kepala divisi hari ini
@@ -258,27 +263,33 @@ class DivisiDashboardController extends Controller
         $izin->status = 'Disetujui';
         $izin->save();
 
-        // Sync with Absensi table
-        $tanggal = \Carbon\Carbon::parse($izin->created_at)->toDateString();
+        // Sync with Absensi table for the entire range of dates
+        $startDate = \Carbon\Carbon::parse($izin->tanggal_mulai ?? $izin->created_at);
+        $endDate = \Carbon\Carbon::parse($izin->tanggal_selesai ?? $izin->created_at);
+        $period = \Carbon\CarbonPeriod::create($startDate, $endDate);
 
         // Map kategori to valid absensis status ('Cuti' -> 'Izin')
         $statusAbsensi = $izin->kategori === 'Cuti' ? 'Izin' : $izin->kategori;
 
-        $absensi = Absensi::where('karyawan_id', $izin->karyawan_id)
-            ->whereDate('tanggal', $tanggal)
-            ->first();
+        foreach ($period as $date) {
+            $tanggal = $date->toDateString();
 
-        if ($absensi) {
-            $absensi->status = $statusAbsensi;
-            $absensi->save();
-        } else {
-            Absensi::create([
-                'karyawan_id' => $izin->karyawan_id,
-                'tanggal'     => $tanggal,
-                'jam_masuk'   => null,
-                'jam_keluar'  => null,
-                'status'      => $statusAbsensi,
-            ]);
+            $absensi = Absensi::where('karyawan_id', $izin->karyawan_id)
+                ->whereDate('tanggal', $tanggal)
+                ->first();
+
+            if ($absensi) {
+                $absensi->status = $statusAbsensi;
+                $absensi->save();
+            } else {
+                Absensi::create([
+                    'karyawan_id' => $izin->karyawan_id,
+                    'tanggal'     => $tanggal,
+                    'jam_masuk'   => null,
+                    'jam_keluar'  => null,
+                    'status'      => $statusAbsensi,
+                ]);
+            }
         }
 
         return redirect()
@@ -300,10 +311,12 @@ class DivisiDashboardController extends Controller
         $izin->alasan_tolak = $request->alasan_tolak; // Pastikan kolom 'alasan_tolak' sudah ada di database Anda
         $izin->save();
 
-        // Sync with Absensi table - delete if it exists
-        $tanggal = \Carbon\Carbon::parse($izin->created_at)->toDateString();
+        // Sync with Absensi table - delete if it exists within the range
+        $startDate = \Carbon\Carbon::parse($izin->tanggal_mulai ?? $izin->created_at)->toDateString();
+        $endDate = \Carbon\Carbon::parse($izin->tanggal_selesai ?? $izin->created_at)->toDateString();
+
         Absensi::where('karyawan_id', $izin->karyawan_id)
-            ->whereDate('tanggal', $tanggal)
+            ->whereBetween('tanggal', [$startDate, $endDate])
             ->whereIn('status', ['Izin', 'Sakit', 'Cuti'])
             ->delete();
 

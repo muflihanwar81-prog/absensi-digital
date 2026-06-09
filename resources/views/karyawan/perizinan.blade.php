@@ -102,6 +102,7 @@
                                             <th class="px-6 py-3.5 text-left font-semibold">Divisi</th>
                                             <th class="px-6 py-3.5 text-left font-semibold">Jabatan</th>
                                             <th class="px-6 py-3.5 text-left font-semibold">Jenis Izin</th>
+                                            <th class="px-6 py-3.5 text-left font-semibold">Tanggal</th>
                                             <th class="px-6 py-3.5 text-center font-semibold">Status</th>
                                             <th class="px-6 py-3.5 text-center font-semibold">Aksi</th>
                                         </tr>
@@ -136,6 +137,17 @@
                                                     {{ $item->kategori }}
                                                 </td>
 
+                                                <td class="px-6 py-4 text-slate-500 font-mono text-xs">
+                                                    @if($item->tanggal_mulai && $item->tanggal_selesai)
+                                                        {{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d-m-Y') }}
+                                                        @if($item->tanggal_mulai !== $item->tanggal_selesai)
+                                                            s/d {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d-m-Y') }}
+                                                        @endif
+                                                    @else
+                                                        {{ $item->created_at->format('d-m-Y') }}
+                                                    @endif
+                                                </td>
+
                                                 <td class="px-6 py-4 text-center">
                                                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
                                                         @if ($item->status == 'Disetujui')
@@ -165,7 +177,7 @@
                                         @empty
                                             <tr>
                                                 <td
-                                                    colspan="8"
+                                                    colspan="9"
                                                     class="text-center py-24 text-slate-400 italic text-sm">
                                                     Belum ada pengajuan izin.
                                                 </td>
@@ -286,6 +298,34 @@
                     </div>
                 </div>
 
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
+                            Tanggal Mulai
+                        </label>
+                        <input
+                            type="date"
+                            name="tanggal_mulai"
+                            id="tanggal_mulai"
+                            required
+                            value="{{ date('Y-m-d') }}"
+                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-700 outline-none shadow-sm focus:border-blue-500 transition">
+                    </div>
+
+                    <div>
+                        <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
+                            Tanggal Selesai
+                        </label>
+                        <input
+                            type="date"
+                            name="tanggal_selesai"
+                            id="tanggal_selesai"
+                            required
+                            value="{{ date('Y-m-d') }}"
+                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-700 outline-none shadow-sm focus:border-blue-500 transition">
+                    </div>
+                </div>
+
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
                         File Tambahan
@@ -329,6 +369,24 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
+            }
+        });
+
+        // Validasi Tanggal Mulai & Tanggal Selesai
+        document.addEventListener('DOMContentLoaded', function() {
+            const tanggalMulaiInput = document.getElementById('tanggal_mulai');
+            const tanggalSelesaiInput = document.getElementById('tanggal_selesai');
+
+            if (tanggalMulaiInput && tanggalSelesaiInput) {
+                tanggalMulaiInput.addEventListener('change', function() {
+                    tanggalSelesaiInput.min = this.value;
+                    if (tanggalSelesaiInput.value < this.value) {
+                        tanggalSelesaiInput.value = this.value;
+                    }
+                });
+                
+                // Set initial min date
+                tanggalSelesaiInput.min = tanggalMulaiInput.value;
             }
         });
     </script>

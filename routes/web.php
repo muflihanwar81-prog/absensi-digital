@@ -14,9 +14,9 @@ use App\Http\Controllers\{
     AbsensiController,
     AuthController,
     TAController,
-    ProdukController,
     KaryawanDashboardController,
     IzinController,
+    AdminDashboardController,
     AdminDataKaryawanController,
     AdminDataAbsensiController,
     AdminDataPerizinanController,
@@ -27,9 +27,8 @@ use App\Http\Controllers\{
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/products', [ProdukController::class, 'index']);
 Route::get('/tecno_view', [TAController::class, 'tampilkan']);
-Route::get('/test', [ProdukController::class, 'test']);
+
 
 Route::get('/login', function () {
     if (Auth::check()) {
@@ -50,71 +49,8 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 Route::middleware(['auth'])->name('admin.')->group(function () {
 
-    Route::get('/dashboard', function () {
-        $divisiList = Divisi::orderBy('nama_divisi')->get();
-        $totalDivisi = Divisi::count();
-        $totalKaryawan = Karyawan::count();
-        $totalAbsensi = Absensi::count();
-        $totalPerizinan = Perizinan::count();
-
-        // Attendance status counts
-        $totalHadir = Absensi::where('status', 'Hadir')->count();
-        $totalTerlambat = Absensi::where('status', 'Terlambat')->count();
-        $totalAlpha = Absensi::where('status', 'Alpha')->count();
-        $totalIzin = Absensi::where('status', 'Izin')->count();
-        $totalSakit = Absensi::where('status', 'Sakit')->count();
-
-        // Fetch latest 5 activities
-        $activities = AdminActivity::latest()->take(5)->get();
-
-        return view('admin.dashboard', compact(
-            'divisiList',
-            'totalDivisi',
-            'totalKaryawan',
-            'totalAbsensi',
-            'totalPerizinan',
-            'totalHadir',
-            'totalTerlambat',
-            'totalAlpha',
-            'totalIzin',
-            'totalSakit',
-            'activities'
-        ));
-    })->name('dashboard');
-
-    // API endpoint for filtered dashboard stats by divisi
-    Route::get('/dashboard/stats', function (Illuminate\Http\Request $request) {
-        $divisiId = $request->query('divisi_id');
-
-        if ($divisiId) {
-            // Get karyawan IDs in this divisi
-            $karyawanIds = Karyawan::where('divisi_id', $divisiId)->pluck('id');
-
-            $totalKaryawan = $karyawanIds->count();
-            $totalHadir = Absensi::whereIn('karyawan_id', $karyawanIds)->where('status', 'Hadir')->count();
-            $totalTerlambat = Absensi::whereIn('karyawan_id', $karyawanIds)->where('status', 'Terlambat')->count();
-            $totalAlpha = Absensi::whereIn('karyawan_id', $karyawanIds)->where('status', 'Alpha')->count();
-            $totalIzin = Absensi::whereIn('karyawan_id', $karyawanIds)->where('status', 'Izin')->count();
-            $totalSakit = Absensi::whereIn('karyawan_id', $karyawanIds)->where('status', 'Sakit')->count();
-        } else {
-            // All divisions
-            $totalKaryawan = Karyawan::count();
-            $totalHadir = Absensi::where('status', 'Hadir')->count();
-            $totalTerlambat = Absensi::where('status', 'Terlambat')->count();
-            $totalAlpha = Absensi::where('status', 'Alpha')->count();
-            $totalIzin = Absensi::where('status', 'Izin')->count();
-            $totalSakit = Absensi::where('status', 'Sakit')->count();
-        }
-
-        return response()->json([
-            'totalKaryawan' => $totalKaryawan,
-            'totalHadir' => $totalHadir,
-            'totalTerlambat' => $totalTerlambat,
-            'totalAlpha' => $totalAlpha,
-            'totalIzin' => $totalIzin,
-            'totalSakit' => $totalSakit,
-        ]);
-    })->name('dashboard.stats');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/stats', [AdminDashboardController::class, 'stats'])->name('dashboard.stats');
 
     Route::get('/aktifitas', function () {
         $activities = AdminActivity::latest()->paginate(15);

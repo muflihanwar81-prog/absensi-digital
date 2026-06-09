@@ -13,6 +13,8 @@ class Izin extends Model
         'divisi',
         'jabatan',
         'kategori',
+        'tanggal_mulai',
+        'tanggal_selesai',
         'file_tambahan',
         'status',
     ];
