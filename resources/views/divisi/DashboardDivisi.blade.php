@@ -30,10 +30,10 @@
 
         <main class="flex-1 p-6 overflow-y-auto min-w-0 flex flex-col gap-6">
 
-            <header class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 flex justify-between items-center">
-                <h1 class="text-xl font-black text-blue-900 tracking-wider">KEPALA DIVISI</h1>
+            <header class="bg-blue-600 to-blue-500 rounded-2xl shadow-sm border border-slate-200/80 p-4 flex justify-between items-center">
+                <h1 class="text-l font-extrabold tracking-tight text-white leading-tight">KEPALA DIVISI</h1>
                 <div class="text-right">
-                    <p class="text-sm font-bold text-slate-700">Hallo, {{ $nama_user }}</p>
+                    <p class="text-sm font-extrabold tracking-tight text-white leading-tight">Hallo, {{ $nama_user }}</p>
                 </div>
             </header>
 
