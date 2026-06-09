@@ -68,11 +68,6 @@ class AdminLaporanController extends Controller
         return view('admin.laporan', compact('data', 'daftarDivisi', 'karyawanPerDivisi'));
     }
 
-    /**
-     * Export laporan absensi ke format CSV (bisa dibuka di Excel).
-     * Menggunakan streaming agar tidak membebani memori untuk data besar.
-     * Catat aksi ini ke log aktivitas admin.
-     */
     public function exportExcel()
     {
         // Ambil semua data absensi dengan relasi karyawan
@@ -128,12 +123,6 @@ class AdminLaporanController extends Controller
         // Kirim response stream sebagai file download
         return response()->stream($callback, 200, $headers);
     }
-
-    /**
-     * Export laporan absensi ke format PDF menggunakan library DomPDF.
-     * Render dari view blade laporan_pdf lalu trigger download.
-     * Catat aksi ini ke log aktivitas admin.
-     */
     public function exportPdf()
     {
         // Ambil semua data absensi dengan relasi karyawan
