@@ -55,7 +55,7 @@
                         @php
                             $delay = ($loop->index + 1) * 100 . 'ms';
                         @endphp
-                        <div class="text-center bg-slate-50 border border-slate-200/60 rounded-xl py-3 shadow-sm hover:scale-[1.02] transition-transform duration-200 animate-card" style="animation-delay: {{ $delay }};">
+                        <div class="text-center bg-slate-50 border border-slate-200/60 rounded-xl py-3 shadow-sm hover:scale-[1.02] transition-transform duration-200 animate-card" style="animation-delay: 5 ;">
                             <p class="text-xxs font-bold uppercase mb-1 text-slate-400 tracking-wider">
                                 {{ $divisi }}
                             </p>
