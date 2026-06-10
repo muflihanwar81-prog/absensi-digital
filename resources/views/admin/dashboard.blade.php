@@ -427,7 +427,12 @@
                         </h2>
                     </div>
 
-                    <canvas id="absensiChart"></canvas>
+                    <canvas id="absensiChart"
+                        data-hadir="{{ $totalHadir }}"
+                        data-terlambat="{{ $totalTerlambat }}"
+                        data-belum-absen="{{ $totalBelumAbsen }}"
+                        data-izin="{{ $totalIzin }}"
+                        data-sakit="{{ $totalSakit }}"></canvas>
                 </div>
                 <!-- AKTIFITAS ADMIN -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 min-w-0 flex flex-col h-[24rem] animate-chart-section delay-1000">
@@ -497,6 +502,7 @@
     <!-- CHART with animation -->
     <script>
         const ctx = document.getElementById('absensiChart');
+        const dataset = ctx.dataset;
 
         let absensiChart = new Chart(ctx, {
             type: 'bar',
@@ -511,11 +517,11 @@
                 datasets: [{
                     label: 'Jumlah Data',
                     data: [
-                        {{ $totalHadir }},
-                        {{ $totalTerlambat }},
-                        {{ $totalBelumAbsen }},
-                        {{ $totalIzin }},
-                        {{ $totalSakit }}
+                        Number(dataset.hadir || 0),
+                        Number(dataset.terlambat || 0),
+                        Number(dataset.belumAbsen || 0),
+                        Number(dataset.izin || 0),
+                        Number(dataset.sakit || 0)
                     ],
                     backgroundColor: [
                         'rgba(59, 130, 246, 0.85)', // Blue

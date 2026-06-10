@@ -36,7 +36,7 @@
         
         {{-- PAGE TITLE: Judul halaman laporan --}}
         <div class="px-6 pt-6">
-            <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm">
+            <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm animate-welcome-left">
                 <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">
                     Reporting System
                 </p>
@@ -55,7 +55,7 @@
         <div class="p-6">
 
         {{-- FILTER CARD: Real-time filter tanpa klik button --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 mb-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 mb-6 animate-card delay-100">
                 <div class="flex flex-wrap gap-4 items-center">
 
                     {{-- Input pencarian umum: NIP, jabatan --}}
@@ -149,7 +149,7 @@
             </div>
 
             {{-- TABLE CARD: Tampilkan data laporan absensi dari controller --}}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 animate-card delay-200">
 
                 {{-- Judul tabel --}}
                 <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 flex items-center justify-between">
@@ -266,7 +266,7 @@
     const rows           = document.querySelectorAll('.tabel-row');
     const totalRows      = rows.length;
 
-    // ─── Dropdown nama: update isi sesuai divisi yang dipilih ───────────────
+    // Dropdown nama: update isi sesuai divisi yang dipilih
     function updateNamaDropdown(divisi) {
         const current = elNama.value;
         elNama.innerHTML = '<option value="">Semua Karyawan</option>';
@@ -291,7 +291,7 @@
         applyFilter();
     }
 
-    // ─── Filter utama: sembunyikan/tampilkan baris tabel ────────────────────
+    //Filter utama: sembunyikan/tampilkan baris tabel 
     function applyFilter() {
         const search  = elSearch.value.trim().toLowerCase();
         const divisi  = elDivisi.value;

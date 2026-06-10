@@ -38,7 +38,7 @@
                 {{-- HEADER CARD: Judul + total seluruh aktivitas (dari pagination) --}}
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
-                        <div>
+                        <div class="animate-welcome-left">
                             <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">
                                 Audit Trail
                             </p>
@@ -51,7 +51,7 @@
                         </div>
 
                         {{-- Total aktivitas dari hasil paginasi --}}
-                        <div class="bg-slate-50 border border-slate-200/60 rounded-xl px-5 py-3 shadow-sm text-center min-w-[160px]">
+                        <div class="bg-slate-50 border border-slate-200/60 rounded-xl px-5 py-3 shadow-sm text-center min-w-[160px] animate-welcome-right">
                             <p class="text-xxs font-bold uppercase tracking-wider text-slate-400 mb-1">
                                 Total Aktifitas
                             </p>
@@ -63,7 +63,7 @@
                 </div>
 
                 {{-- TIMELINE LIST: Tampilkan aktivitas sebagai timeline vertikal --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 animate-card delay-100">
                     <div class="flow-root">
                         <ul role="list" class="-mb-8">
                             {{-- Mapping warna ikon berdasarkan tipe aktivitas --}}

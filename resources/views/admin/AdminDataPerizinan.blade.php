@@ -35,7 +35,7 @@
                 {{-- HEADER CARD --}}
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
-                        <div>
+                        <div class="animate-welcome-left">
                             <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">
                                 Manajemen Data
                             </p>
@@ -46,7 +46,7 @@
                                 Kelola seluruh pengajuan izin karyawan secara terpusat.
                             </p>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200/60 rounded-xl px-5 py-3 shadow-sm text-center min-w-[160px]">
+                        <div class="bg-slate-50 border border-slate-200/60 rounded-xl px-5 py-3 shadow-sm text-center min-w-[160px] animate-welcome-right">
                             <p class="text-xxs font-bold uppercase tracking-wider text-slate-400 mb-1">Total Perizinan</p>
                             <h2 class="text-2xl font-extrabold text-slate-800 font-mono">{{ $perizinan->count() }}</h2>
                         </div>
@@ -54,7 +54,7 @@
                 </div>
 
                 {{-- SEARCH BAR --}}
-                <div class="mb-6">
+                <div class="mb-6 animate-card delay-100">
                     <form action="{{ route('admin.perizinan.index') }}" method="GET">
                         <div class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-200 w-full max-w-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,7 +68,7 @@
                 </div>
 
                 {{-- TABLE --}}
-                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px]">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px] animate-card delay-200">
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
 

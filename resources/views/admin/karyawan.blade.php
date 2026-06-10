@@ -35,7 +35,7 @@
                 {{-- HEADER CARD --}}
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
-                        <div>
+                        <div class="animate-welcome-left">
                             <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">
                                 Data Karyawan
                             </h1>
@@ -43,7 +43,7 @@
                         </div>
 
                         <button onclick="openModal()"
-                            class="bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/10 px-5 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 hover:scale-[1.02] transition-all duration-200">
+                            class="bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/10 px-5 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 hover:scale-[1.02] transition-all duration-200 animate-welcome-right">
                             <span class="text-lg leading-none">+</span>
                             <span>Tambah Karyawan</span>
                         </button>
@@ -52,7 +52,10 @@
                     {{-- STATISTIK DIVISI --}}
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-gray-800">
                         @forelse($daftarDivisi as $divisi)
-                        <div class="text-center bg-slate-50 border border-slate-200/60 rounded-xl py-3 shadow-sm hover:scale-[1.02] transition-transform duration-200">
+                        @php
+                            $delay = ($loop->index + 1) * 100 . 'ms';
+                        @endphp
+                        <div class="text-center bg-slate-50 border border-slate-200/60 rounded-xl py-3 shadow-sm hover:scale-[1.02] transition-transform duration-200 animate-card" style="animation-delay: {{ $delay }};">
                             <p class="text-xxs font-bold uppercase mb-1 text-slate-400 tracking-wider">
                                 {{ $divisi }}
                             </p>
@@ -69,7 +72,7 @@
                 </div>
 
                 {{-- SEARCH & FILTER --}}
-                <div class="flex gap-4 items-center mb-6">
+                <div class="flex gap-4 items-center mb-6 animate-card delay-300">
                     <form action="{{ route('admin.karyawan') }}"
                         method="GET"
                         class="flex-1 flex flex-wrap gap-4 items-center">
@@ -134,7 +137,7 @@
                 </div>
 
                 {{-- TABEL --}}
-                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden min-h-[480px] shadow-sm">
+                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden min-h-[480px] shadow-sm animate-card delay-400">
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
                             <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
@@ -170,10 +173,6 @@
 
                                     <td class="px-4 py-4 text-center">
                                         <div class="flex justify-center gap-3.5 text-base">
-
-                                            <a href="#" class="text-slate-400 hover:text-blue-600 transition" title="Foto Presensi">
-                                                <i class="fa-solid fa-camera"></i>
-                                            </a>
 
                                             {{-- TOMBOL DETAIL --}}
                                             <button type="button"
@@ -625,6 +624,103 @@
         </div>
     </div>
 </div>
+{{-- MODAL DETAIL KARYAWAN --}}
+<div id="modalDetail"
+     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-50 p-4">
+
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl border border-slate-200/80 relative flex flex-col max-h-[95vh]">
+
+        <!-- Header -->
+        <div class="bg-slate-50 border-b border-slate-200/80 rounded-t-2xl px-8 py-4.5 flex items-center justify-between flex-shrink-0">
+            <h2 class="text-lg font-bold text-slate-800 tracking-tight">Detail Karyawan</h2>
+            <button type="button" onclick="closeDetailModal()"
+                    class="text-slate-400 hover:text-slate-650 text-2xl font-bold leading-none">&times;</button>
+        </div>
+
+        <!-- Detail Body -->
+        <div class="overflow-y-auto px-8 py-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">NIK</label>
+                    <p id="detail_nip" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Username</label>
+                    <p id="detail_username" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Nama Karyawan</label>
+                    <p id="detail_nama" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Email</label>
+                    <p id="detail_email" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Divisi</label>
+                    <p id="detail_divisi" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Jabatan</label>
+                    <p id="detail_jabatan" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Tanggal Lahir</label>
+                    <p id="detail_tgl_lahir" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Jenis Kelamin</label>
+                    <p id="detail_jenis_kelamin" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Tanggal Bergabung</label>
+                    <p id="detail_tgl_bergabung" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">No HP</label>
+                    <p id="detail_no_hp" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Role</label>
+                    <p id="detail_role" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Status</label>
+                    <p id="detail_status" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Alamat</label>
+                    <p id="detail_alamat" class="text-sm font-semibold text-slate-800">-</p>
+                </div>
+
+                <!-- KOMENTAR NONAKTIF (DETAIL) -->
+                <div id="detail_komentar_wrapper" class="md:col-span-2" style="display: none;">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mt-1">
+                        <label class="block mb-1.5 font-bold text-amber-600 text-xxs uppercase tracking-wider">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>Alasan Nonaktif
+                        </label>
+                        <p id="detail_komentar_nonaktif" class="text-sm font-medium text-amber-800">-</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     
     // MODAL TAMBAH KARYAWAN
@@ -819,102 +915,6 @@
     }
 </script>
 
-{{-- MODAL DETAIL KARYAWAN --}}
-<div id="modalDetail"
-     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-50 p-4">
-
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl border border-slate-200/80 relative flex flex-col max-h-[95vh]">
-
-        <!-- Header -->
-        <div class="bg-slate-50 border-b border-slate-200/80 rounded-t-2xl px-8 py-4.5 flex items-center justify-between flex-shrink-0">
-            <h2 class="text-lg font-bold text-slate-800 tracking-tight">Detail Karyawan</h2>
-            <button type="button" onclick="closeDetailModal()"
-                    class="text-slate-400 hover:text-slate-650 text-2xl font-bold leading-none">&times;</button>
-        </div>
-
-        <!-- Detail Body -->
-        <div class="overflow-y-auto px-8 py-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">NIK</label>
-                    <p id="detail_nip" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Username</label>
-                    <p id="detail_username" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Nama Karyawan</label>
-                    <p id="detail_nama" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Email</label>
-                    <p id="detail_email" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Divisi</label>
-                    <p id="detail_divisi" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Jabatan</label>
-                    <p id="detail_jabatan" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Tanggal Lahir</label>
-                    <p id="detail_tgl_lahir" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Jenis Kelamin</label>
-                    <p id="detail_jenis_kelamin" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Tanggal Bergabung</label>
-                    <p id="detail_tgl_bergabung" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">No HP</label>
-                    <p id="detail_no_hp" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Role</label>
-                    <p id="detail_role" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div>
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Status</label>
-                    <p id="detail_status" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <div class="md:col-span-2">
-                    <label class="block mb-1 font-bold text-slate-400 text-xxs uppercase tracking-wider">Alamat</label>
-                    <p id="detail_alamat" class="text-sm font-semibold text-slate-800">-</p>
-                </div>
-
-                <!-- KOMENTAR NONAKTIF (DETAIL) -->
-                <div id="detail_komentar_wrapper" class="md:col-span-2" style="display: none;">
-                    <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mt-1">
-                        <label class="block mb-1.5 font-bold text-amber-600 text-xxs uppercase tracking-wider">
-                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>Alasan Nonaktif
-                        </label>
-                        <p id="detail_komentar_nonaktif" class="text-sm font-medium text-amber-800">-</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

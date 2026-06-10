@@ -31,7 +31,7 @@
 
         <!-- Judul -->
         <div class="px-6 pt-6">
-            <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm">
+            <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm animate-welcome-left">
                 <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">Manajemen Divisi</p>
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Kelola Divisi</h1>
                 <p class="text-slate-500 mt-1.5 text-sm">Atur divisi, jam kerja, dan lokasi absensi perusahaan</p>
@@ -40,7 +40,7 @@
 
         <div class="p-6">
             <!-- Maps -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 mb-6 overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 mb-6 overflow-hidden animate-card delay-100">
                 <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 text-slate-800">
                     <h3 class="font-extrabold text-base flex items-center gap-2">📍 Peta Lokasi Absensi Kantor Pusat</h3>
                     <p class="text-slate-500 text-xs mt-1">Titik pusat dan area radius absensi kantor pusat (berlaku untuk semua divisi)</p>
@@ -49,14 +49,7 @@
             </div>
 
             <!-- Filter dan Button -->
-            <div class="flex flex-wrap gap-4 items-center mb-6">
-                <input type="text" placeholder="Pencarian..."
-                    class="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-sm outline-none text-slate-700 placeholder-slate-400 focus:border-blue-500 transition-all duration-200 w-72">
-
-                <button
-                    class="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition">
-                    Filter
-                </button>
+            <div class="flex flex-wrap gap-4 items-center mb-6 animate-card delay-200">
 
                 <div class="ml-auto flex gap-3">
                     <button type="button" onclick="openModalTambahDivisi()"
@@ -72,7 +65,7 @@
             </div>
 
             <!-- Table -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 animate-card delay-300">
                 <div class="overflow-x-auto">
                     <table class="w-full border-collapse">
                         <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
