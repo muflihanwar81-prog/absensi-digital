@@ -27,32 +27,26 @@ class DivisiDashboardController extends Controller
         $nama_user  = $user->name;
         $namaDivisi = $user->name;
         $divisi     = $namaDivisi;
-
         // Ambil ID karyawan yang ada di divisi ini
         $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
 
         $total_karyawan = $karyawanIds->count();
-
         $hadir = Absensi::whereIn('karyawan_id', $karyawanIds)
             ->whereIn('status', ['Hadir', 'Terlambat'])
             ->whereDate('tanggal', Carbon::today())
             ->count();
-
         $terlambat = Absensi::whereIn('karyawan_id', $karyawanIds)
             ->where('status', 'Terlambat')
             ->whereDate('tanggal', Carbon::today())
             ->count();
-
         $alpha = Absensi::whereIn('karyawan_id', $karyawanIds)
             ->whereIn('status', ['Alpha', 'Tidak Hadir'])
             ->whereDate('tanggal', Carbon::today())
             ->count();
-
         $izin = Absensi::whereIn('karyawan_id', $karyawanIds)
             ->where('status', 'Izin')
             ->whereDate('tanggal', Carbon::today())
             ->count();
-
         $sakit = Absensi::whereIn('karyawan_id', $karyawanIds)
             ->where('status', 'Sakit')
             ->whereDate('tanggal', Carbon::today())
@@ -97,13 +91,11 @@ class DivisiDashboardController extends Controller
             return redirect()->back()
                 ->with('error', 'Data karyawan kepala divisi tidak ditemukan.');
         }
-
         // Validasi GPS
         $gpsCheck = $this->validateGPSLocation($request);
         if (!$gpsCheck['status']) {
             return redirect()->back()->with('error', $gpsCheck['message']);
         }
-
         $today = Carbon::today()->toDateString();
 
         $absensi = Absensi::where('karyawan_id', $karyawan->id)
@@ -112,7 +104,6 @@ class DivisiDashboardController extends Controller
 
         if (!$absensi) {
             $jamSekarang = Carbon::now('Asia/Jakarta');
-
             // Cek jam masuk divisi
             $divisi = Divisi::where('nama_divisi', $karyawan->divisi)->first();
             $status = 'Hadir';
@@ -122,7 +113,6 @@ class DivisiDashboardController extends Controller
                     ->setTimeFromTimeString($divisi->jam_masuk);
                 $status = $jamSekarang->gt($jamMasukDivisi) ? 'Terlambat' : 'Hadir';
             }
-
             Absensi::create([
                 'karyawan_id' => $karyawan->id,
                 'tanggal'     => $today,
@@ -130,7 +120,6 @@ class DivisiDashboardController extends Controller
                 'status'      => $status,
             ]);
         }
-
         return redirect()->back()
             ->with('success', 'Absensi masuk berhasil dicatat.');
     }
@@ -265,11 +254,9 @@ class DivisiDashboardController extends Controller
 
         foreach ($period as $date) {
             $tanggal = $date->toDateString();
-
             $absensi = Absensi::where('karyawan_id', $izin->karyawan_id)
                 ->whereDate('tanggal', $tanggal)
                 ->first();
-
             if ($absensi) {
                 $absensi->status = $statusAbsensi;
                 $absensi->save();
@@ -283,7 +270,6 @@ class DivisiDashboardController extends Controller
                 ]);
             }
         }
-
         return redirect()
             ->route('divisi.data-perizinan')
             ->with('success', 'Pengajuan izin berhasil disetujui.');
