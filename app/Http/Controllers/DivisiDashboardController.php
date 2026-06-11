@@ -300,10 +300,10 @@ class DivisiDashboardController extends Controller
         
         // 2. Simpan status 'Ditolak' beserta alasannya ke model/tabel Izin
         $izin->status = 'Ditolak';
-        $izin->alasan_tolak = $request->alasan_tolak; // Pastikan kolom 'alasan_tolak' sudah ada di database Anda
+        $izin->alasan_tolak = $request->alasan_tolak;
         $izin->save();
 
-        // Sync with Absensi table - delete if it exists within the range
+        
         $startDate = \Carbon\Carbon::parse($izin->tanggal_mulai ?? $izin->created_at)->toDateString();
         $endDate = \Carbon\Carbon::parse($izin->tanggal_selesai ?? $izin->created_at)->toDateString();
 
