@@ -33,38 +33,67 @@
 
             <div class="p-8">
 
-                <div class="mb-6 flex flex-wrap gap-4 items-center bg-white p-4 rounded-xl border border-blue-200 shadow-sm">
-                    
-                    {{-- SEARCH PENCARIAN --}}
-                    <div class="w-full md:w-auto flex-1 min-w-[250px]">
-                        <input type="text"
-                               placeholder="Pencarian.."
-                               class="w-full p-3 bg-white rounded-xl border border-blue-200 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400 font-semibold text-sm text-blue-900">
-                    </div>
+                {{-- SEARCH & FILTER: Form pencarian data absensi --}}
+                <div class="flex gap-4 items-center mb-6">
+                    {{-- Form GET → dikirim ke controller index() untuk filter data --}}
+                    <form
+                        action="{{ route('divisi.DivisiLaporan') }}"
+                        method="GET"
+                        class="flex-1 flex gap-4 items-center">
 
-                    {{-- FILTER TANGGAL MULAI --}}
-                    <div class="w-full md:w-auto">
-                        <input type="date"
-                               class="w-full p-3 bg-white rounded-xl border border-blue-200 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none font-semibold text-sm text-blue-900">
-                    </div>
+                        {{-- Input pencarian: NIP, nama, divisi, atau jabatan --}}
+                        <div class="flex-1">
+                            <div
+                                class="bg-white border border-slate-250 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-205">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5 text-slate-450"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
 
-                    {{-- PEMBATAS TANGGAL --}}
-                    <span class="text-xs font-bold text-blue-400 uppercase tracking-wider px-1 mx-auto md:mx-0">
-                        S/D
-                    </span>
+                                <input
+                                    type="text"
+                                    name="search"
+                                    value="{{ request('search') }}" {{-- Pertahankan nilai search setelah submit --}}
+                                    placeholder="Cari NIP, nama, divisi, atau jabatan..."
+                                    class="w-full bg-transparent outline-none text-sm font-medium text-slate-700 placeholder-slate-400">
+                            </div>
+                        </div>
 
-                    {{-- FILTER TANGGAL SELESAI --}}
-                    <div class="w-full md:w-auto">
-                        <input type="date"
-                               class="w-full p-3 bg-white rounded-xl border border-blue-200 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none font-semibold text-sm text-blue-900">
-                    </div>
+                        {{-- Tombol submit filter --}}
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-sm shadow-blue-500/10 hover:scale-[1.02] transition-all duration-200">
+                            Filter
+                        </button>
+                        {{-- Tanggal --}}
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <label class="font-bold text-slate-500 text-xxs uppercase tracking-wider">
+                                        Tanggal:
+                                    </label>
 
-                    {{-- BUTTON FILTER --}}
-                    <button class="w-full md:w-auto px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-md transition">
-                        Filter
-                    </button>
+                                    <input
+                                        type="date"
+                                        name="tanggal_awal"
+                                        value="{{ request('tanggal_awal') }}"
+                                        class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-750 shadow-sm focus:outline-none focus:border-blue-500 transition">
 
-                    {{-- EXPORT UTILITIES (Excel & PDF) --}}
+                                    <span class="font-bold text-slate-400 text-xs uppercase tracking-wider px-1">
+                                        s/d
+                                    </span>
+
+                                    <input
+                                        type="date"
+                                        name="tanggal_akhir"
+                                        value="{{ request('tanggal_akhir') }}"
+                                        class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-750 shadow-sm focus:outline-none focus:border-blue-500 transition">
+                                </div>
+                                                    {{-- EXPORT UTILITIES (Excel & PDF) --}}
                     <div class="w-full md:w-auto flex gap-2 md:ml-auto">
                         <a href="{{ route('admin.laporan.excel') }}"
                            class="flex-1 md:flex-initial text-center bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-bold text-sm shadow-sm transition">
@@ -75,7 +104,7 @@
                            <i class="fa-solid fa-file-pdf mr-1"></i> PDF
                         </a>
                     </div>
-
+                    </form>
                 </div>
 
                 <div class="bg-white border border-blue-200 rounded-xl overflow-hidden shadow-sm">

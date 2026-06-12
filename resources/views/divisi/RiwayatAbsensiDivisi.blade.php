@@ -20,26 +20,68 @@
 
             <!-- Content -->
             <div class="p-8">
+            
+                {{-- SEARCH & FILTER: Form pencarian data absensi --}}
+                <div class="flex gap-4 items-center mb-6">
+                    {{-- Form GET → dikirim ke controller index() untuk filter data --}}
+                    <form
+                        action="{{ route('divisi.riwayat-absensi') }}"
+                        method="GET"
+                        class="flex-1 flex gap-4 items-center">
 
-                <!-- Filter -->
-                <div class="flex flex-wrap items-center gap-4 mb-6">
-                    <div class="flex-1 min-w-[300px]">
-                        <input type="text"
-                               placeholder="Pencarian.."
-                               class="w-full p-3 bg-white rounded-xl border border-blue-200 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400 font-semibold text-sm text-blue-900">
-                    </div>
+                        {{-- Input pencarian: NIP, nama, divisi, atau jabatan --}}
+                        <div class="flex-1">
+                            <div
+                                class="bg-white border border-slate-250 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-205">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5 text-slate-450"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
 
-                    <div class="flex items-center gap-2">
-                        <input type="text"
-                               placeholder="Rentang Tanggal"
-                               class="p-3 bg-white rounded-xl border border-blue-200 shadow-sm text-sm font-semibold w-40 text-center text-blue-900 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                                <input
+                                    type="text"
+                                    name="search"
+                                    value="{{ request('search') }}" {{-- Pertahankan nilai search setelah submit --}}
+                                    placeholder="Cari NIP, nama, divisi, atau jabatan..."
+                                    class="w-full bg-transparent outline-none text-sm font-medium text-slate-700 placeholder-slate-400">
+                            </div>
+                        </div>
 
-                        <span class="font-bold text-blue-700">S/D</span>
+                        {{-- Tombol submit filter --}}
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-sm shadow-blue-500/10 hover:scale-[1.02] transition-all duration-200">
+                            Filter
+                        </button>
+                        {{-- Tanggal --}}
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <label class="font-bold text-slate-500 text-xxs uppercase tracking-wider">
+                                        Tanggal:
+                                    </label>
 
-                        <input type="text"
-                               placeholder="Rentang Tanggal"
-                               class="p-3 bg-white rounded-xl border border-blue-200 shadow-sm text-sm font-semibold w-40 text-center text-blue-900 focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                    </div>
+                                    <input
+                                        type="date"
+                                        name="tanggal_awal"
+                                        value="{{ request('tanggal_awal') }}"
+                                        class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-750 shadow-sm focus:outline-none focus:border-blue-500 transition">
+
+                                    <span class="font-bold text-slate-400 text-xs uppercase tracking-wider px-1">
+                                        s/d
+                                    </span>
+
+                                    <input
+                                        type="date"
+                                        name="tanggal_akhir"
+                                        value="{{ request('tanggal_akhir') }}"
+                                        class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-750 shadow-sm focus:outline-none focus:border-blue-500 transition">
+                                </div>
+                    </form>
                 </div>
 
                 <!-- Table -->
