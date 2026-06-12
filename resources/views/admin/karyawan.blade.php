@@ -85,7 +85,7 @@
                                     type="text"
                                     name="search"
                                     value="{{ request('search') }}"
-                                    placeholder="Cari NIP dan nama karyawan..."
+                                    placeholder="Cari"
                                     class="w-full bg-transparent outline-none text-sm text-slate-700 placeholder-slate-400 font-medium">
                             </div>
                         </div>
@@ -253,8 +253,6 @@
             </div>
         </div>
     </main>
-    <!-- TAMBAHKAN INI SEBELUM TAG </body> -->
-<!-- Jika modal ini tidak ada, fungsi openModal() tidak akan bekerja -->
 
 {{-- MODAL TAMBAH KARYAWAN --}}
 <div id="modalTambah"
@@ -298,7 +296,6 @@
                     <input type="text" name="nama" required placeholder="Nama lengkap karyawan"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
-
                 <!-- PASSWORD -->
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Password</label>
