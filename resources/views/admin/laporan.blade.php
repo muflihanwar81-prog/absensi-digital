@@ -117,11 +117,11 @@
 
                     {{-- TOMBOL EXPORT --}}
                     <div class="ml-auto flex gap-3">
-                        <a href="{{ route('admin.laporan.excel') }}"
+                        <a href="{{ route('admin.laporan.excel') }}" id="btnExportExcel"
                             class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-sm shadow-emerald-500/10 hover:scale-[1.02] transition-all">
                             <i class="fa-solid fa-file-excel mr-1"></i> Excel
                         </a>
-                        <a href="{{ route('admin.laporan.pdf') }}"
+                        <a href="{{ route('admin.laporan.pdf') }}" id="btnExportPdf"
                             class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-sm shadow-rose-500/10 hover:scale-[1.02] transition-all">
                             <i class="fa-solid fa-file-pdf mr-1"></i> PDF
                         </a>
@@ -361,6 +361,19 @@
         // Tampilkan baris kosong jika tidak ada hasil
         const emptyRow = document.getElementById('emptyRow');
         if (emptyRow) emptyRow.style.display = visibleCount === 0 ? '' : 'none';
+
+        // Update link export excel & pdf
+        const exportParams = new URLSearchParams();
+        if (elSearch.value.trim()) exportParams.append('search', elSearch.value.trim());
+        if (divisi) exportParams.append('divisi', divisi);
+        if (elNama.value) exportParams.append('nama', elNama.value);
+        if (tglAwal) exportParams.append('tanggal_awal', tglAwal);
+        if (tglAkhir) exportParams.append('tanggal_akhir', tglAkhir);
+
+        const btnExportExcel = document.getElementById('btnExportExcel');
+        const btnExportPdf = document.getElementById('btnExportPdf');
+        if (btnExportExcel) btnExportExcel.href = "{{ route('admin.laporan.excel') }}?" + exportParams.toString();
+        if (btnExportPdf) btnExportPdf.href = "{{ route('admin.laporan.pdf') }}?" + exportParams.toString();
     }
 
     function updateBadge(badgeId, textId, value) {

@@ -14,15 +14,11 @@ use App\Models\AdminActivity;
 
 class AdminDataKaryawanController extends Controller
 {
-    /**
-     * Tampilkan daftar karyawan dengan filter dan statistik per divisi.
-     * Support filter: search, divisi, jabatan, status.
-     */
     public function index(Request $request)
     {
         $query = Karyawan::query();
 
-        // Filter pencarian: NIP, nama, divisi, atau jabatan
+        // Filter pencarian
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -33,28 +29,28 @@ class AdminDataKaryawanController extends Controller
             });
         }
 
-        // Filter berdasarkan divisi tertentu
+        // Filter divisi
         if ($request->filled('divisi')) {
             $query->where('divisi', $request->divisi);
         }
 
-        // Filter berdasarkan jabatan tertentu
+        // Filter jabatan
         if ($request->filled('jabatan')) {
             $query->where('jabatan', $request->jabatan);
         }
 
-        // Filter berdasarkan status (Aktif / Nonaktif)
+        // Filter status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Ambil hasil query urut berdasarkan nama
+        // Ambil query nama
         $karyawans = $query->orderBy('nama')->get();
 
-        // Ambil daftar nama divisi untuk dropdown filter
+        // Ambil nama divisi untuk dropdown filter
         $daftarDivisi = Divisi::orderBy('nama_divisi')->pluck('nama_divisi');
 
-        // Ambil daftar jabatan unik untuk dropdown filter
+        // Ambil daftar jabatan
         $daftarJabatan = Karyawan::select('jabatan')
             ->whereNotNull('jabatan')
             ->where('jabatan', '!=', '')
@@ -62,7 +58,7 @@ class AdminDataKaryawanController extends Controller
             ->orderBy('jabatan')
             ->pluck('jabatan');
 
-        // Hitung jumlah karyawan per divisi untuk kartu statistik
+        // jumlah karyawan per divisi
         $stats = [];
         foreach ($daftarDivisi as $divisi) {
             $stats[$divisi] = Karyawan::where('divisi', $divisi)->count();
@@ -76,10 +72,6 @@ class AdminDataKaryawanController extends Controller
         ));
     }
 
-    /**
-     * Simpan karyawan baru ke database.
-     * Jika jabatan Kepala Divisi atau role admin, otomatis buatkan akun user login.
-     */
     public function store(Request $request)
     {
         // Validasi semua input form tambah karyawan
@@ -104,7 +96,7 @@ class AdminDataKaryawanController extends Controller
         // Cari data divisi untuk mengambil jam masuk/keluar otomatis
         $divisi = Divisi::where('nama_divisi', $request->divisi)->first();
 
-        // Buat instance karyawan baru dan isi semua fieldnya
+        // Buat data karyawan baru
         $karyawan = new Karyawan();
         $karyawan->nip            = $request->nip;
         $karyawan->nama           = $request->nama;
@@ -132,7 +124,7 @@ class AdminDataKaryawanController extends Controller
 
         $karyawan->save();
 
-        // Jika jabatan Kepala Divisi → buat akun user dengan role kepala_divisi
+        // buat akun user dengan role kepala_divisi
         $roleLower = strtolower($request->role);
         if ($request->jabatan === 'Kepala Divisi') {
             User::updateOrCreate(
@@ -143,7 +135,7 @@ class AdminDataKaryawanController extends Controller
                     'role'     => 'kepala_divisi',
                 ]
             );
-        // Jika role admin/super_admin → buat akun user dengan role yang sesuai
+        //  akun user dengan role admin
         } elseif (in_array($roleLower, ['admin', 'super_admin', 'super admin'])) {
             $normalizedRole = $roleLower === 'super admin' ? 'super_admin' : $roleLower;
             User::updateOrCreate(
@@ -168,25 +160,16 @@ class AdminDataKaryawanController extends Controller
             ->with('success', 'Data karyawan berhasil ditambahkan.');
     }
 
-    /**
-     * Ambil data karyawan berdasarkan ID dan kembalikan sebagai JSON.
-     * Dipakai oleh modal edit via JavaScript (fetch/AJAX).
-     */
     public function edit($id)
     {
         $karyawan = Karyawan::findOrFail($id);
 
-        // Return JSON agar bisa diisi ke form modal edit di frontend
+        // Ambil nama divisi untuk dropdown filter
         return response()->json($karyawan);
     }
-
-    /**
-     * Update data karyawan yang sudah ada.
-     * Handle sync akun user jika jabatan/role berubah.
-     */
     public function update(Request $request, $id)
     {
-        // Validasi input, abaikan nilai unik milik karyawan itu sendiri
+        // Validasi semua input form edit karyawan
         $request->validate([
             'nip'           => 'required|unique:karyawans,nip,' . $id,
             'nama'          => 'required',

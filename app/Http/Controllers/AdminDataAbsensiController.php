@@ -9,10 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminDataAbsensiController extends Controller
 {
-    /**
-     * Tampilkan semua data absensi karyawan.
-     * Support filter: search (NIP/nama/divisi/jabatan), rentang tanggal, dan status.
-     */
+
     public function index(Request $request)
     {
         // Mulai query dengan eager load relasi karyawan
@@ -47,7 +44,7 @@ class AdminDataAbsensiController extends Controller
         // Ambil data urut terbaru
         $absensi = $query->orderBy('tanggal', 'desc')->get();
 
-        // Tambahkan field karyawan langsung ke tiap record absensi agar mudah diakses di view
+        // Tambahkan field karyawan
         $absensi->transform(function ($item) {
             $item->nip     = optional($item->karyawan)->nip ?? '-';
             $item->nama    = optional($item->karyawan)->nama ?? '-';

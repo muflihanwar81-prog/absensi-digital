@@ -10,11 +10,7 @@ use Carbon\Carbon;
 
 class AdminLaporanController extends Controller
 {
-    /**
-     * Tampilkan halaman laporan absensi.
-     * Support filter: search, nama, divisi, tanggal_awal, tanggal_akhir.
-     */
-    public function index(Request $request)
+    private function applyFilters(Request $request)
     {
         $query = Absensi::with(['karyawan.divisi']);
 
@@ -29,14 +25,14 @@ class AdminLaporanController extends Controller
             });
         }
 
-        // Filter nama karyawan spesifik
+        // Filter nama karyawan
         if ($request->filled('nama')) {
             $query->whereHas('karyawan', function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->nama . '%');
             });
         }
 
-        // Filter divisi spesifik (exact match dari dropdown)
+        // Filter divisi
         if ($request->filled('divisi')) {
             $query->whereHas('karyawan', function ($q) use ($request) {
                 $q->where('divisi', $request->divisi);
@@ -53,12 +49,19 @@ class AdminLaporanController extends Controller
             $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
         }
 
+        return $query;
+    }
+
+    public function index(Request $request)
+    {
+        $query = $this->applyFilters($request);
+
         $data = $query->orderBy('tanggal', 'desc')->get();
 
-        // Ambil daftar divisi untuk dropdown filter
+        // dropdown yg munculin divsi
         $daftarDivisi = \App\Models\Divisi::orderBy('nama_divisi')->pluck('nama_divisi');
 
-        // Ambil semua karyawan dikelompokkan per divisi untuk dropdown nama dinamis
+        // munculin kaeyawan sesuai divisi di filter
         $karyawanPerDivisi = \App\Models\Karyawan::select('nama', 'divisi')
             ->orderBy('nama')
             ->get()
@@ -68,14 +71,14 @@ class AdminLaporanController extends Controller
         return view('admin.laporan', compact('data', 'daftarDivisi', 'karyawanPerDivisi'));
     }
 
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        // Ambil semua data absensi dengan relasi karyawan
-        $data = Absensi::with(['karyawan.divisi'])
+        // Ambil data absensi sesuai filter dengan relasi karyawan
+        $data = $this->applyFilters($request)
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        // Nama file dengan timestamp agar unik
+        // Nama file dengan timestamp
         $filename = "laporan_absensi_admin_" . date('Ymd_His') . ".csv";
 
         // Header HTTP untuk trigger download file CSV
@@ -123,10 +126,10 @@ class AdminLaporanController extends Controller
         // Kirim response stream sebagai file download
         return response()->stream($callback, 200, $headers);
     }
-    public function exportPdf()
+    public function exportPdf(Request $request)
     {
-        // Ambil semua data absensi dengan relasi karyawan
-        $data = Absensi::with(['karyawan.divisi'])
+        // Ambil data absensi sesuai filter dengan relasi karyawan
+        $data = $this->applyFilters($request)
             ->orderBy('tanggal', 'desc')
             ->get();
 
