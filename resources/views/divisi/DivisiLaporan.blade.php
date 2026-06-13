@@ -95,11 +95,11 @@
                                 </div>
                                                     {{-- EXPORT UTILITIES (Excel & PDF) --}}
                     <div class="w-full md:w-auto flex gap-2 md:ml-auto">
-                        <a href="{{ route('admin.laporan.excel') }}"
+                        <a href="{{ route('divisi.laporan.excel') }}"
                            class="flex-1 md:flex-initial text-center bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-bold text-sm shadow-sm transition">
                            <i class="fa-solid fa-file-excel mr-1"></i> Excel
                         </a>
-                        <a href="{{ route('admin.laporan.pdf') }}"
+                        <a href="{{ route('divisi.laporan.pdf') }}"
                            class="flex-1 md:flex-initial text-center bg-rose-600 hover:bg-rose-700 text-white px-4 py-3 rounded-xl font-bold text-sm shadow-sm transition">
                            <i class="fa-solid fa-file-pdf mr-1"></i> PDF
                         </a>

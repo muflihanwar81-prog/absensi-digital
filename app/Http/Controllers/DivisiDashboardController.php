@@ -198,40 +198,94 @@ class DivisiDashboardController extends Controller
         return ['status' => true];
     }
 
-    public function karyawan()
+    public function karyawan(Request $request)
     {
-        $user       = Auth::user();
+        $user = Auth::user();
         $namaDivisi = $user->name;
 
+        $search = $request->search;
+        $status = $request->status;
+
         $karyawans = Karyawan::where('divisi', $namaDivisi)
+
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nip', 'like', "%{$search}%")
+                    ->orWhere('nama', 'like', "%{$search}%")
+                    ->orWhere('jabatan', 'like', "%{$search}%");
+                });
+            })
             ->orderBy('nama')
             ->get();
-
         return view('divisi.DataKaryawanDivisi', compact('karyawans'));
     }
 
-    public function riwayatAbsensi()
+    public function riwayatAbsensi(Request $request)
     {
-        $user       = Auth::user();
+        $user = Auth::user();
         $namaDivisi = $user->name;
 
-        // Ambil ID karyawan di divisi ini
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
+        // Ambil ID karyawan sesuai divisi yang login
+        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+
+                $query->where(function ($q) use ($search) {
+                    $q->where('nip', 'like', "%{$search}%")
+                    ->orWhere('nama', 'like', "%{$search}%")
+                    ->orWhere('jabatan', 'like', "%{$search}%");
+                });
+            })
+            ->pluck('id');
 
         $absensi = Absensi::with('karyawan')
             ->whereIn('karyawan_id', $karyawanIds)
+
+            // Filter tanggal awal
+            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '>=', $request->tanggal_awal);
+            })
+
+            // Filter tanggal akhir
+            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+            })
+
             ->latest()
             ->get();
 
         return view('divisi.RiwayatAbsensiDivisi', compact('absensi'));
     }
 
-    public function perizinan()
+    public function perizinan(Request $request)
     {
-        $user       = Auth::user();
+        $user = Auth::user();
         $namaDivisi = $user->name;
 
         $data = Izin::where('divisi', $namaDivisi)
+
+            // Pencarian
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+
+                $query->where(function ($q) use ($search) {
+                    $q->where('nip', 'like', "%{$search}%")
+                    ->orWhere('nama', 'like', "%{$search}%")
+                    ->orWhere('jabatan', 'like', "%{$search}%")
+                    ->orWhere('kategori', 'like', "%{$search}%");
+                });
+            })
+
+            // Filter tanggal awal
+            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+                $query->whereDate('tanggal_mulai', '>=', $request->tanggal_awal);
+            })
+
+            // Filter tanggal akhir
+            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+                $query->whereDate('tanggal_selesai', '<=', $request->tanggal_akhir);
+            })
+
             ->latest()
             ->get();
 
@@ -303,18 +357,37 @@ class DivisiDashboardController extends Controller
             ->with('danger', 'Pengajuan izin telah ditolak.');
     }
 
-    public function laporan()
+    public function laporan(Request $request)
     {
-        $user       = Auth::user();
+        $user = Auth::user();
         $namaDivisi = $user->name;
+        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
 
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
-
+            // Pencarian
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('nip', 'like', "%{$search}%")
+                    ->orWhere('nama', 'like', "%{$search}%")
+                    ->orWhere('jabatan', 'like', "%{$search}%");
+                });
+            })
+            ->pluck('id');
         $karyawans = Karyawan::where('divisi', $namaDivisi)->get();
-        $absensi   = Absensi::with('karyawan')
+        $absensi = Absensi::with('karyawan')
             ->whereIn('karyawan_id', $karyawanIds)
+            // Filter tanggal awal
+            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '>=', $request->tanggal_awal);
+            })
+            // Filter tanggal akhir
+            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+            })
+            ->orderBy('tanggal', 'desc')
             ->get();
-        $izins     = Izin::where('divisi', $namaDivisi)->get();
+
+        $izins = Izin::where('divisi', $namaDivisi)->get();
 
         return view('divisi.DivisiLaporan', compact(
             'karyawans',
@@ -322,7 +395,6 @@ class DivisiDashboardController extends Controller
             'izins'
         ));
     }
-
     public function exportExcel()
     {
         $user       = Auth::user();
