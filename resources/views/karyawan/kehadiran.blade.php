@@ -30,7 +30,8 @@
         @include('layouts.sidebar_karyawan')
 
         {{-- Main Content --}}
-        <div class="flex-1 min-w-0">
+        <main id="mainContent"
+        class="ml-72 flex-1 transition-all duration-300">
 
             {{-- Header --}}
             @include('components.header')
