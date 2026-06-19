@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Divisi;
 use App\Models\Karyawan;
 use App\Models\Absensi;
-use App\Models\Perizinan;
 use App\Models\AdminActivity;
 
 use App\Http\Controllers\{
-    HomeController,
     AbsensiController,
     AuthController,
-    TAController,
     KaryawanDashboardController,
     IzinController,
     AdminDashboardController,
@@ -25,9 +22,10 @@ use App\Http\Controllers\{
     DivisiDashboardController
 };
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/tecno_view', [TAController::class, 'tampilkan']);
+Route::get('/', function () {
+    return redirect('/login');
+});
+
 
 
 Route::get('/login', function () {
@@ -79,9 +77,11 @@ Route::middleware(['auth'])->name('admin.')->group(function () {
         ->name('karyawan.destroy');
 
     Route::resource('absensi', AdminDataAbsensiController::class)
+        ->only(['index', 'destroy'])
         ->names('absensi');
 
     Route::resource('perizinan', AdminDataPerizinanController::class)
+        ->only(['index', 'update', 'destroy'])
         ->names('perizinan');
 
     Route::get('/laporan-admin', [AdminLaporanController::class, 'index'])

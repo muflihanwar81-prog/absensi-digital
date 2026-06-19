@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Absensi;
 use App\Models\Izin;
-use App\Models\Perizinan;
 use App\Models\User;
 use App\Models\AdminActivity;
 
@@ -276,9 +275,6 @@ class AdminDataKaryawanController extends Controller
 
         // Hapus seluruh data izin milik karyawan ini
         Izin::where('karyawan_id', $id)->delete();
-
-        // Hapus seluruh data perizinan milik karyawan ini
-        Perizinan::where('karyawan_id', $id)->delete();
 
         // Hapus data karyawan dari tabel utama
         $karyawan->delete();

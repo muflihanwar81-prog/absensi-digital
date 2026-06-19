@@ -32,37 +32,7 @@ class AdminDataPerizinanController extends Controller
         return view('admin.AdminDataPerizinan', compact('perizinan'));
     }
 
-    /**
-     * Tidak digunakan — admin tidak membuat izin secara manual.
-     */
-    public function create()
-    {
-        return redirect()->route('admin.perizinan.index');
-    }
 
-    /**
-     * Tidak digunakan — pengajuan izin hanya dari karyawan.
-     */
-    public function store(Request $request)
-    {
-        return redirect()->route('admin.perizinan.index');
-    }
-
-    /**
-     * Tidak digunakan — halaman detail perizinan belum diimplementasi.
-     */
-    public function show($id)
-    {
-        return redirect()->route('admin.perizinan.index');
-    }
-
-    /**
-     * Tidak digunakan — admin tidak edit data izin secara langsung.
-     */
-    public function edit($id)
-    {
-        return redirect()->route('admin.perizinan.index');
-    }
 
     /**
      * Update status pengajuan izin (Menunggu / Disetujui / Ditolak).

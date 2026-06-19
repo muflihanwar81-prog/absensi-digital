@@ -56,47 +56,7 @@ class AdminDataAbsensiController extends Controller
         return view('admin.AdminDataAbsensi', compact('absensi'));
     }
 
-    /**
-     * Tidak digunakan — admin tidak boleh buat absensi manual.
-     * Redirect balik ke halaman index.
-     */
-    public function create()
-    {
-        return redirect()->route('admin.absensi.index');
-    }
 
-    /**
-     * Tidak digunakan — admin tidak boleh buat absensi manual.
-     */
-    public function store(Request $request)
-    {
-        return redirect()->route('admin.absensi.index');
-    }
-
-    /**
-     * Tidak digunakan — tidak ada halaman detail absensi saat ini.
-     */
-    public function show($id)
-    {
-        $item = Absensi::with('karyawan')->findOrFail($id);
-        return redirect()->route('admin.absensi.index');
-    }
-
-    /**
-     * Tidak digunakan — admin tidak bisa edit absensi.
-     */
-    public function edit($id)
-    {
-        return redirect()->route('admin.absensi.index');
-    }
-
-    /**
-     * Tidak digunakan — admin tidak bisa edit absensi.
-     */
-    public function update(Request $request, $id)
-    {
-        return redirect()->route('admin.absensi.index');
-    }
 
     /**
      * Hapus satu record absensi berdasarkan ID.
