@@ -285,10 +285,10 @@
 
         <main class="flex-1 p-6 overflow-y-auto min-w-0">
 
-            <!-- HEADER -->
+            
             @include('components.header_admin')
 
-            <!-- WELCOME SECTION -->
+            
             <div
                 class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6 hover:shadow-md transition-shadow duration-300">
 
@@ -334,10 +334,10 @@
                 </div>
             </div>
 
-            <!-- STATISTICS -->
+            
             <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-6 w-full">
 
-                <!-- TOTAL DIVISI -->
+                
                 <div
                     class="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-2xl shadow-sm flex flex-col justify-center items-center h-60 border border-blue-500/30 hover:scale-[1.01] transition-transform duration-200 animate-card delay-200">
                     <p class="text-lg font-semibold mb-2 opacity-90">
@@ -348,7 +348,7 @@
                     </h1>
                 </div>
 
-                <!-- OTHER CARDS -->
+                
                 <div class="xl:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
 
                     <div
@@ -415,10 +415,10 @@
 
             </div>
 
-            <!-- CHART & SHORTCUT -->
+            
             <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 w-full">
 
-                <!-- CHART -->
+                
                 <div class="xl:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 h-96 animate-chart-section delay-900">
 
                     <div class="flex items-center justify-between mb-4">
@@ -434,7 +434,7 @@
                         data-izin="{{ $totalIzin }}"
                         data-sakit="{{ $totalSakit }}"></canvas>
                 </div>
-                <!-- AKTIFITAS ADMIN -->
+                
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 min-w-0 flex flex-col h-[24rem] animate-chart-section delay-1000">
 
                     <div class="flex items-center justify-between mb-4">
@@ -499,7 +499,7 @@
 
     </div>
 
-    <!-- CHART with animation -->
+    
     <script>
         const ctx = document.getElementById('absensiChart');
         const dataset = ctx.dataset;
@@ -524,11 +524,11 @@
                         Number(dataset.sakit || 0)
                     ],
                     backgroundColor: [
-                        'rgba(59, 130, 246, 0.85)', // Blue
-                        'rgba(245, 158, 11, 0.85)', // Amber
-                        'rgba(239, 68, 68, 0.85)',  // Rose/Red
-                        'rgba(6, 182, 212, 0.85)',  // Cyan
-                        'rgba(236, 72, 153, 0.85)'  // Pink
+                        'rgba(59, 130, 246, 0.85)', 
+                        'rgba(245, 158, 11, 0.85)', 
+                        'rgba(239, 68, 68, 0.85)',  
+                        'rgba(6, 182, 212, 0.85)',  
+                        'rgba(236, 72, 153, 0.85)'  
                     ],
                     borderRadius: 8,
                     borderWidth: 0,
@@ -584,7 +584,7 @@
         });
     </script>
 
-    <!-- CLOCK -->
+    
     <script>
         function updateClock() {
             const now = new Date();
@@ -612,12 +612,9 @@
         setInterval(updateClock, 1000);
     </script>
 
-    <!-- COUNTER ANIMATION -->
+    
     <script>
-        /**
-         * Animasi counter: angka naik dari 0 ke target
-         * Menggunakan easeOutExpo untuk efek smooth deceleration
-         */
+        
         function animateCounters() {
             const counters = document.querySelectorAll('.counter');
 
@@ -643,7 +640,7 @@
                         const elapsed = currentTime - startTime;
                         const progress = Math.min(elapsed / duration, 1);
 
-                        // Apply easing
+                        
                         const easedProgress = easeOutExpo(progress);
                         const currentValue = Math.floor(easedProgress * target);
 
@@ -652,7 +649,7 @@
                         if (progress < 1) {
                             requestAnimationFrame(updateCounter);
                         } else {
-                            // Final value & glow effect
+                            
                             counter.textContent = target.toLocaleString('id-ID');
                             counter.classList.add('counter-done');
                         }
@@ -663,14 +660,14 @@
             });
         }
 
-        // Trigger counters when page loads
+        
         document.addEventListener('DOMContentLoaded', () => {
-            // Small delay agar card animation selesai dulu
+            
             setTimeout(animateCounters, 400);
         });
     </script>
 
-    <!-- DIVISI FILTER AJAX -->
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const divisiSelect = document.getElementById('divisiFilter');
@@ -682,12 +679,12 @@
                 const divisiId = this.value;
                 const selectedText = this.options[this.selectedIndex].text;
 
-                // Show loading state
+                
                 if (statsContainer) {
                     statsContainer.classList.add('stats-loading');
                 }
 
-                // Update badge
+                
                 if (divisiId) {
                     divisiBadge.style.display = 'inline-flex';
                     divisiBadge.classList.add('active');
@@ -714,7 +711,7 @@
 
                     const data = await response.json();
 
-                    // Update counter targets and re-animate
+                    
                     const counterMap = {
                         'totalKaryawan':  data.totalKaryawan,
                         'totalHadir':     data.totalMasuk,
@@ -724,7 +721,7 @@
                         'totalSakit':     data.totalSakit,
                     };
 
-                    // Animate each counter to new value
+                    
                     Object.entries(counterMap).forEach(([key, newTarget], index) => {
                         const counter = document.querySelector(`.counter[data-key="${key}"]`);
                         if (!counter) return;
@@ -733,17 +730,17 @@
                         counter.setAttribute('data-target', newTarget);
                         counter.classList.remove('counter-done');
 
-                        // Animate from current value to new value
+                        
                         animateSingleCounter(counter, currentValue, newTarget, index * 80);
                     });
 
-                    // Update chart with animation
+                    
                     updateChart(data);
 
                 } catch (error) {
                     console.error('Error fetching stats:', error);
                 } finally {
-                    // Remove loading state
+                    
                     if (statsContainer) {
                         statsContainer.classList.remove('stats-loading');
                     }
@@ -751,9 +748,7 @@
             });
         });
 
-        /**
-         * Animate a single counter from oldValue to newValue
-         */
+        
         function animateSingleCounter(counter, fromValue, toValue, delay = 0) {
             const duration = 1200;
 
@@ -785,9 +780,7 @@
             }, delay);
         }
 
-        /**
-         * Update chart data with smooth animation
-         */
+        
         function updateChart(data) {
             if (typeof absensiChart === 'undefined') return;
 

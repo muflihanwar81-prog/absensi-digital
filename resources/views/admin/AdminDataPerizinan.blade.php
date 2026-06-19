@@ -20,19 +20,19 @@
 
 <body class="bg-slate-50 text-slate-900 flex font-sans h-screen overflow-hidden">
 
-    {{-- Sidebar navigasi admin --}}
+    
     @include('layouts.sidebar')
 
-    {{-- MAIN CONTENT --}}
+    
     <main class="flex-1 h-screen overflow-y-auto">
 
-        {{-- Header atas halaman admin --}}
+        
         @include('components.header_admin')
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">
 
-                {{-- HEADER CARD --}}
+                
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
                         <div class="animate-welcome-left">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                {{-- SEARCH BAR --}}
+                
                 <div class="mb-6 animate-card delay-100">
                     <form action="{{ route('admin.perizinan.index') }}" method="GET">
                         <div class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-200 w-full max-w-md">
@@ -67,7 +67,7 @@
                     </form>
                 </div>
 
-                {{-- TABLE --}}
+                
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px] animate-card delay-200">
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
@@ -124,7 +124,7 @@
                                             @endif
                                         </td>
 
-                                        {{-- Kolom Bukti File --}}
+                                        
                                         <td class="px-4 py-4 text-center">
                                             @if($p->file_tambahan)
                                                 <a href="{{ asset('storage/' . $p->file_tambahan) }}"
@@ -138,7 +138,7 @@
                                             @endif
                                         </td>
 
-                                        {{-- Badge status --}}
+                                        
                                         <td class="px-4 py-4 text-center">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
                                                 @if($p->status == 'Disetujui') bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20
@@ -148,7 +148,7 @@
                                             </span>
                                         </td>
 
-                                        {{-- Tombol Detail → buka modal --}}
+                                        
                                         <td class="px-4 py-4 text-center">
                                             <button
                                                 type="button"
@@ -191,17 +191,17 @@
 
 </body>
 
-{{-- ============================================================ --}}
-{{-- MODAL DETAIL PERIZINAN                                       --}}
-{{-- Tampilkan info lengkap: jenis izin, durasi, file bukti       --}}
-{{-- ============================================================ --}}
+
+
+
+
 <div id="modalDetailPerizinan"
     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999] p-4"
     style="z-index: 9999;">
 
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
 
-        {{-- Header modal --}}
+        
         <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 flex items-center justify-between">
             <div>
                 <p class="text-xxs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Detail Pengajuan</p>
@@ -211,10 +211,10 @@
                 class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
         </div>
 
-        {{-- Body modal --}}
+        
         <div class="p-6 space-y-5">
 
-            {{-- Info Karyawan --}}
+            
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/60">
                 <p class="text-xxs font-bold text-slate-400 uppercase tracking-wider mb-3">Identitas Karyawan</p>
                 <div class="grid grid-cols-2 gap-3">
@@ -237,7 +237,7 @@
                 </div>
             </div>
 
-            {{-- Info Izin --}}
+            
             <div class="bg-blue-50/60 rounded-xl p-4 border border-blue-100">
                 <p class="text-xxs font-bold text-blue-400 uppercase tracking-wider mb-3">Detail Izin</p>
                 <div class="grid grid-cols-2 gap-3">
@@ -261,25 +261,25 @@
                     </div>
                 </div>
 
-                {{-- Durasi --}}
+                
                 <div class="mt-3 pt-3 border-t border-blue-100">
                     <p class="text-xs text-slate-400 mb-0.5">Durasi</p>
                     <p id="detail_durasi" class="font-bold text-blue-700 text-sm"></p>
                 </div>
             </div>
 
-            {{-- Bukti File --}}
+            
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/60">
                 <p class="text-xxs font-bold text-slate-400 uppercase tracking-wider mb-3">Bukti / Lampiran</p>
 
                 <div id="detail_file_wrapper">
-                    {{-- Diisi JS --}}
+                    
                 </div>
             </div>
 
         </div>
 
-        {{-- Footer modal --}}
+        
         <div class="bg-slate-50 border-t border-slate-200/80 px-6 py-4 flex justify-end">
             <button type="button" onclick="closeDetailModal()"
                 class="bg-white border border-slate-200 text-slate-700 px-5 py-2 rounded-xl font-semibold text-sm hover:bg-slate-50 transition shadow-sm">
@@ -291,19 +291,15 @@
 </div>
 
 <script>
-    /**
-     * openDetailModal()
-     * Mengisi semua field modal dengan data dari baris tabel yang diklik,
-     * lalu menampilkan modal ke layar.
-     */
+    
     function openDetailModal(nip, nama, divisi, jabatan, kategori, tglMulai, tglSelesai, status, fileUrl, fileName) {
-        // --- Identitas Karyawan ---
+        
         document.getElementById('detail_nip').textContent     = nip    || '-';
         document.getElementById('detail_nama').textContent    = nama   || '-';
         document.getElementById('detail_divisi').textContent  = divisi || '-';
         document.getElementById('detail_jabatan').textContent = jabatan || '-';
 
-        // --- Badge Jenis Izin ---
+        
         const kategoriBadge = document.getElementById('detail_kategori_badge');
         kategoriBadge.textContent = kategori || '-';
         kategoriBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ';
@@ -311,7 +307,7 @@
         else if (kategori === 'Cuti') kategoriBadge.className += 'bg-purple-100 text-purple-700';
         else                          kategoriBadge.className += 'bg-cyan-100 text-cyan-700';
 
-        // --- Badge Status ---
+        
         const statusBadge = document.getElementById('detail_status_badge');
         statusBadge.textContent = status || '-';
         statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ';
@@ -319,7 +315,7 @@
         else if (status === 'Ditolak')  statusBadge.className += 'bg-rose-100 text-rose-700';
         else                            statusBadge.className += 'bg-amber-100 text-amber-700';
 
-        // --- Tanggal & Durasi ---
+        
         const formatTgl = (tgl) => {
             if (!tgl) return '-';
             const d = new Date(tgl);
@@ -329,21 +325,21 @@
         document.getElementById('detail_tgl_mulai').textContent   = formatTgl(tglMulai);
         document.getElementById('detail_tgl_selesai').textContent  = formatTgl(tglSelesai);
 
-        // Hitung durasi hari
+        
         let durasiText = '-';
         if (tglMulai && tglSelesai) {
             const mulai   = new Date(tglMulai);
             const selesai = new Date(tglSelesai);
             const diffMs  = selesai - mulai;
-            const diffHari = Math.round(diffMs / (1000 * 60 * 60 * 24)) + 1; // inklusif
+            const diffHari = Math.round(diffMs / (1000 * 60 * 60 * 24)) + 1; 
             durasiText = diffHari + (diffHari === 1 ? ' hari' : ' hari');
         }
         document.getElementById('detail_durasi').textContent = durasiText;
 
-        // --- Bukti File ---
+        
         const fileWrapper = document.getElementById('detail_file_wrapper');
         if (fileUrl && fileUrl !== '') {
-            // Deteksi tipe file dari ekstensi nama file
+            
             const ext = fileName.split('.').pop().toLowerCase();
             const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
             const isPdf   = ext === 'pdf';
@@ -351,7 +347,7 @@
             let fileHtml = '';
 
             if (isImage) {
-                // Tampilkan preview gambar
+                
                 fileHtml = `
                     <div class="mb-3 rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
                         <img src="${fileUrl}" alt="Bukti Izin"
@@ -360,7 +356,7 @@
                     </div>
                 `;
             } else if (isPdf) {
-                // Tampilkan ikon PDF
+                
                 fileHtml = `
                     <div class="flex items-center gap-3 p-3 bg-rose-50 rounded-xl border border-rose-100 mb-3">
                         <div class="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -373,7 +369,7 @@
                     </div>
                 `;
             } else {
-                // File lainnya (docx, dll)
+                
                 fileHtml = `
                     <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-xl border border-blue-100 mb-3">
                         <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -387,7 +383,7 @@
                 `;
             }
 
-            // Tombol buka file di tab baru
+            
             fileHtml += `
                 <a href="${fileUrl}" target="_blank"
                     class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition shadow-sm">
@@ -398,7 +394,7 @@
 
             fileWrapper.innerHTML = fileHtml;
         } else {
-            // Tidak ada file
+            
             fileWrapper.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-6 text-slate-400">
                     <i class="fa-solid fa-file-circle-xmark text-3xl mb-2 text-slate-300"></i>
@@ -407,26 +403,26 @@
             `;
         }
 
-        // Tampilkan modal
+        
         const modal = document.getElementById('modalDetailPerizinan');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
     }
 
-    // Tutup modal
+    
     function closeDetailModal() {
         const modal = document.getElementById('modalDetailPerizinan');
         modal.classList.add('hidden');
         modal.classList.remove('flex');
     }
 
-    // Tutup modal klik backdrop
+    
     document.addEventListener('click', function(e) {
         const modal = document.getElementById('modalDetailPerizinan');
         if (modal && e.target === modal) closeDetailModal();
     });
 
-    // Tutup modal dengan ESC
+    
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeDetailModal();
     });

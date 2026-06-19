@@ -7,7 +7,7 @@
     <title>{{ $title ?? 'Data Absensi' }} - ADMIN</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     
-    <!-- Google Fonts Plus Jakarta Sans -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -24,18 +24,18 @@
 
 <body class="bg-slate-50 text-slate-900 flex font-sans overflow-hidden">
 
-    {{-- Sidebar navigasi admin --}}
+    
     @include('layouts.sidebar')
 
     <main class="flex-1 h-screen overflow-y-auto">
 
-        {{-- Header atas halaman admin --}}
+        
         @include('components.header_admin')
 
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">
 
-                {{-- HEADER CARD: Judul halaman + total absensi --}}
+                
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
                         <div class="animate-welcome-left">
@@ -50,20 +50,20 @@
                             </p>
                         </div>
 
-                        {{-- Badge counter: menampilkan jumlah total record absensi --}}
+                        
                         <div
                             class="bg-slate-50 border border-slate-200/60 rounded-xl px-5 py-3 shadow-sm text-center min-w-[160px] animate-welcome-right">
                             <p class="text-xxs font-bold uppercase tracking-wider text-slate-400 mb-1">
                                 Total Absensi
                             </p>
                             <h2 class="text-2xl font-extrabold text-slate-800 font-mono">
-                                {{ $absensi->count() }} {{-- Hitung total absensi dari collection --}}
+                                {{ $absensi->count() }} 
                             </h2>
                         </div>
                     </div>
                 </div>
 
-                {{-- NOTIF / ALERTS --}}
+                
                 @if(session('success'))
                     <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl mb-6 flex items-center gap-3 shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -82,11 +82,11 @@
                     </div>
                 @endif
 
-                {{-- SEARCH & FILTER: Form pencarian data absensi --}}
+                
                 <div class="bg-white rounded-2xl p-5 mb-6 shadow-sm border border-slate-200/80 animate-card delay-100">
                     <form action="{{ route('admin.absensi.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                         
-                        {{-- Input Pencarian --}}
+                        
                         <div class="md:col-span-4">
                             <label class="block text-xs font-bold text-slate-450 uppercase tracking-wider mb-2">Pencarian</label>
                             <div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-200">
@@ -99,21 +99,21 @@
                             </div>
                         </div>
 
-                        {{-- Tanggal Awal --}}
+                        
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-slate-450 uppercase tracking-wider mb-2">Tanggal Awal</label>
                             <input type="date" name="tanggal_awal" value="{{ request('tanggal_awal') }}"
                                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 outline-none text-sm font-medium text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
                         </div>
 
-                        {{-- Tanggal Akhir --}}
+                        
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-slate-450 uppercase tracking-wider mb-2">Tanggal Akhir</label>
                             <input type="date" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}"
                                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 outline-none text-sm font-medium text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
                         </div>
 
-                        {{-- Filter Status --}}
+                        
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-slate-450 uppercase tracking-wider mb-2">Status</label>
                             <select name="status"
@@ -127,7 +127,7 @@
                             </select>
                         </div>
 
-                        {{-- Tombol Aksi --}}
+                        
                         <div class="md:col-span-2 flex gap-2">
                             <button type="submit"
                                 class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-sm shadow-sm transition hover:scale-[1.02] active:scale-[0.98] duration-150 text-center">
@@ -145,12 +145,12 @@
                     </form>
                 </div>
 
-                {{-- TABEL DATA ABSENSI: Tampilkan hasil query dari controller --}}
+                
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 min-h-[500px] animate-card delay-200">
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
 
-                            {{-- Kolom header tabel --}}
+                            
                             <thead
                                 class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-semibold text-xs uppercase tracking-wider">
                                 <tr>
@@ -167,7 +167,7 @@
                                 </tr>
                             </thead>
 
-                            {{-- Baris data: loop $absensi dari controller, tampilkan kosong jika tidak ada --}}
+                            
                             <tbody>
                                 @forelse($absensi as $index => $a)
                                     <tr
@@ -262,16 +262,16 @@
 
     </main>
 
-    {{-- ============================================================ --}}
-    {{-- MODAL DETAIL ABSENSI                                         --}}
-    {{-- ============================================================ --}}
+    
+    
+    
     <div id="modalDetailAbsensi"
         class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999] p-4"
         style="z-index: 9999;">
 
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
 
-            {{-- Header modal --}}
+            
             <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 flex items-center justify-between">
                 <div>
                     <p class="text-xxs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Detail Kehadiran</p>
@@ -281,10 +281,10 @@
                     class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
             </div>
 
-            {{-- Body modal --}}
+            
             <div class="p-6 space-y-5">
 
-                {{-- Info Karyawan --}}
+                
                 <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/60">
                     <p class="text-xxs font-bold text-slate-400 uppercase tracking-wider mb-3">Identitas Karyawan</p>
                     <div class="grid grid-cols-2 gap-3">
@@ -311,7 +311,7 @@
                     </div>
                 </div>
 
-                {{-- Info Absensi --}}
+                
                 <div class="bg-blue-50/60 rounded-xl p-4 border border-blue-100">
                     <p class="text-xxs font-bold text-blue-400 uppercase tracking-wider mb-3">Rincian Absensi</p>
                     <div class="grid grid-cols-2 gap-3">
@@ -337,9 +337,9 @@
 
             </div>
 
-            {{-- Footer modal --}}
+            
             <div class="bg-slate-50 border-t border-slate-200/80 px-6 py-4 flex justify-between items-center">
-                {{-- Tombol Hapus --}}
+                
                 <form id="delete_form" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus catatan absensi ini?')">
                     @csrf
                     @method('DELETE')
@@ -359,11 +359,7 @@
     </div>
 
     <script>
-        /**
-         * openDetailModal()
-         * Mengisi semua field modal dengan data dari baris tabel yang diklik,
-         * lalu menampilkan modal ke layar.
-         */
+        
         function openDetailModal(id, nip, nama, divisi, jabatan, jamMasuk, jamKeluar, tanggal, status, karyawanStatus) {
             document.getElementById('detail_nip').textContent = nip || '-';
             document.getElementById('detail_nama').textContent = nama || '-';
@@ -374,7 +370,7 @@
             document.getElementById('detail_jam_masuk').textContent = jamMasuk || '-';
             document.getElementById('detail_jam_keluar').textContent = jamKeluar || '-';
 
-            // Format Tanggal
+            
             if (tanggal) {
                 const d = new Date(tanggal);
                 const options = { day: '2-digit', month: 'long', year: 'numeric' };
@@ -383,7 +379,7 @@
                 document.getElementById('detail_tanggal').textContent = '-';
             }
 
-            // Badge status styling
+            
             const badge = document.getElementById('detail_status_badge');
             badge.textContent = status || '-';
             badge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold font-mono ';
@@ -399,29 +395,29 @@
                 badge.className += 'bg-rose-100 text-rose-700';
             }
 
-            // Set Form Action URL
+            
             document.getElementById('delete_form').action = `/absensi/${id}`;
 
-            // Tampilkan modal
+            
             const modal = document.getElementById('modalDetailAbsensi');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
 
-        // Tutup modal
+        
         function closeDetailModal() {
             const modal = document.getElementById('modalDetailAbsensi');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
 
-        // Tutup modal klik backdrop
+        
         document.addEventListener('click', function(e) {
             const modal = document.getElementById('modalDetailAbsensi');
             if (modal && e.target === modal) closeDetailModal();
         });
 
-        // Tutup modal dengan ESC
+        
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeDetailModal();
         });

@@ -7,7 +7,7 @@
     <title>Data Karyawan - Dashboard Admin</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     
-    <!-- Google Fonts Plus Jakarta Sans -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
         <div class="p-6">
             <div class="w-full mx-auto px-4 lg:px-6">
 
-                {{-- HEADER CARD --}}
+                
                 <div class="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-slate-200/80">
                     <div class="flex justify-between items-center flex-wrap gap-4">
                         <div class="animate-welcome-left">
@@ -49,7 +49,7 @@
                         </button>
                     </div>
 
-                    {{-- STATISTIK DIVISI --}}
+                    
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-gray-800">
                         @forelse($daftarDivisi as $divisi)
                         @php
@@ -71,13 +71,13 @@
                     </div>
                 </div>
 
-                {{-- SEARCH & FILTER --}}
+                
                 <div class="flex gap-4 items-center mb-6 animate-card delay-300">
                     <form action="{{ route('admin.karyawan') }}"
                         method="GET"
                         class="flex-1 flex flex-wrap gap-4 items-center">
 
-                        {{-- SEARCH --}}
+                        
                         <div class="flex-1 min-w-[280px]">
                             <div class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-200">
                                 <i class="fa-solid fa-magnifying-glass text-slate-400 text-base"></i>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
 
-                        {{-- FILTER DIVISI --}}
+                        
                         <select
                             name="divisi"
                             onchange="this.form.submit()"
@@ -104,7 +104,7 @@
                             @endforeach
                         </select>
 
-                        {{-- FILTER JABATAN --}}
+                        
                         <select
                             name="jabatan"
                             onchange="this.form.submit()"
@@ -118,7 +118,7 @@
                             @endforeach
                         </select>
 
-                        {{-- FILTER STATUS --}}
+                        
                         <select
                             name="status"
                             onchange="this.form.submit()"
@@ -136,7 +136,7 @@
                     </form>
                 </div>
 
-                {{-- TABEL --}}
+                
                 <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden min-h-[480px] shadow-sm animate-card delay-400">
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse">
@@ -174,7 +174,7 @@
                                     <td class="px-4 py-4 text-center">
                                         <div class="flex justify-center gap-3.5 text-base">
 
-                                            {{-- TOMBOL DETAIL --}}
+                                            
                                             <button type="button"
                                                 onclick="openDetailModal(
                                                     '{{ $k->nip }}',
@@ -197,7 +197,7 @@
                                                 <i class="fa-solid fa-circle-info"></i>
                                             </button>
 
-                                            {{-- TOMBOL EDIT --}}
+                                            
                                             <button type="button"
                                                 onclick="openEditModal(
                                                     '{{ $k->id }}',
@@ -254,49 +254,49 @@
         </div>
     </main>
 
-{{-- MODAL TAMBAH KARYAWAN --}}
+
 <div id="modalTambah"
      class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-50 p-4">
 
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-4xl border border-slate-200/80 relative flex flex-col max-h-[95vh]">
 
-        <!-- Header -->
+        
         <div class="bg-slate-50 border-b border-slate-200/80 rounded-t-2xl px-8 py-4.5 flex items-center justify-between flex-shrink-0">
             <h2 class="text-lg font-bold text-slate-800 tracking-tight">Form Tambah Data Karyawan &amp; Pengguna</h2>
             <button type="button" onclick="closeModal()"
                     class="text-slate-400 hover:text-slate-650 text-2xl font-bold leading-none">&times;</button>
         </div>
 
-        <!-- Form Body -->
+        
         <div class="overflow-y-auto px-8 py-6">
         <form id="formTambah" action="{{ route('admin.karyawan.store') }}" method="POST">
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
 
-                {{-- KOLOM KIRI --}}
+                
 
-                <!-- NIK -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">NIK</label>
                     <input type="text" name="nip" required placeholder="Nomor Induk Karyawan"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- USERNAME -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Username</label>
                     <input type="text" name="username" placeholder="Username"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- NAMA KARYAWAN -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nama Karyawan</label>
                     <input type="text" name="nama" required placeholder="Nama lengkap karyawan"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
-                <!-- PASSWORD -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Password</label>
                     <div class="relative">
@@ -309,7 +309,7 @@
                     </div>
                 </div>
 
-                <!-- DIVISI -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Divisi</label>
                     <div class="relative">
@@ -324,7 +324,7 @@
                     </div>
                 </div>
 
-                <!-- TGL BERGABUNG -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tanggal Bergabung</label>
                     <div class="relative">
@@ -333,7 +333,7 @@
                     </div>
                 </div>
 
-                <!-- JABATAN -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Jabatan</label>
                     <div class="relative">
@@ -347,14 +347,14 @@
                     </div>
                 </div>
 
-                <!-- G-MAIL -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Email</label>
                     <input type="email" name="email" 
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- TGL LAHIR -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tanggal Lahir</label>
                     <div class="relative">
@@ -363,14 +363,14 @@
                     </div>
                 </div>
 
-                <!-- NO HP -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nomor Handphone</label>
                     <input type="text" name="no_hp" 
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- JENIS KELAMIN -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Jenis Kelamin</label>
                     <div class="relative">
@@ -384,7 +384,7 @@
                     </div>
                 </div>
 
-                <!-- ROLE -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Hak Akses</label>
                     <div class="relative">
@@ -398,14 +398,14 @@
                     </div>
                 </div>
 
-                <!-- ALAMAT -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Alamat Lengkap</label>
                     <textarea name="alamat" rows="2" placeholder="Tulis alamat rumah lengkap..."
                               class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none resize-none transition shadow-sm"></textarea>
                 </div>
 
-                <!-- STATUS -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Status Karyawan</label>
                     <div class="relative">
@@ -418,7 +418,7 @@
                     </div>
                 </div>
 
-                <!-- KOMENTAR NONAKTIF (TAMBAH) -->
+                
                 <div id="tambah_komentar_wrapper" class="md:col-span-2" style="display: none; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
                         <i class="fa-solid fa-comment-dots text-amber-500 mr-1"></i>Alasan / Komentar Nonaktif
@@ -429,7 +429,7 @@
 
             </div>
 
-            <!-- Tombol Simpan -->
+            
             <div class="mt-6">
                 <button type="submit"
                         class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition duration-200 shadow-sm shadow-blue-500/10 hover:shadow-blue-500/25">
@@ -440,20 +440,20 @@
         </div>
     </div>
 </div>
-{{-- MODAL EDIT KARYAWAN --}}
+
 <div id="modalEdit"
      class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-50 p-4">
 
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-4xl border border-slate-200/80 relative flex flex-col max-h-[95vh]">
 
-        <!-- Header -->
+        
         <div class="bg-slate-50 border-b border-slate-200/80 rounded-t-2xl px-8 py-4.5 flex items-center justify-between flex-shrink-0">
             <h2 class="text-lg font-bold text-slate-800 tracking-tight">Data Karyawan &amp; Pengguna</h2>
             <button type="button" onclick="closeEditModal()"
                     class="text-slate-400 hover:text-slate-650 text-2xl font-bold leading-none">&times;</button>
         </div>
 
-        <!-- Form Body -->
+        
         <div class="overflow-y-auto px-8 py-6">
         <form id="formEdit" action="" method="POST">
             @csrf
@@ -461,28 +461,28 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
 
-                <!-- NIP -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nik</label>
                     <input type="text" id="edit_nip" name="nip" required
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- USERNAME -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Username</label>
                     <input type="text" id="edit_username" name="username"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- NAMA -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nama Karyawan</label>
                     <input type="text" id="edit_nama" name="nama" required
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- PASSWORD -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Password</label>
                     <div class="relative">
@@ -495,7 +495,7 @@
                     </div>
                 </div>
 
-                <!-- DIVISI -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Divisi</label>
                     <div class="relative">
@@ -510,14 +510,14 @@
                     </div>
                 </div>
 
-                <!-- TGL BERGABUNG -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tgl, Bergabung</label>
                     <input type="date" id="edit_tgl_bergabung" name="tgl_bergabung"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm text-slate-650">
                 </div>
 
-                <!-- JABATAN -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Jabatan</label>
                     <div class="relative">
@@ -530,28 +530,28 @@
                     </div>
                 </div>
 
-                <!-- G-MAIL -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Email</label>
                     <input type="email" id="edit_email" name="email" required
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- TGL LAHIR -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tgl, Lahir</label>
                     <input type="date" id="edit_tgl_lahir" name="tgl_lahir"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm text-slate-650">
                 </div>
 
-                <!-- NO HP -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">No Hp</label>
                     <input type="text" id="edit_no_hp" name="no_hp"
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
-                <!-- JENIS KELAMIN -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Jenis Kelamin</label>
                     <div class="relative">
@@ -565,7 +565,7 @@
                     </div>
                 </div>
 
-                <!-- ROLE -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Role</label>
                     <div class="relative">
@@ -579,14 +579,14 @@
                     </div>
                 </div>
 
-                <!-- ALAMAT -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Alamat lengkap</label>
                     <textarea id="edit_alamat" name="alamat" rows="2"
                               class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none resize-none transition shadow-sm"></textarea>
                 </div>
 
-                <!-- STATUS -->
+                
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Status</label>
                     <div class="relative">
@@ -599,7 +599,7 @@
                     </div>
                 </div>
 
-                <!-- KOMENTAR NONAKTIF (EDIT) -->
+                
                 <div id="edit_komentar_wrapper" class="md:col-span-2" style="display: none; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
                         <i class="fa-solid fa-comment-dots text-amber-500 mr-1"></i>Alasan / Komentar Nonaktif
@@ -610,7 +610,7 @@
 
             </div>
 
-            <!-- Tombol Simpan -->
+            
             <div class="mt-6">
                 <button type="submit"
                         class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition duration-200 shadow-sm shadow-blue-500/10 hover:shadow-blue-500/25">
@@ -621,20 +621,20 @@
         </div>
     </div>
 </div>
-{{-- MODAL DETAIL KARYAWAN --}}
+
 <div id="modalDetail"
      class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-50 p-4">
 
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl border border-slate-200/80 relative flex flex-col max-h-[95vh]">
 
-        <!-- Header -->
+        
         <div class="bg-slate-50 border-b border-slate-200/80 rounded-t-2xl px-8 py-4.5 flex items-center justify-between flex-shrink-0">
             <h2 class="text-lg font-bold text-slate-800 tracking-tight">Detail Karyawan</h2>
             <button type="button" onclick="closeDetailModal()"
                     class="text-slate-400 hover:text-slate-650 text-2xl font-bold leading-none">&times;</button>
         </div>
 
-        <!-- Detail Body -->
+        
         <div class="overflow-y-auto px-8 py-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
 
@@ -703,7 +703,7 @@
                     <p id="detail_alamat" class="text-sm font-semibold text-slate-800">-</p>
                 </div>
 
-                <!-- KOMENTAR NONAKTIF (DETAIL) -->
+                
                 <div id="detail_komentar_wrapper" class="md:col-span-2" style="display: none;">
                     <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mt-1">
                         <label class="block mb-1.5 font-bold text-amber-600 text-xxs uppercase tracking-wider">
@@ -720,7 +720,7 @@
 
 <script>
     
-    // MODAL TAMBAH KARYAWAN
+    
     
     function openModal() {
         const modalTambah = document.getElementById('modalTambah');
@@ -739,7 +739,7 @@
     }
 
     
-    // MODAL EDIT KARYAWAN
+    
     function openEditModal(id, nip, nama, divisi, jabatan, email, status, username, tglLahir, jenisKelamin, alamat, tglBergabung, noHp, role, komentarNonaktif) {
         document.getElementById('edit_nip').value       = nip       || '';
         document.getElementById('edit_nama').value      = nama      || '';
@@ -751,39 +751,39 @@
         document.getElementById('edit_tgl_bergabung').value = tglBergabung || '';
         document.getElementById('edit_no_hp').value     = noHp      || '';
 
-        // Divisi dropdown
+        
         const editDivisi = document.getElementById('edit_divisi');
         if (editDivisi) {
             for (let o of editDivisi.options) o.selected = (o.value === divisi);
         }
 
-        // Status dropdown
+        
         const editStatus = document.getElementById('edit_status');
         if (editStatus) {
             for (let o of editStatus.options) o.selected = (o.value === (status || 'Aktif'));
         }
 
-        // Jenis Kelamin dropdown
+        
         const editJK = document.getElementById('edit_jenis_kelamin');
         if (editJK) {
             for (let o of editJK.options) o.selected = (o.value === jenisKelamin);
         }
 
-        // Role dropdown
+        
         const editRole = document.getElementById('edit_role');
         if (editRole) {
             for (let o of editRole.options) o.selected = (o.value === role);
         }
 
-        // Komentar Nonaktif
+        
         document.getElementById('edit_komentar_nonaktif').value = komentarNonaktif || '';
         toggleKomentarEdit();
 
-        // Set action form update
+        
         document.getElementById('formEdit').action = '/karyawan/' + id;
 
         
-        // Show modal edit
+        
         const modalEdit = document.getElementById('modalEdit');
         if (modalEdit) {
             modalEdit.classList.remove('hidden');
@@ -799,7 +799,7 @@
         }
     }
 
-    // Toggle password visibility
+    
     function togglePassword(inputId, iconId) {
         const input = document.getElementById(inputId);
         const icon  = document.getElementById(iconId);
@@ -812,7 +812,7 @@
         }
     }
 
-    // Tutup modal saat klik area gelap
+    
     document.addEventListener('click', function (e) {
         const modalTambah = document.getElementById('modalTambah');
         const modalEdit   = document.getElementById('modalEdit');
@@ -820,13 +820,13 @@
         if (modalEdit   && e.target === modalEdit)   closeEditModal();
     });
 
-    // Tutup modal dengan tombol ESC
+    
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') { closeModal(); closeEditModal(); closeDetailModal(); }
     });
 
     
-    // MODAL DETAIL KARYAWAN
+    
     
     function openDetailModal(nip, nama, divisi, jabatan, tglLahir, jenisKelamin, alamat, username, tglBergabung, email, noHp, role, status, komentarNonaktif) {
         document.getElementById('detail_nip').textContent           = nip           || '-';
@@ -843,7 +843,7 @@
         document.getElementById('detail_role').textContent          = role          || '-';
         document.getElementById('detail_status').textContent        = status        || '-';
 
-        // Komentar Nonaktif
+        
         const komentarWrapper = document.getElementById('detail_komentar_wrapper');
         const komentarText = document.getElementById('detail_komentar_nonaktif');
         if (status === 'Nonaktif' && komentarNonaktif) {
@@ -869,13 +869,13 @@
         }
     }
 
-    // Tutup modal detail saat klik backdrop
+    
     document.addEventListener('click', function (e) {
         const modalDetail = document.getElementById('modalDetail');
         if (modalDetail && e.target === modalDetail) closeDetailModal();
     });
 
-    // Toggle komentar nonaktif visibility - TAMBAH modal
+    
     function toggleKomentarTambah() {
         const status = document.getElementById('tambah_status').value;
         const wrapper = document.getElementById('tambah_komentar_wrapper');
@@ -893,7 +893,7 @@
         }
     }
 
-    // Toggle komentar nonaktif visibility - EDIT modal
+    
     function toggleKomentarEdit() {
         const status = document.getElementById('edit_status').value;
         const wrapper = document.getElementById('edit_komentar_wrapper');

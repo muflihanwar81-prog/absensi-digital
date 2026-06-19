@@ -26,10 +26,10 @@
     @include('layouts.sidebar')
 
     <div class="flex-1 min-w-0">
-        <!-- Header -->
+        
         @include('components.header_admin')
 
-        <!-- Judul -->
+        
         <div class="px-6 pt-6">
             <div class="bg-white border border-slate-200/80 rounded-2xl px-6 py-6 shadow-sm animate-welcome-left">
                 <p class="text-blue-600 font-semibold uppercase tracking-wider text-xs mb-1">Manajemen Divisi</p>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="p-6">
-            <!-- Maps -->
+            
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 mb-6 overflow-hidden animate-card delay-100">
                 <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 text-slate-800">
                     <h3 class="font-extrabold text-base flex items-center gap-2">📍 Peta Lokasi Absensi Kantor Pusat</h3>
@@ -48,7 +48,7 @@
                 <div id="main-map" class="h-80 w-full"></div>
             </div>
 
-            <!-- Filter dan Button -->
+            
             <div class="flex flex-wrap gap-4 items-center mb-6 animate-card delay-200">
 
                 <div class="ml-auto flex gap-3">
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <!-- Table -->
+            
             <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 animate-card delay-300">
                 <div class="overflow-x-auto">
                     <table class="w-full border-collapse">
@@ -116,7 +116,7 @@
     </div>
 </div>
 
-<!-- Modal Tambah Divisi -->
+
 <div id="modalTambahDivisi"
     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[500px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
@@ -155,7 +155,7 @@
     </div>
 </div>
 
-<!-- Modal Edit Divisi -->
+
 <div id="modalEditDivisi"
     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[500px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
@@ -195,7 +195,7 @@
     </div>
 </div>
 
-<!-- Modal Atur Lokasi -->
+
 <div id="modalAturLokasi"
     class="fixed inset-0 backdrop-blur-sm bg-slate-900/40 hidden items-center justify-center z-[9999]" style="z-index: 9999;">
     <div class="bg-white w-[650px] rounded-2xl shadow-xl overflow-hidden border border-slate-200">
@@ -252,7 +252,7 @@ let map;
 let marker;
 let circle;
 
-// Fix Leaflet marker icon path issue globally
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -276,7 +276,7 @@ function initMainMap() {
         attribution: '© OpenStreetMap'
     }).addTo(mainMap);
 
-    // Add Marker
+    
     const m = L.marker(defaultCenter).addTo(mainMap);
     m.bindPopup(`
         <div style="font-family: sans-serif; font-size: 14px; padding: 5px;">
@@ -289,7 +289,7 @@ function initMainMap() {
         </div>
     `);
 
-    // Add Circle
+    
     L.circle(defaultCenter, {
         color: '#2563eb',
         fillColor: '#3b82f6',
@@ -361,7 +361,7 @@ function openModalTambahDivisi() {
     modal.classList.add('flex');
 }
 
-// Close Modal with backdrop
+
 document.addEventListener('click', function (e) {
     const modalTambah = document.getElementById('modalTambahDivisi');
     const modalAtur    = document.getElementById('modalAturLokasi');
@@ -371,12 +371,12 @@ document.addEventListener('click', function (e) {
     if (modalEdit    && e.target === modalEdit)    closeModalEditDivisi();
 });
 
-// Close Modal with ESC
+
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeModalTambahDivisi(); closeModalAturLokasi(); closeModalEditDivisi(); }
 });
 
-// Edit Divisi Modal
+
 function openModalEditDivisi(id, namaDivisi, jamMasuk, jamKeluar) {
     document.getElementById('edit_nama_divisi').value = namaDivisi || '';
     document.getElementById('edit_jam_masuk').value    = jamMasuk   || '';
