@@ -1,5 +1,5 @@
 <aside id="sidebarKaryawan"
-    class="w-72 bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen">
+    class="w-72 fixed bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen">
 
     {{-- HEADER --}}
     <div>
@@ -7,10 +7,10 @@
             <div class="flex items-center justify-between">
                 <div id="sidebarTitle" class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">
-                        C
+                        CS
                     </div>
                     <h1 class="text-2xl font-bold tracking-tight text-white">
-                        CODIA<span class="text-blue-500">.</span>
+                        CODIA-<span class="text-blue-500">SYNC</span>
                     </h1>
                 </div>
 
@@ -92,7 +92,7 @@
         {{-- USER INFO --}}
         <a href="{{ url('/profile') }}" class="flex items-center gap-3 mb-4 px-2 hover:bg-slate-800/50 py-2 rounded-xl transition duration-200 group">
             <div
-                class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-200 shrink-0">
+                class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-200 shrink-0">
                 {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 2)) }}
             </div>
 
@@ -120,12 +120,26 @@
 
 <script>
 function toggleSidebarKaryawan() {
+
     const sidebar = document.getElementById('sidebarKaryawan');
+    const main = document.getElementById('mainContent');
+
     const texts = document.querySelectorAll('#sidebarKaryawan .menu-text');
     const title = document.getElementById('sidebarTitle');
 
     sidebar.classList.toggle('w-72');
     sidebar.classList.toggle('w-20');
+
+    if (sidebar.classList.contains('w-20')) {
+
+        main.classList.remove('ml-72');
+        main.classList.add('ml-20');
+
+    } else {
+
+        main.classList.remove('ml-20');
+        main.classList.add('ml-72');
+    }
 
     texts.forEach(text => {
         text.classList.toggle('hidden');

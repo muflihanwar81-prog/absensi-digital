@@ -32,7 +32,8 @@
         @include('layouts.sidebar_karyawan')
 
         {{-- Main Content --}}
-        <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+        <div id="mainContent"
+        class="ml-72 flex-1 transition-all duration-300">
 
             {{-- HEADER --}}
             @include('components.header')

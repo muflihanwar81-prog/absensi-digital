@@ -32,7 +32,8 @@
         @include('layouts.sidebar_karyawan')
 
         {{-- MAIN CONTENT --}}
-        <main class="flex-1 overflow-y-auto">
+        <main id="mainContent"
+        class="ml-72 flex-1 transition-all duration-300">
 
             {{-- TOP HEADER --}}
             @include('components.header')
