@@ -13,13 +13,19 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
+
+            // Blokir akun yang berstatus Nonaktif
+            if (($user->status ?? 'Aktif') === 'Nonaktif') {
+                return back()->with('error', 'Akun Anda telah dinonaktifkan. Hubungi administrator.');
+            }
+
             Auth::login($user);
             $request->session()->regenerate();
 
@@ -29,21 +35,26 @@ class AuthController extends Controller
             }
 
             // Admin & Super Admin
-            if ($user->role === 'admin') {
+            if (in_array($user->role, ['admin', 'super_admin'])) {
                 return redirect('/dashboard');
             }
 
             Auth::logout();
-
             return back()->with('error', 'Role tidak dikenali.');
         }
 
-        // Login Karyawan
+        // Login Karyawan (session-based, tabel karyawans)
         $karyawan = Karyawan::where('email', $request->email)->first();
 
         if ($karyawan && Hash::check($request->password, $karyawan->password)) {
+
+            // Blokir karyawan yang berstatus Nonaktif
+            if (($karyawan->status ?? 'Aktif') === 'Nonaktif') {
+                return back()->with('error', 'Akun Anda telah dinonaktifkan. Hubungi administrator.');
+            }
+
             session([
-                'karyawan_id' => $karyawan->id,
+                'karyawan_id'   => $karyawan->id,
                 'karyawan_nama' => $karyawan->nama,
             ]);
 

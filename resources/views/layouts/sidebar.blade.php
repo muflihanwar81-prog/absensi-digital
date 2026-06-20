@@ -105,7 +105,6 @@
                         <span class="menu-text font-medium text-sm">Laporan</span>
                     </a>
                 </li>
-
             </ul>
         </nav>
     </div>

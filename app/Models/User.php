@@ -47,6 +47,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'status',
     ];
 
     /**
@@ -77,13 +78,13 @@ class User extends Authenticatable
 
     /**
      * Relasi: User memiliki satu Karyawan.
-     * Menghubungkan akun login (user) dengan data karyawan terkait.
-     * Tidak semua user memiliki karyawan (misal: admin tanpa NIP).
+     * Menggunakan email sebagai foreign key karena tabel karyawans
+     * tidak menyimpan user_id, melainkan email yang sama.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function karyawan(): HasOne
     {
-        return $this->hasOne(Karyawan::class);
+        return $this->hasOne(Karyawan::class, 'email', 'email');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Izin;
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -277,15 +278,22 @@ class KaryawanDashboardController extends Controller
             'username.unique' => 'Username sudah digunakan oleh karyawan lain.',
         ]);
 
+        $oldEmail = $karyawan->email;
+
         $karyawan->update([
-            'nama' => $request->nama,
-            'username' => $request->username,
-            'email' => $request->email,
-            'no_hp' => $request->no_hp,
-            'tgl_lahir' => $request->tgl_lahir,
+            'nama'          => $request->nama,
+            'username'      => $request->username,
+            'email'         => $request->email,
+            'no_hp'         => $request->no_hp,
+            'tgl_lahir'     => $request->tgl_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'alamat' => $request->alamat,
+            'alamat'        => $request->alamat,
         ]);
+
+        // Sinkronisasi email ke tabel users jika karyawan ini memiliki akun login
+        if ($oldEmail !== $request->email) {
+            User::where('email', $oldEmail)->update(['email' => $request->email]);
+        }
 
         // Update session name
         session(['karyawan_nama' => $karyawan->nama]);
@@ -320,6 +328,10 @@ class KaryawanDashboardController extends Controller
         $karyawan->update([
             'password' => Hash::make($request->password_baru),
         ]);
+
+        // Sinkronisasi password ke tabel users jika karyawan ini memiliki akun login
+        User::where('email', $karyawan->email)
+            ->update(['password' => Hash::make($request->password_baru)]);
 
         return redirect()->back()->with('success', 'Password berhasil diperbarui.');
     }

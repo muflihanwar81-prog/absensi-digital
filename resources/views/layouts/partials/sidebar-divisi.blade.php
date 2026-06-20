@@ -88,7 +88,6 @@
                         <span class="menu-text font-medium">Laporan</span>
                     </a>
                 </li>
-
             </ul>
         </nav>
     </div>

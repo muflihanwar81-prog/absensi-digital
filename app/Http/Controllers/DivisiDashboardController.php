@@ -395,15 +395,30 @@ class DivisiDashboardController extends Controller
             'izins'
         ));
     }
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
         $user       = Auth::user();
         $namaDivisi = $user->name;
 
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
+        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('nip', 'like', "%{$search}%")
+                      ->orWhere('nama', 'like', "%{$search}%")
+                      ->orWhere('jabatan', 'like', "%{$search}%");
+                });
+            })
+            ->pluck('id');
 
         $data = Absensi::with('karyawan')
             ->whereIn('karyawan_id', $karyawanIds)
+            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '>=', $request->tanggal_awal);
+            })
+            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+            })
             ->orderBy('tanggal', 'desc')
             ->get();
 
@@ -443,15 +458,30 @@ class DivisiDashboardController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
-    public function exportPdf()
+    public function exportPdf(Request $request)
     {
         $user       = Auth::user();
         $namaDivisi = $user->name;
 
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
+        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('nip', 'like', "%{$search}%")
+                      ->orWhere('nama', 'like', "%{$search}%")
+                      ->orWhere('jabatan', 'like', "%{$search}%");
+                });
+            })
+            ->pluck('id');
 
         $data = Absensi::with('karyawan')
             ->whereIn('karyawan_id', $karyawanIds)
+            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '>=', $request->tanggal_awal);
+            })
+            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+                $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+            })
             ->orderBy('tanggal', 'desc')
             ->get();
 

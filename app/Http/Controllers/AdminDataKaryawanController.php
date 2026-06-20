@@ -123,8 +123,8 @@ class AdminDataKaryawanController extends Controller
 
         $karyawan->save();
 
-        // buat akun user dengan role kepala_divisi
-        $roleLower = strtolower($request->role);
+        // Buat akun user dengan role kepala_divisi
+        $roleLower = strtolower($request->role ?? '');
         if ($request->jabatan === 'Kepala Divisi') {
             User::updateOrCreate(
                 ['email' => $request->email],
@@ -132,9 +132,10 @@ class AdminDataKaryawanController extends Controller
                     'name'     => $request->divisi,
                     'password' => Hash::make($request->password),
                     'role'     => 'kepala_divisi',
+                    'status'   => $karyawan->status,
                 ]
             );
-        //  akun user dengan role admin
+        // Buat akun user dengan role admin / super_admin
         } elseif (in_array($roleLower, ['admin', 'super_admin', 'super admin'])) {
             $normalizedRole = $roleLower === 'super admin' ? 'super_admin' : $roleLower;
             User::updateOrCreate(
@@ -143,6 +144,7 @@ class AdminDataKaryawanController extends Controller
                     'name'     => $request->nama,
                     'password' => Hash::make($request->password),
                     'role'     => $normalizedRole,
+                    'status'   => $karyawan->status,
                 ]
             );
         }
@@ -224,12 +226,18 @@ class AdminDataKaryawanController extends Controller
 
         $karyawan->save();
 
+        // Sinkronisasi status ke akun user (aktif/nonaktif)
+        $existingUser = User::where('email', $oldEmail)
+            ->orWhere('email', $request->email)
+            ->first();
+
         // Jika jabatan diubah ke Kepala Divisi → update atau buat akun user
         if ($request->jabatan === 'Kepala Divisi') {
             $userData = [
-                'name'  => $request->divisi,
-                'email' => $request->email,
-                'role'  => 'kepala_divisi',
+                'name'   => $request->divisi,
+                'email'  => $request->email,
+                'role'   => 'kepala_divisi',
+                'status' => $karyawan->status,
             ];
             if ($request->filled('password')) {
                 $userData['password'] = Hash::make($request->password);
@@ -243,6 +251,27 @@ class AdminDataKaryawanController extends Controller
                 ->orWhere('email', $request->email)
                 ->where('role', 'kepala_divisi')
                 ->delete();
+
+            // Jika role karyawan adalah admin/super_admin, sync status ke users
+            $roleLower = strtolower($request->role ?? '');
+            if (in_array($roleLower, ['admin', 'super_admin', 'super admin'])) {
+                $normalizedRole = $roleLower === 'super admin' ? 'super_admin' : $roleLower;
+                $userData = [
+                    'name'   => $request->nama,
+                    'email'  => $request->email,
+                    'role'   => $normalizedRole,
+                    'status' => $karyawan->status,
+                ];
+                if ($request->filled('password')) {
+                    $userData['password'] = Hash::make($request->password);
+                } else {
+                    $userData['password'] = $karyawan->password;
+                }
+                User::updateOrCreate(['email' => $oldEmail], $userData);
+            } elseif ($existingUser && !in_array($existingUser->role, ['kepala_divisi'])) {
+                // Sync status-only untuk user yang sudah ada dengan role lain (admin)
+                $existingUser->update(['status' => $karyawan->status]);
+            }
         }
 
         // Catat aktivitas edit karyawan ke log admin

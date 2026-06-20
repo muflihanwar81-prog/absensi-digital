@@ -100,7 +100,7 @@ class Karyawan extends Authenticatable
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'email', 'email');
     }
 
     /**
