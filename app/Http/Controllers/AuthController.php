@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use App\Models\Karyawan;
 
 class AuthController extends Controller
 {
@@ -29,36 +28,12 @@ class AuthController extends Controller
             Auth::login($user);
             $request->session()->regenerate();
 
-            // Kepala Divisi
-            if ($user->role === 'kepala_divisi') {
-                return redirect('/divisi-dashboard');
-            }
-
-            // Admin & Super Admin
-            if (in_array($user->role, ['admin', 'super_admin'])) {
-                return redirect('/dashboard');
-            }
-
-            Auth::logout();
-            return back()->with('error', 'Role tidak dikenali.');
-        }
-
-        // Login Karyawan (session-based, tabel karyawans)
-        $karyawan = Karyawan::where('email', $request->email)->first();
-
-        if ($karyawan && Hash::check($request->password, $karyawan->password)) {
-
-            // Blokir karyawan yang berstatus Nonaktif
-            if (($karyawan->status ?? 'Aktif') === 'Nonaktif') {
-                return back()->with('error', 'Akun Anda telah dinonaktifkan. Hubungi administrator.');
-            }
-
-            session([
-                'karyawan_id'   => $karyawan->id,
-                'karyawan_nama' => $karyawan->nama,
-            ]);
-
-            return redirect('/dashboard_karyawan');
+            // Redirect berdasarkan role
+            return match ($user->role) {
+                'admin'                => redirect('/dashboard'),
+                'kepala_divisi'        => redirect('/divisi-dashboard'),
+                default                => redirect('/dashboard_karyawan'),
+            };
         }
 
         return back()->with('error', 'Email atau Password salah');
@@ -67,11 +42,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
-        $request->session()->forget([
-            'karyawan_id',
-            'karyawan_nama',
-        ]);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

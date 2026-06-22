@@ -3,23 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Izin;
-use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class IzinController extends Controller
 {
     public function index()
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $karyawan = Karyawan::findOrFail($karyawanId);
-
-        $data = Izin::where('karyawan_id', $karyawanId)
+        $data = Izin::where('user_id', $karyawan->id)
             ->latest()
             ->get();
 
@@ -28,9 +26,9 @@ class IzinController extends Controller
 
     public function store(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
@@ -42,8 +40,6 @@ class IzinController extends Controller
             'file_tambahan' => 'nullable|file|mimes:pdf,docx,jpg,jpeg,png|max:10240',
         ]);
 
-        $karyawan = Karyawan::findOrFail($karyawanId);
-
         $namaFile = null;
 
         if ($request->hasFile('file_tambahan')) {
@@ -52,7 +48,7 @@ class IzinController extends Controller
         }
 
         Izin::create([
-            'karyawan_id'     => $karyawan->id,
+            'user_id'         => $karyawan->id,
             'nip'             => $karyawan->nip,
             'nama'            => $karyawan->nama,
             'divisi'          => $karyawan->divisi,
@@ -71,15 +67,15 @@ class IzinController extends Controller
 
     public function destroy($id)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
         $izin = Izin::where('id', $id)
-            ->where('karyawan_id', $karyawanId)
+            ->where('user_id', $karyawan->id)
             ->firstOrFail();
 
         $izin->delete();

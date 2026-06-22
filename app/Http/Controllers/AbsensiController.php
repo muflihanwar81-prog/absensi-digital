@@ -9,13 +9,13 @@ class AbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawanId = auth()->id();
 
         if (!$karyawanId) {
             return redirect('/login');
         }
 
-        $query = Absensi::where('karyawan_id', $karyawanId);
+        $query = Absensi::where('user_id', $karyawanId);
 
         if ($request->filled('tanggal_awal')) {
             $query->whereDate('tanggal', '>=', $request->tanggal_awal);
@@ -42,14 +42,14 @@ class AbsensiController extends Controller
 
     public function exportPdf()
     {
-        $karyawanId = session('karyawan_id');
+        $karyawanId = auth()->id();
 
         if (!$karyawanId) {
             return redirect('/login');
         }
 
-        $absensis = Absensi::with('karyawan')
-            ->where('karyawan_id', $karyawanId)
+        $absensis = Absensi::with('user')
+            ->where('user_id', $karyawanId)
             ->orderBy('tanggal', 'desc')
             ->get();
 

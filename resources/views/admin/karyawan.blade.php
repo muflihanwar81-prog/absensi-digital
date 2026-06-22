@@ -60,7 +60,7 @@
                                 {{ $divisi }}
                             </p>
                             <h2 class="text-2xl font-extrabold text-slate-800 font-mono">
-                                {{ \App\Models\Karyawan::where('divisi', $divisi)->count() }}
+                                {{ \App\Models\User::where('divisi', $divisi)->count() }}
                             </h2>
                         </div>
                         @empty
@@ -110,7 +110,7 @@
                             onchange="this.form.submit()"
                             class="bg-white border border-slate-200 shadow-sm px-4 py-2.5 rounded-xl font-semibold text-sm outline-none text-slate-700 cursor-pointer focus:border-blue-500 transition">
                             <option value="">Semua Jabatan</option>
-                            @foreach(\App\Models\Karyawan::select('jabatan')->distinct()->pluck('jabatan') as $jabatan)
+                            @foreach(\App\Models\User::select('jabatan')->distinct()->pluck('jabatan') as $jabatan)
                             <option value="{{ $jabatan }}"
                                 {{ request('jabatan') == $jabatan ? 'selected' : '' }}>
                                 {{ $jabatan }}

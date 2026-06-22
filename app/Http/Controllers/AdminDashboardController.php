@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Divisi;
-use App\Models\Karyawan;
+use App\Models\User;
 use App\Models\Absensi;
 use App\Models\Izin;
 use App\Models\AdminActivity;
@@ -21,39 +21,39 @@ class AdminDashboardController extends Controller
         $totalDivisi = Divisi::count();
 
         // Hanya karyawan dengan status Aktif
-        $totalKaryawan = Karyawan::where('status', 'Aktif')->count();
+        $totalKaryawan = User::where('status', 'Aktif')->count();
 
         // ID semua karyawan aktif
-        $semuaKaryawanIds = Karyawan::where('status', 'Aktif')->pluck('id');
+        $semuaKaryawanIds = User::where('status', 'Aktif')->pluck('id');
 
         // karyawan yg hadir
         $totalHadir = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Hadir')
-            ->whereIn('karyawan_id', $semuaKaryawanIds)
+            ->whereIn('user_id', $semuaKaryawanIds)
             ->count();
 
         // karyawan yg terlambat
         $totalTerlambat = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Terlambat')
-            ->whereIn('karyawan_id', $semuaKaryawanIds)
+            ->whereIn('user_id', $semuaKaryawanIds)
             ->count();
 
         // karyawan yg izin
         $totalIzin = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Izin')
-            ->whereIn('karyawan_id', $semuaKaryawanIds)
+            ->whereIn('user_id', $semuaKaryawanIds)
             ->count();
 
         // karyawan yg sakit
         $totalSakit = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Sakit')
-            ->whereIn('karyawan_id', $semuaKaryawanIds)
+            ->whereIn('user_id', $semuaKaryawanIds)
             ->count();
 
         // karyawan yang belum absen sama sekali hari ini
         $sudahAbsenIds = Absensi::whereDate('tanggal', $today)
-            ->whereIn('karyawan_id', $semuaKaryawanIds)
-            ->pluck('karyawan_id');
+            ->whereIn('user_id', $semuaKaryawanIds)
+            ->pluck('user_id');
 
         $totalBelumAbsen = $semuaKaryawanIds->diff($sudahAbsenIds)->count();
 
@@ -96,7 +96,7 @@ class AdminDashboardController extends Controller
         $divisiId = $request->query('divisi_id');
 
         // Tentukan scope karyawan: per divisi atau semua
-        $karyawanQuery = Karyawan::where('status', 'Aktif');
+        $karyawanQuery = User::where('status', 'Aktif');
         if ($divisiId) {
             $divisi = Divisi::find($divisiId);
             if ($divisi) {
@@ -106,31 +106,31 @@ class AdminDashboardController extends Controller
         $karyawanIds = $karyawanQuery->pluck('id');
         $totalKaryawan = $karyawanIds->count();
 
-        // Hitung statistik absensi untuk karyawan hari ini 
+        // Hitung statistik absensi untuk karyawan hari ini
         $totalHadir = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Hadir')
-            ->whereIn('karyawan_id', $karyawanIds)
+            ->whereIn('user_id', $karyawanIds)
             ->count();
 
         $totalTerlambat = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Terlambat')
-            ->whereIn('karyawan_id', $karyawanIds)
+            ->whereIn('user_id', $karyawanIds)
             ->count();
 
         $totalIzin = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Izin')
-            ->whereIn('karyawan_id', $karyawanIds)
+            ->whereIn('user_id', $karyawanIds)
             ->count();
 
         $totalSakit = Absensi::whereDate('tanggal', $today)
             ->where('status', 'Sakit')
-            ->whereIn('karyawan_id', $karyawanIds)
+            ->whereIn('user_id', $karyawanIds)
             ->count();
 
         // Karyawan yang belum absen sama sekali hari ini
         $sudahAbsenIds = Absensi::whereDate('tanggal', $today)
-            ->whereIn('karyawan_id', $karyawanIds)
-            ->pluck('karyawan_id');
+            ->whereIn('user_id', $karyawanIds)
+            ->pluck('user_id');
         $totalBelumAbsen = $karyawanIds->diff($sudahAbsenIds)->count();
 
         $totalMasuk      = $totalHadir + $totalTerlambat;

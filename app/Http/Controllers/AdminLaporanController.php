@@ -12,11 +12,11 @@ class AdminLaporanController extends Controller
 {
     private function applyFilters(Request $request)
     {
-        $query = Absensi::with(['karyawan.divisi']);
+        $query = Absensi::with(['user.divisiObj']);
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->whereHas('karyawan', function ($q) use ($search) {
+            $query->whereHas('user', function ($q) use ($search) {
                 $q->where('nip', 'like', '%' . $search . '%')
                   ->orWhere('nama', 'like', '%' . $search . '%')
                   ->orWhere('divisi', 'like', '%' . $search . '%');
@@ -24,13 +24,13 @@ class AdminLaporanController extends Controller
         }
 
         if ($request->filled('nama')) {
-            $query->whereHas('karyawan', function ($q) use ($request) {
+            $query->whereHas('user', function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->nama . '%');
             });
         }
 
         if ($request->filled('divisi')) {
-            $query->whereHas('karyawan', function ($q) use ($request) {
+            $query->whereHas('user', function ($q) use ($request) {
                 $q->where('divisi', $request->divisi);
             });
         }
@@ -54,7 +54,7 @@ class AdminLaporanController extends Controller
 
         $daftarDivisi = \App\Models\Divisi::orderBy('nama_divisi')->pluck('nama_divisi');
 
-        $karyawanPerDivisi = \App\Models\Karyawan::select('nama', 'divisi')
+        $karyawanPerDivisi = \App\Models\User::select('nama', 'divisi')
             ->orderBy('nama')
             ->get()
             ->groupBy('divisi')
@@ -91,10 +91,10 @@ class AdminLaporanController extends Controller
             foreach ($data as $item) {
                 fputcsv($file, [
                     $no++,
-                    optional($item->karyawan)->nip ?? '-',
-                    optional($item->karyawan)->nama ?? '-',
-                    optional($item->karyawan)->divisi ?? '-',
-                    optional($item->karyawan)->jabatan ?? '-',
+                    optional($item->user)->nip ?? '-',
+                    optional($item->user)->nama ?? '-',
+                    optional($item->user)->divisi ?? '-',
+                    optional($item->user)->jabatan ?? '-',
                     $item->jam_masuk ?? '-',
                     $item->jam_keluar ?? '-',
                     Carbon::parse($item->tanggal)->format('d-m-Y')

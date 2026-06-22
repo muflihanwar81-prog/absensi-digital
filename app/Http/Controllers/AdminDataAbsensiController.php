@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
-use App\Models\Karyawan;
+use App\Models\User;
 use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 
@@ -23,7 +23,7 @@ class AdminDataAbsensiController extends Controller
             });
         }
 
-        // Filter tanggal 
+        // Filter tanggal
         if ($request->filled('tanggal_awal')) {
             $query->whereDate('tanggal', '>=', $request->tanggal_awal);
         }
@@ -40,7 +40,7 @@ class AdminDataAbsensiController extends Controller
         // Ambil data urut terbaru
         $absensi = $query->orderBy('tanggal', 'desc')->get();
 
-        // Tambahan field karyawan
+        // Tambahan field karyawan (uses karyawan() alias on Absensi model)
         $absensi->transform(function ($item) {
             $item->nip     = optional($item->karyawan)->nip ?? '-';
             $item->nama    = optional($item->karyawan)->nama ?? '-';
@@ -54,7 +54,7 @@ class AdminDataAbsensiController extends Controller
 
     public function destroy($id)
     {
-        // Cari data absensi beserta relasi karyawannya
+        // Cari data absensi beserta relasi
         $absensi = Absensi::with('karyawan')->findOrFail($id);
 
         $namaKaryawan = $absensi->karyawan ? $absensi->karyawan->nama : 'Tidak diketahui';

@@ -93,12 +93,12 @@
         <a href="{{ url('/profile') }}" class="flex items-center gap-3 mb-4 px-2 hover:bg-slate-800/50 py-2 rounded-xl transition duration-200 group">
             <div
                 class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-200 shrink-0">
-                {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 2)) }}
+                {{ strtoupper(substr(auth()->user()->nama ?? 'Karyawan', 0, 2)) }}
             </div>
 
             <div class="menu-text min-w-0">
                 <p class="font-bold text-slate-100 text-sm truncate group-hover:text-blue-400 transition-colors">
-                    {{ session('karyawan_nama', 'Karyawan') }}
+                    {{ auth()->user()->nama ?? 'Karyawan' }}
                 </p>
                 <p class="text-xs text-slate-450 truncate">
                     Karyawan Aktif

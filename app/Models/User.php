@@ -2,36 +2,41 @@
 
 namespace App\Models;
 
-use App\Models\Karyawan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Model User
+ * Model User (Unified)
  *
- * Merepresentasikan akun login untuk admin dan kepala divisi.
- * Tabel users terpisah dari tabel karyawans — hanya pengguna
- * dengan hak akses tertentu yang memiliki akun di tabel ini.
+ * Merepresentasikan semua pengguna sistem: karyawan, admin, super admin,
+ * dan kepala divisi. Menggabungkan data yang sebelumnya terpisah di
+ * tabel users dan karyawans menjadi satu tabel.
  *
  * Role yang tersedia:
+ * - karyawan      : karyawan biasa, akses dashboard karyawan
  * - admin         : admin biasa, akses penuh ke panel admin
- * - super_admin   : super admin, level tertinggi
- * - kepala_divisi : kepala divisi, akses dashboard divisi masing-masing
+ * - kepala_divisi : kepala divisi, akses dashboard divisi
  *
- * Akun user otomatis dibuat/dihapus oleh admin saat mengelola
- * data karyawan (AdminDataKaryawanController):
- * - Dibuat saat karyawan berjabatan Kepala Divisi atau ber-role admin
- * - Dihapus saat jabatan diturunkan dari Kepala Divisi
- *
- * @property int         $id                  Primary key
- * @property string      $name                Nama pengguna (nama divisi untuk kepala_divisi)
- * @property string      $email               Email login (unik, sinkron dengan email karyawan)
- * @property string      $password            Password terenkripsi (auto-hash via cast)
- * @property string      $role                Role akses: admin|super_admin|kepala_divisi
- * @property string|null $email_verified_at   Timestamp verifikasi email
- * @property string|null $remember_token      Token "remember me" untuk session
+ * @property int         $id
+ * @property string|null $nip               Nomor Induk Pegawai
+ * @property string      $nama              Nama lengkap
+ * @property int|null    $divisi_id         Foreign key ke tabel divisis
+ * @property string|null $divisi            Nama divisi (denormalized)
+ * @property string|null $jabatan           Jabatan karyawan
+ * @property string      $email             Email login (unik)
+ * @property string|null $username          Username opsional
+ * @property string      $password          Password terenkripsi
+ * @property string      $role              Role akses
+ * @property string      $status            Status: Aktif|Nonaktif
+ * @property string|null $komentar_nonaktif Alasan nonaktif
+ * @property time|null   $jam_masuk         Jam masuk kerja
+ * @property time|null   $jam_keluar        Jam keluar kerja
+ * @property date|null   $tgl_lahir         Tanggal lahir
+ * @property string|null $jenis_kelamin     Jenis kelamin
+ * @property string|null $alamat            Alamat
+ * @property date|null   $tgl_bergabung     Tanggal mulai bekerja
+ * @property string|null $no_hp             Nomor HP
  */
 class User extends Authenticatable
 {
@@ -43,16 +48,28 @@ class User extends Authenticatable
      * @var array<string>
      */
     protected $fillable = [
-        'name',
+        'nip',
+        'nama',
+        'divisi_id',
+        'divisi',
+        'jabatan',
         'email',
+        'username',
         'password',
         'role',
         'status',
+        'komentar_nonaktif',
+        'jam_masuk',
+        'jam_keluar',
+        'tgl_lahir',
+        'jenis_kelamin',
+        'alamat',
+        'tgl_bergabung',
+        'no_hp',
     ];
 
     /**
-     * Kolom-kolom yang disembunyikan saat serialisasi (JSON/array).
-     * Mencegah password dan token bocor ke response.
+     * Kolom-kolom yang disembunyikan saat serialisasi.
      *
      * @var array<string>
      */
@@ -62,9 +79,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Definisi casting tipe data untuk kolom tertentu.
-     * - email_verified_at: otomatis di-cast ke instance Carbon
-     * - password: otomatis di-hash saat di-set (fitur Laravel 11+)
+     * Definisi casting tipe data.
      *
      * @return array<string, string>
      */
@@ -77,14 +92,26 @@ class User extends Authenticatable
     }
 
     /**
-     * Relasi: User memiliki satu Karyawan.
-     * Menggunakan email sebagai foreign key karena tabel karyawans
-     * tidak menyimpan user_id, melainkan email yang sama.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Relasi: User termasuk dalam satu Divisi.
      */
-    public function karyawan(): HasOne
+    public function divisiObj()
     {
-        return $this->hasOne(Karyawan::class, 'email', 'email');
+        return $this->belongsTo(Divisi::class, 'divisi_id');
+    }
+
+    /**
+     * Relasi: User memiliki banyak Absensi.
+     */
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class);
+    }
+
+    /**
+     * Relasi: User memiliki banyak Izin.
+     */
+    public function izin()
+    {
+        return $this->hasMany(Izin::class);
     }
 }

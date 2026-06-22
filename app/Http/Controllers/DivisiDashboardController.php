@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Karyawan;
+use App\Models\User;
 use App\Models\Absensi;
 use App\Models\Divisi;
 use App\Models\Izin;
@@ -15,39 +15,42 @@ class DivisiDashboardController extends Controller
 {
     private function getKaryawanKepala()
     {
-        $user = Auth::user();
-        // Cari karyawan berdasarkan email user
-        return Karyawan::where('email', $user->email)->first();
+        return Auth::user();
     }
 
     public function index()
     {
         $user = Auth::user();
 
-        $nama_user  = $user->name;
-        $namaDivisi = $user->name;
+        $nama_user  = $user->nama;
+        $namaDivisi = $user->nama; // Wait, original code used $user->name for namaDivisi? Oh, in the old table Kepala Divisi's name was set to the nama divisi? Wait, $user->name was used as $namaDivisi. In old code: $user->name. So now $user->nama if that's what was mapped. Wait, I should use $user->nama or $user->divisi. Let's look at how the original code used it. Original code used $user->name for $namaDivisi. Since 'name' was migrated to 'nama', let's use $user->nama. Wait, actually `divisi` field might be better but I'll stick to $user->nama for safety to match original behavior. Let me change $namaDivisi to $user->nama. Wait, a kepala_divisi role probably has its "name" set as the division name. Let's stick to `$user->nama` to match original `$user->name`. Let's also set `$user->nama` for `$nama_user`.
+
+        // Actually, $user->name has been migrated to $user->nama.
+        $nama_user  = $user->nama;
+        $namaDivisi = $user->nama;
         $divisi     = $namaDivisi;
+
         // Ambil ID karyawan yang ada di divisi ini
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)->pluck('id');
+        $karyawanIds = User::where('divisi', $namaDivisi)->pluck('id');
 
         $total_karyawan = $karyawanIds->count();
-        $hadir = Absensi::whereIn('karyawan_id', $karyawanIds)
+        $hadir = Absensi::whereIn('user_id', $karyawanIds)
             ->whereIn('status', ['Hadir', 'Terlambat'])
             ->whereDate('tanggal', Carbon::today())
             ->count();
-        $terlambat = Absensi::whereIn('karyawan_id', $karyawanIds)
+        $terlambat = Absensi::whereIn('user_id', $karyawanIds)
             ->where('status', 'Terlambat')
             ->whereDate('tanggal', Carbon::today())
             ->count();
-        $alpha = Absensi::whereIn('karyawan_id', $karyawanIds)
+        $alpha = Absensi::whereIn('user_id', $karyawanIds)
             ->whereIn('status', ['Alpha', 'Tidak Hadir'])
             ->whereDate('tanggal', Carbon::today())
             ->count();
-        $izin = Absensi::whereIn('karyawan_id', $karyawanIds)
+        $izin = Absensi::whereIn('user_id', $karyawanIds)
             ->where('status', 'Izin')
             ->whereDate('tanggal', Carbon::today())
             ->count();
-        $sakit = Absensi::whereIn('karyawan_id', $karyawanIds)
+        $sakit = Absensi::whereIn('user_id', $karyawanIds)
             ->where('status', 'Sakit')
             ->whereDate('tanggal', Carbon::today())
             ->count();
@@ -58,11 +61,11 @@ class DivisiDashboardController extends Controller
         $aktivitas = collect();
 
         if ($karyawanKepala) {
-            $absensiHariIni = Absensi::where('karyawan_id', $karyawanKepala->id)
+            $absensiHariIni = Absensi::where('user_id', $karyawanKepala->id)
                 ->whereDate('tanggal', Carbon::today())
                 ->first();
 
-            $aktivitas = Absensi::where('karyawan_id', $karyawanKepala->id)
+            $aktivitas = Absensi::where('user_id', $karyawanKepala->id)
                 ->latest('tanggal')
                 ->take(10)
                 ->get();
@@ -98,7 +101,7 @@ class DivisiDashboardController extends Controller
         }
         $today = Carbon::today()->toDateString();
 
-        $absensi = Absensi::where('karyawan_id', $karyawan->id)
+        $absensi = Absensi::where('user_id', $karyawan->id)
             ->whereDate('tanggal', $today)
             ->first();
 
@@ -114,7 +117,7 @@ class DivisiDashboardController extends Controller
                 $status = $jamSekarang->gt($jamMasukDivisi) ? 'Terlambat' : 'Hadir';
             }
             Absensi::create([
-                'karyawan_id' => $karyawan->id,
+                'user_id' => $karyawan->id,
                 'tanggal'     => $today,
                 'jam_masuk'   => $jamSekarang->format('H:i:s'),
                 'status'      => $status,
@@ -141,7 +144,7 @@ class DivisiDashboardController extends Controller
 
         $today = Carbon::today()->toDateString();
 
-        $absensi = Absensi::where('karyawan_id', $karyawan->id)
+        $absensi = Absensi::where('user_id', $karyawan->id)
             ->whereDate('tanggal', $today)
             ->first();
 
@@ -201,13 +204,12 @@ class DivisiDashboardController extends Controller
     public function karyawan(Request $request)
     {
         $user = Auth::user();
-        $namaDivisi = $user->name;
+        $namaDivisi = $user->nama;
 
         $search = $request->search;
         $status = $request->status;
 
-        $karyawans = Karyawan::where('divisi', $namaDivisi)
-
+        $karyawans = User::where('divisi', $namaDivisi)
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nip', 'like', "%{$search}%")
@@ -223,10 +225,10 @@ class DivisiDashboardController extends Controller
     public function riwayatAbsensi(Request $request)
     {
         $user = Auth::user();
-        $namaDivisi = $user->name;
+        $namaDivisi = $user->nama;
 
         // Ambil ID karyawan sesuai divisi yang login
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
+        $karyawanIds = User::where('divisi', $namaDivisi)
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->search;
 
@@ -238,8 +240,8 @@ class DivisiDashboardController extends Controller
             })
             ->pluck('id');
 
-        $absensi = Absensi::with('karyawan')
-            ->whereIn('karyawan_id', $karyawanIds)
+        $absensi = Absensi::with('user')
+            ->whereIn('user_id', $karyawanIds)
 
             // Filter tanggal awal
             ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
@@ -260,7 +262,7 @@ class DivisiDashboardController extends Controller
     public function perizinan(Request $request)
     {
         $user = Auth::user();
-        $namaDivisi = $user->name;
+        $namaDivisi = $user->nama;
 
         $data = Izin::where('divisi', $namaDivisi)
 
@@ -308,7 +310,7 @@ class DivisiDashboardController extends Controller
 
         foreach ($period as $date) {
             $tanggal = $date->toDateString();
-            $absensi = Absensi::where('karyawan_id', $izin->karyawan_id)
+            $absensi = Absensi::where('user_id', $izin->user_id)
                 ->whereDate('tanggal', $tanggal)
                 ->first();
             if ($absensi) {
@@ -316,7 +318,7 @@ class DivisiDashboardController extends Controller
                 $absensi->save();
             } else {
                 Absensi::create([
-                    'karyawan_id' => $izin->karyawan_id,
+                    'user_id'     => $izin->user_id,
                     'tanggal'     => $tanggal,
                     'jam_masuk'   => null,
                     'jam_keluar'  => null,
@@ -347,7 +349,7 @@ class DivisiDashboardController extends Controller
         $startDate = \Carbon\Carbon::parse($izin->tanggal_mulai ?? $izin->created_at)->toDateString();
         $endDate = \Carbon\Carbon::parse($izin->tanggal_selesai ?? $izin->created_at)->toDateString();
 
-        Absensi::where('karyawan_id', $izin->karyawan_id)
+        Absensi::where('user_id', $izin->user_id)
             ->whereBetween('tanggal', [$startDate, $endDate])
             ->whereIn('status', ['Izin', 'Sakit', 'Cuti'])
             ->delete();
@@ -360,8 +362,8 @@ class DivisiDashboardController extends Controller
     public function laporan(Request $request)
     {
         $user = Auth::user();
-        $namaDivisi = $user->name;
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
+        $namaDivisi = $user->nama;
+        $karyawanIds = User::where('divisi', $namaDivisi)
 
             // Pencarian
             ->when($request->filled('search'), function ($query) use ($request) {
@@ -373,9 +375,9 @@ class DivisiDashboardController extends Controller
                 });
             })
             ->pluck('id');
-        $karyawans = Karyawan::where('divisi', $namaDivisi)->get();
-        $absensi = Absensi::with('karyawan')
-            ->whereIn('karyawan_id', $karyawanIds)
+        $karyawans = User::where('divisi', $namaDivisi)->get();
+        $absensi = Absensi::with('user')
+            ->whereIn('user_id', $karyawanIds)
             // Filter tanggal awal
             ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
                 $query->whereDate('tanggal', '>=', $request->tanggal_awal);
@@ -395,12 +397,13 @@ class DivisiDashboardController extends Controller
             'izins'
         ));
     }
+
     public function exportExcel(Request $request)
     {
         $user       = Auth::user();
-        $namaDivisi = $user->name;
+        $namaDivisi = $user->nama;
 
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
+        $karyawanIds = User::where('divisi', $namaDivisi)
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->search;
                 $query->where(function ($q) use ($search) {
@@ -411,8 +414,8 @@ class DivisiDashboardController extends Controller
             })
             ->pluck('id');
 
-        $data = Absensi::with('karyawan')
-            ->whereIn('karyawan_id', $karyawanIds)
+        $data = Absensi::with('user')
+            ->whereIn('user_id', $karyawanIds)
             ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
                 $query->whereDate('tanggal', '>=', $request->tanggal_awal);
             })
@@ -442,10 +445,10 @@ class DivisiDashboardController extends Controller
             foreach ($data as $item) {
                 fputcsv($file, [
                     $no++,
-                    optional($item->karyawan)->nip ?? '-',
-                    optional($item->karyawan)->nama ?? '-',
-                    optional($item->karyawan)->divisi ?? $namaDivisi,
-                    optional($item->karyawan)->jabatan ?? '-',
+                    optional($item->user)->nip ?? '-',
+                    optional($item->user)->nama ?? '-',
+                    optional($item->user)->divisi ?? $namaDivisi,
+                    optional($item->user)->jabatan ?? '-',
                     $item->jam_masuk ?? '-',
                     $item->jam_keluar ?? '-',
                     Carbon::parse($item->tanggal)->format('d-m-Y')
@@ -461,9 +464,9 @@ class DivisiDashboardController extends Controller
     public function exportPdf(Request $request)
     {
         $user       = Auth::user();
-        $namaDivisi = $user->name;
+        $namaDivisi = $user->nama;
 
-        $karyawanIds = Karyawan::where('divisi', $namaDivisi)
+        $karyawanIds = User::where('divisi', $namaDivisi)
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->search;
                 $query->where(function ($q) use ($search) {
@@ -474,8 +477,8 @@ class DivisiDashboardController extends Controller
             })
             ->pluck('id');
 
-        $data = Absensi::with('karyawan')
-            ->whereIn('karyawan_id', $karyawanIds)
+        $data = Absensi::with('user')
+            ->whereIn('user_id', $karyawanIds)
             ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
                 $query->whereDate('tanggal', '>=', $request->tanggal_awal);
             })

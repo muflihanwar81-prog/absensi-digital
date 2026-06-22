@@ -8,29 +8,19 @@ use Illuminate\Database\Eloquent\Model;
  * Model Izin
  *
  * Merepresentasikan data pengajuan izin/cuti dari karyawan.
- * Karyawan mengajukan izin melalui form, lalu admin menyetujui atau menolak.
  *
- * Status izin:
- * - Menunggu  : belum diproses oleh admin
- * - Disetujui : izin diterima oleh admin
- * - Ditolak   : izin ditolak oleh admin
- *
- * Digunakan oleh admin untuk:
- * - Melihat dan mengelola pengajuan izin (AdminDataPerizinanController)
- * - Menampilkan jumlah izin pending di dashboard (AdminDashboardController)
- * - Dihapus saat karyawan dihapus (AdminDataKaryawanController)
- *
- * @property int         $id               Primary key
- * @property int         $karyawan_id      Foreign key ke tabel karyawans
- * @property string      $nip              NIP karyawan yang mengajukan (denormalized)
- * @property string      $nama             Nama karyawan yang mengajukan (denormalized)
+ * @property int         $id
+ * @property int         $user_id          Foreign key ke tabel users
+ * @property string      $nip              NIP karyawan (denormalized)
+ * @property string      $nama             Nama karyawan (denormalized)
  * @property string      $divisi           Divisi karyawan (denormalized)
  * @property string      $jabatan          Jabatan karyawan (denormalized)
- * @property string      $kategori         Kategori izin (misal: Sakit, Cuti, Dinas Luar)
- * @property string      $tanggal_mulai    Tanggal mulai izin (format: Y-m-d)
- * @property string      $tanggal_selesai  Tanggal selesai izin (format: Y-m-d)
- * @property string|null $file_tambahan    Path file lampiran/bukti (opsional)
- * @property string      $status           Status izin: Menunggu|Disetujui|Ditolak
+ * @property string      $kategori         Kategori izin (Sakit, Cuti, dll)
+ * @property string      $tanggal_mulai    Tanggal mulai izin
+ * @property string      $tanggal_selesai  Tanggal selesai izin
+ * @property string|null $file_tambahan    Path file lampiran
+ * @property string      $status           Status: Menunggu|Disetujui|Ditolak
+ * @property string|null $alasan_tolak     Alasan penolakan
  */
 class Izin extends Model
 {
@@ -40,7 +30,7 @@ class Izin extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'karyawan_id',
+        'user_id',
         'nip',
         'nama',
         'divisi',
@@ -51,4 +41,14 @@ class Izin extends Model
         'file_tambahan',
         'status',
     ];
+
+    /**
+     * Relasi: Izin milik satu User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -40,4 +40,12 @@ class Divisi extends Model
         'longitude',
         'radius',
     ];
+
+    /**
+     * Relasi: Divisi memiliki banyak User (karyawan).
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class, 'divisi_id');
+    }
 }

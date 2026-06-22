@@ -64,7 +64,7 @@
                             Divisi
                         </p>
                         <p class="text-lg font-bold mt-0.5">
-                            {{ session('karyawan_divisi', 'Divisi') }}
+                            {{ auth()->user()->divisi ?? 'Divisi' }}
                         </p>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                         <div class="flex items-center gap-5">
                             <div
                                 class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-50 to-indigo-600 flex items-center justify-center text-2xl font-extrabold text-white shadow-md ring-2 ring-white/10 shrink-0">
-                                {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 3)) }}
+                                {{ strtoupper(substr(auth()->user()->nama ?? 'Karyawan', 0, 3)) }}
                             </div>
 
                             <div>
@@ -132,11 +132,11 @@
                                 </p>
 
                                 <h3 class="text-2xl font-extrabold text-slate-800 tracking-tight">
-                                    {{ session('karyawan_nama', 'Karyawan') }}
+                                    {{ auth()->user()->nama ?? 'Karyawan' }}
                                 </h3>
 
                                 <p class="text-base text-slate-500 mt-1 font-medium">
-                                    {{ session('karyawan_jabatan', 'Karyawan') }}
+                                    {{ auth()->user()->jabatan ?? 'Karyawan' }}
                                 </p>
                             </div>
                         </div>
@@ -244,7 +244,7 @@
 
                                         {{-- NAMA --}}
                                         <td class="px-6 py-4 font-bold text-slate-800">
-                                            {{ session('karyawan_nama') }}
+                                            {{ auth()->user()->nama }}
                                         </td>
 
                                         {{-- TANGGAL --}}

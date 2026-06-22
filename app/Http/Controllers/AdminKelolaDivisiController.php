@@ -70,7 +70,7 @@ class AdminKelolaDivisiController extends Controller
         $divisi->jam_keluar  = $request->jam_keluar;
         $divisi->save();
 
-        \App\Models\Karyawan::where('divisi', $namaDivisiLama)->update([
+        \App\Models\User::where('divisi', $namaDivisiLama)->update([
             'divisi'    => $divisi->nama_divisi,
             'divisi_id' => $divisi->id,
         ]);
@@ -90,7 +90,7 @@ class AdminKelolaDivisiController extends Controller
     public function destroy($id)
     {
         $divisi = Divisi::findOrFail($id);
-        $jumlahKaryawan = \App\Models\Karyawan::where('divisi_id', $divisi->id)->count();
+        $jumlahKaryawan = \App\Models\User::where('divisi_id', $divisi->id)->count();
 
         if ($jumlahKaryawan > 0) {
             return redirect()

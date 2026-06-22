@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Divisi;
-use App\Models\Karyawan;
+use App\Models\User;
 use App\Models\Absensi;
 use App\Models\AdminActivity;
 
@@ -30,11 +30,13 @@ Route::get('/', function () {
 
 Route::get('/login', function () {
     if (Auth::check()) {
-        return redirect('/dashboard');
-    }
+        $user = Auth::user();
 
-    if (session()->has('karyawan_id')) {
-        return redirect('/dashboard_karyawan');
+        return match ($user->role) {
+            'admin'                => redirect('/dashboard'),
+            'kepala_divisi'        => redirect('/divisi-dashboard'),
+            default                => redirect('/dashboard_karyawan'),
+        };
     }
 
     return view('login');
@@ -150,7 +152,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('divisi.absensi.keluar');
 });
 
-Route::middleware(['karyawan.auth'])->group(function () {
+// Karyawan routes — now uses standard 'auth' middleware instead of 'karyawan.auth'
+Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard_karyawan', [KaryawanDashboardController::class, 'index'])
         ->name('karyawan.dashboard');

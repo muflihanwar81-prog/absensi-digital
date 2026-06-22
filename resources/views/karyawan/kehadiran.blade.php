@@ -153,7 +153,7 @@
 
                                         {{-- Nama --}}
                                         <td class="px-6 py-4 font-bold text-slate-800">
-                                            {{ $item->nama_karyawan ?? session('karyawan_nama') }}
+                                            {{ $item->nama_karyawan ?? auth()->user()->nama }}
                                         </td>
 
                                         {{-- Tanggal --}}

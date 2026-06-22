@@ -10,12 +10,12 @@
             <div class="text-right">
                 <p class="text-xs text-slate-400 font-medium">Selamat Datang</p>
                 <p class="text-sm font-bold text-slate-800">
-                    {{ session('karyawan_nama', 'Karyawan') }}
+                    {{ auth()->user()->nama ?? 'Karyawan' }}
                 </p>
             </div>
 
             <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20 ring-2 ring-white/10">
-                {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 1)) }}
+                {{ strtoupper(substr(auth()->user()->nama ?? 'Karyawan', 0, 1)) }}
             </div>
         </div>
     </div>

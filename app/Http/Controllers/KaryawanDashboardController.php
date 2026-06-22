@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Izin;
-use App\Models\Karyawan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,40 +13,34 @@ class KaryawanDashboardController extends Controller
 {
     public function index()
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $karyawan = Karyawan::findOrFail($karyawanId);
+        $karyawanId = $karyawan->id;
 
-        $hadir = Absensi::where('karyawan_id', $karyawanId)
+        $hadir = Absensi::where('user_id', $karyawanId)
             ->whereIn('status', ['Hadir', 'Terlambat'])
             ->count();
 
-        $terlambat = Absensi::where('karyawan_id', $karyawanId)
+        $terlambat = Absensi::where('user_id', $karyawanId)
             ->where('status', 'Terlambat')
             ->count();
 
-        $tidakHadir = Absensi::where('karyawan_id', $karyawanId)
+        $tidakHadir = Absensi::where('user_id', $karyawanId)
             ->where('status', 'Tidak Hadir')
             ->count();
 
-        $izin = Izin::where('karyawan_id', $karyawanId)
+        $izin = Izin::where('user_id', $karyawanId)
             ->count();
 
-        $aktivitas = Absensi::where('karyawan_id', $karyawanId)
+        $aktivitas = Absensi::where('user_id', $karyawanId)
             ->latest()
             ->take(10)
             ->get();
-
-        session([
-            'karyawan_nama' => $karyawan->nama,
-            'karyawan_divisi' => $karyawan->divisi,
-            'karyawan_jabatan' => $karyawan->jabatan,
-        ]);
 
         return view('karyawan.dashboard', compact(
             'karyawan',
@@ -61,12 +54,14 @@ class KaryawanDashboardController extends Controller
 
     public function absenMasuk(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
+
+        $karyawanId = $karyawan->id;
 
         // Validasi GPS
         $gpsCheck = $this->validateGPSLocation($request);
@@ -76,24 +71,21 @@ class KaryawanDashboardController extends Controller
 
         $today = Carbon::today()->toDateString();
 
-        $absensi = Absensi::where('karyawan_id', $karyawanId)
+        $absensi = Absensi::where('user_id', $karyawanId)
             ->whereDate('tanggal', $today)
             ->first();
 
         if (!$absensi) {
-            $karyawan = Karyawan::with('divisi')
-                ->findOrFail($karyawanId);
-
             $jamSekarang = Carbon::now('Asia/Jakarta');
 
             $jamMasukDivisi = Carbon::today('Asia/Jakarta')
-                ->setTimeFromTimeString($karyawan->getRelation('divisi')->jam_masuk);
+                ->setTimeFromTimeString(optional($karyawan->divisiObj)->jam_masuk ?? '08:00:00');
             $status = $jamSekarang->gt($jamMasukDivisi)
                 ? 'Terlambat'
                 : 'Hadir';
 
             Absensi::create([
-                'karyawan_id' => $karyawanId,
+                'user_id'     => $karyawanId,
                 'tanggal'     => $today,
                 'jam_masuk'   => $jamSekarang->format('H:i:s'),
                 'status'      => $status,
@@ -106,12 +98,14 @@ class KaryawanDashboardController extends Controller
 
     public function absenPulang(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
+
+        $karyawanId = $karyawan->id;
 
         // Validasi GPS
         $gpsCheck = $this->validateGPSLocation($request);
@@ -121,7 +115,7 @@ class KaryawanDashboardController extends Controller
 
         $today = Carbon::today()->toDateString();
 
-        $absensi = Absensi::where('karyawan_id', $karyawanId)
+        $absensi = Absensi::where('user_id', $karyawanId)
             ->whereDate('tanggal', $today)
             ->first();
 
@@ -180,14 +174,16 @@ class KaryawanDashboardController extends Controller
 
     public function kehadiran(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $query = Absensi::where('karyawan_id', $karyawanId);
+        $karyawanId = $karyawan->id;
+
+        $query = Absensi::where('user_id', $karyawanId);
 
         if ($request->filled('tanggal_awal')) {
             $query->whereDate('tanggal', '>=', $request->tanggal_awal);
@@ -205,8 +201,6 @@ class KaryawanDashboardController extends Controller
             $query->where('status', $request->status);
         }
 
-        $karyawan = Karyawan::findOrFail($karyawanId);
-
         $absensis = $query->orderBy('tanggal', 'desc')->get();
 
         $absensis->transform(function ($item) use ($karyawan) {
@@ -222,16 +216,14 @@ class KaryawanDashboardController extends Controller
 
     public function riwayat(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $karyawan = Karyawan::findOrFail($karyawanId);
-
-        $absensis = Absensi::where('karyawan_id', $karyawanId)
+        $absensis = Absensi::where('user_id', $karyawan->id)
             ->orderBy('tanggal', 'desc')
             ->get();
 
@@ -240,32 +232,30 @@ class KaryawanDashboardController extends Controller
 
     public function profile()
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
-
-        $karyawan = Karyawan::with('divisi')->findOrFail($karyawanId);
 
         return view('karyawan.profile', compact('karyawan'));
     }
 
     public function updateProfile(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $karyawan = Karyawan::findOrFail($karyawanId);
+        $karyawanId = $karyawan->id;
 
         $request->validate([
             'nama' => 'required|string|max:255',
-            'username' => 'nullable|string|max:255|unique:karyawans,username,' . $karyawanId,
-            'email' => 'required|email|max:255|unique:karyawans,email,' . $karyawanId,
+            'username' => 'nullable|string|max:255|unique:users,username,' . $karyawanId,
+            'email' => 'required|email|max:255|unique:users,email,' . $karyawanId,
             'no_hp' => 'nullable|string|max:20',
             'tgl_lahir' => 'nullable|date',
             'jenis_kelamin' => 'nullable|string|max:20',
@@ -278,8 +268,6 @@ class KaryawanDashboardController extends Controller
             'username.unique' => 'Username sudah digunakan oleh karyawan lain.',
         ]);
 
-        $oldEmail = $karyawan->email;
-
         $karyawan->update([
             'nama'          => $request->nama,
             'username'      => $request->username,
@@ -290,22 +278,14 @@ class KaryawanDashboardController extends Controller
             'alamat'        => $request->alamat,
         ]);
 
-        // Sinkronisasi email ke tabel users jika karyawan ini memiliki akun login
-        if ($oldEmail !== $request->email) {
-            User::where('email', $oldEmail)->update(['email' => $request->email]);
-        }
-
-        // Update session name
-        session(['karyawan_nama' => $karyawan->nama]);
-
         return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
     }
 
     public function updatePassword(Request $request)
     {
-        $karyawanId = session('karyawan_id');
+        $karyawan = auth()->user();
 
-        if (!$karyawanId) {
+        if (!$karyawan) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
@@ -319,8 +299,6 @@ class KaryawanDashboardController extends Controller
             'password_baru.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 
-        $karyawan = Karyawan::findOrFail($karyawanId);
-
         if (!Hash::check($request->password_lama, $karyawan->password)) {
             return redirect()->back()->with('error', 'Password lama salah.');
         }
@@ -328,10 +306,6 @@ class KaryawanDashboardController extends Controller
         $karyawan->update([
             'password' => Hash::make($request->password_baru),
         ]);
-
-        // Sinkronisasi password ke tabel users jika karyawan ini memiliki akun login
-        User::where('email', $karyawan->email)
-            ->update(['password' => Hash::make($request->password_baru)]);
 
         return redirect()->back()->with('success', 'Password berhasil diperbarui.');
     }
