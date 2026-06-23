@@ -9,16 +9,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('izins', function (Blueprint $table) {
-            // ⬇️ MASUKKAN KODE ANDA DI SINI
-            $table->string('alasan_tolak')->nullable()->after('status');
+            $table->text('alasan_tolak')->nullable()->after('status');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('izins', function (Blueprint $table) {
-            // Hapus kolom jika migration di-rollback
-            $table->dropColumn('alasan_tolak');
-        });
+    Schema::table('izins', function (Blueprint $table) {
+        $table->dropColumn('alasan_tolak');
+    });
     }
 };

@@ -185,19 +185,13 @@
                                             </tr>
                                         @endforelse
                                     </tbody>
-
                                 </table>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
-
             </main>
-
         </div>
-
     </div>
 
     {{-- MODAL AJUKAN IZIN --}}

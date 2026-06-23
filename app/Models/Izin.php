@@ -29,18 +29,19 @@ class Izin extends Model
      *
      * @var array<string>
      */
-    protected $fillable = [
-        'user_id',
-        'nip',
-        'nama',
-        'divisi',
-        'jabatan',
-        'kategori',
-        'tanggal_mulai',
-        'tanggal_selesai',
-        'file_tambahan',
-        'status',
-    ];
+protected $fillable = [
+    'user_id',
+    'nip',
+    'nama',
+    'divisi',
+    'jabatan',
+    'kategori',
+    'keterangan',
+    'tanggal_mulai',
+    'tanggal_selesai',
+    'status',
+    'alasan_tolak',
+];
 
     /**
      * Relasi: Izin milik satu User.

@@ -335,33 +335,39 @@ public function index()
             ->with('success', 'Pengajuan izin berhasil disetujui.');
     }
 
-   public function tolak(Request $request, $id)
-    {
-        // 1. Validasi agar alasan penolakan wajib diisi
-        $request->validate([
-            'alasan_tolak' => 'required|string|max:255'
-        ]);
+public function tolak(Request $request, $id)
+{
+    $request->validate([
+        'alasan_tolak' => 'required|string|max:255',
+    ], [
+        'alasan_tolak.required' => 'Alasan penolakan wajib diisi.',
+    ]);
 
-        $izin = Izin::findOrFail($id);
-        
-        // 2. Simpan status 'Ditolak' beserta alasannya ke model/tabel Izin
-        $izin->status = 'Ditolak';
-        $izin->alasan_tolak = $request->alasan_tolak;
-        $izin->save();
+    $izin = Izin::findOrFail($id);
 
-        
-        $startDate = \Carbon\Carbon::parse($izin->tanggal_mulai ?? $izin->created_at)->toDateString();
-        $endDate = \Carbon\Carbon::parse($izin->tanggal_selesai ?? $izin->created_at)->toDateString();
+    $izin->update([
+        'status' => 'Ditolak',
+        'alasan_tolak' => $request->alasan_tolak,
+    ]);
 
-        Absensi::where('user_id', $izin->user_id)
-            ->whereBetween('tanggal', [$startDate, $endDate])
-            ->whereIn('status', ['Izin', 'Sakit', 'Cuti'])
-            ->delete();
+    // Hapus absensi izin/sakit/cuti jika sebelumnya pernah dibuat
+    $startDate = \Carbon\Carbon::parse(
+        $izin->tanggal_mulai ?? $izin->created_at
+    )->toDateString();
 
-        return redirect()
-            ->route('divisi.data-perizinan')
-            ->with('danger', 'Pengajuan izin telah ditolak.');
-    }
+    $endDate = \Carbon\Carbon::parse(
+        $izin->tanggal_selesai ?? $izin->created_at
+    )->toDateString();
+
+    Absensi::where('user_id', $izin->user_id)
+        ->whereBetween('tanggal', [$startDate, $endDate])
+        ->whereIn('status', ['Izin', 'Sakit', 'Cuti'])
+        ->delete();
+
+    return redirect()
+        ->route('divisi.data-perizinan')
+        ->with('success', 'Pengajuan izin berhasil ditolak.');
+}
 
     public function laporan(Request $request)
 {
