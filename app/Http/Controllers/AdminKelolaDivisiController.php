@@ -12,9 +12,9 @@ class AdminKelolaDivisiController extends Controller
     public function index()
     {
         $data = Divisi::orderBy('nama_divisi')->get();
-        $globalLatitude  = \App\Models\Setting::get('latitude', '-6.200000');
-        $globalLongitude = \App\Models\Setting::get('longitude', '106.816666');
-        $globalRadius    = \App\Models\Setting::get('radius', '100');
+        $globalLatitude  = \App\Models\Setting::get('latitude', '1.1184317');
+        $globalLongitude = \App\Models\Setting::get('longitude', '104.048482');
+        $globalRadius    = \App\Models\Setting::get('radius', '200');
 
         return view('admin.keloladivisi', compact('data', 'globalLatitude', 'globalLongitude', 'globalRadius'));
     }

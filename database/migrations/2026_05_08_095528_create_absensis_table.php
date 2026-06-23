@@ -12,20 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absensis', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('karyawan_id')->constrained('karyawans');
-    $table->date('tanggal');
-    $table->time('jam_masuk')->nullable();
-    $table->time('jam_keluar')->nullable();
-    $table->enum('status', [
-        'Hadir',
-        'Terlambat',
-        'Izin',
-        'Sakit',
-        'Alpha'
-    ]);
-    $table->timestamps();
-});
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->date('tanggal');
+            $table->time('jam_masuk')->nullable();
+            $table->time('jam_keluar')->nullable();
+            $table->enum('status', [
+                'Hadir',
+                'Terlambat',
+                'Izin',
+                'Sakit',
+                'Alpha'
+            ]);
+            $table->timestamps();
+        });
     }
 
     /**

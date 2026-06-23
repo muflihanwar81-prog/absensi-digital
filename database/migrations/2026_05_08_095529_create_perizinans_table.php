@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perizinans', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('karyawan_id')->constrained('karyawans');
-    $table->enum('jenis', [
-        'Izin',
-        'Sakit'
-    ]);
-    $table->text('keterangan')->nullable();
-    $table->date('tanggal');
-    $table->string('bukti')->nullable();
-    $table->timestamps();
-});
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->enum('jenis', [
+                'Izin',
+                'Sakit'
+            ]);
+            $table->text('keterangan')->nullable();
+            $table->date('tanggal');
+            $table->string('bukti')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

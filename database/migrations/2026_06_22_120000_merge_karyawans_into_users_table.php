@@ -10,7 +10,10 @@ return new class extends Migration
      * Merge karyawans table into users table.
      *
      * Adds all karyawan-specific columns to users, drops the old
-     * karyawans table, and updates FK references in absensis & izins.
+     * karyawans table (if it still exists).
+     *
+     * NOTE: absensis, izins, perizinans migrations already use user_id
+     * referencing users, so no FK rename is needed here.
      */
     public function up(): void
     {
@@ -42,37 +45,8 @@ return new class extends Migration
             $table->dropColumn('name');
         });
 
-        // 4. Drop FK constraints on absensis and izins that reference karyawans
-        Schema::table('absensis', function (Blueprint $table) {
-            $table->dropForeign(['karyawan_id']);
-            $table->renameColumn('karyawan_id', 'user_id');
-        });
-
-        Schema::table('izins', function (Blueprint $table) {
-            $table->dropForeign(['karyawan_id']);
-            $table->renameColumn('karyawan_id', 'user_id');
-        });
-
-        Schema::table('perizinans', function (Blueprint $table) {
-            $table->dropForeign(['karyawan_id']);
-            $table->renameColumn('karyawan_id', 'user_id');
-        });
-
-        // 5. Drop the karyawans table
+        // 4. Drop karyawans table if it still exists (legacy)
         Schema::dropIfExists('karyawans');
-
-        // 6. Add new FK constraints referencing users
-        Schema::table('absensis', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-        });
-
-        Schema::table('izins', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-        });
-
-        Schema::table('perizinans', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-        });
     }
 
     /**
@@ -80,53 +54,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Recreate karyawans table
-        Schema::create('karyawans', function (Blueprint $table) {
-            $table->id();
-            $table->string('nip');
-            $table->string('nama');
-            $table->foreignId('divisi_id')->constrained('divisis');
-            $table->string('divisi')->nullable();
-            $table->string('jabatan');
-            $table->string('status')->nullable();
-            $table->time('jam_masuk')->nullable();
-            $table->time('jam_keluar')->nullable();
-            $table->string('email')->nullable();
-            $table->string('password');
-            $table->string('username')->nullable()->unique();
-            $table->date('tgl_lahir')->nullable();
-            $table->string('jenis_kelamin')->nullable();
-            $table->text('alamat')->nullable();
-            $table->date('tgl_bergabung')->nullable();
-            $table->string('no_hp')->nullable();
-            $table->string('role')->nullable();
-            $table->text('komentar_nonaktif')->nullable();
-            $table->timestamps();
-        });
-
-        // Revert FK on absensis & izins
-        Schema::table('absensis', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->renameColumn('user_id', 'karyawan_id');
-        });
-
-        Schema::table('izins', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->renameColumn('user_id', 'karyawan_id');
-        });
-
-        Schema::table('absensis', function (Blueprint $table) {
-            $table->foreign('karyawan_id')->references('id')->on('karyawans');
-        });
-
-        Schema::table('izins', function (Blueprint $table) {
-            $table->foreign('karyawan_id')->references('id')->on('karyawans')->cascadeOnDelete();
-        });
-
-        // Add back 'name' and remove karyawan columns from users
         Schema::table('users', function (Blueprint $table) {
             $table->string('name')->after('id');
-            $table->dropForeign(['divisi_id']);
+            if (Schema::hasColumn('users', 'divisi_id')) {
+                $table->dropForeign(['divisi_id']);
+            }
             $table->dropColumn([
                 'nip', 'nama', 'divisi_id', 'divisi', 'jabatan',
                 'username', 'tgl_lahir', 'jenis_kelamin', 'alamat',

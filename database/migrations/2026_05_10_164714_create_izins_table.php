@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('izins', function (Blueprint $table) {
             $table->id();
 
-            // Relasi ke tabel karyawans
-            $table->foreignId('karyawan_id')
-                  ->constrained()
+            // Relasi ke tabel users
+            $table->foreignId('user_id')
+                  ->constrained('users')
                   ->cascadeOnDelete();
 
             // Data pengajuan izin
@@ -30,12 +30,19 @@ return new class extends Migration
             $table->text('alasan')->nullable();
             $table->string('kategori')->nullable(); // Sakit, Izin, Cuti
 
+            // Tanggal mulai & selesai
+            $table->date('tanggal_mulai')->nullable();
+            $table->date('tanggal_selesai')->nullable();
+
             // File pendukung
             $table->string('file_tambahan')->nullable();
 
             // Status pengajuan
             $table->string('status')->default('Menunggu');
             // Menunggu, Disetujui, Ditolak
+
+            // Alasan penolakan
+            $table->text('alasan_tolak')->nullable();
 
             $table->timestamps();
         });

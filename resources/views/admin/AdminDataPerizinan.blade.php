@@ -161,8 +161,8 @@
                                                     '{{ $p->tanggal_mulai }}',
                                                     '{{ $p->tanggal_selesai }}',
                                                     '{{ $p->status }}',
-                                                    '{{ $p->file_tambahan ? asset('/storage/' . $p->file_tambahan) : '' }}', 
-                                                    '{{ addslashes(basename($p->file_tambahan ?? ''))}}',
+                                                    '{{ $p->file_tambahan ? asset('/storage/' . $p->file_tambahan) : '' }}',
+                                                    '{{ addslashes(basename($p->file_tambahan ?? '')) }}',
                                                 )"
                                                 class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs hover:bg-blue-100 transition">
                                                 <i class="fa-solid fa-circle-info mr-1 text-xs"></i>
