@@ -71,6 +71,28 @@
                             class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-sm shadow-blue-500/10 hover:scale-[1.02] transition-all duration-200">
                             Filter
                         </button>
+                        <div class="flex items-center gap-2">
+                            <label class="font-bold text-slate-500 text-xxs uppercase tracking-wider">
+                                Bulan:
+                            </label>
+
+                            <select name="bulan"
+                                class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm">
+                                <option value="">Semua Bulan</option>
+                                <option value="1" {{ request('bulan') == '1' ? 'selected' : '' }}>Januari</option>
+                                <option value="2" {{ request('bulan') == '2' ? 'selected' : '' }}>Februari</option>
+                                <option value="3" {{ request('bulan') == '3' ? 'selected' : '' }}>Maret</option>
+                                <option value="4" {{ request('bulan') == '4' ? 'selected' : '' }}>April</option>
+                                <option value="5" {{ request('bulan') == '5' ? 'selected' : '' }}>Mei</option>
+                                <option value="6" {{ request('bulan') == '6' ? 'selected' : '' }}>Juni</option>
+                                <option value="7" {{ request('bulan') == '7' ? 'selected' : '' }}>Juli</option>
+                                <option value="8" {{ request('bulan') == '8' ? 'selected' : '' }}>Agustus</option>
+                                <option value="9" {{ request('bulan') == '9' ? 'selected' : '' }}>September</option>
+                                <option value="10" {{ request('bulan') == '10' ? 'selected' : '' }}>Oktober</option>
+                                <option value="11" {{ request('bulan') == '11' ? 'selected' : '' }}>November</option>
+                                <option value="12" {{ request('bulan') == '12' ? 'selected' : '' }}>Desember</option>
+                            </select>
+                        </div>
                         {{-- Tanggal --}}
                                 <div class="flex flex-wrap items-center gap-2.5">
                                     <label class="font-bold text-slate-500 text-xxs uppercase tracking-wider">
@@ -93,17 +115,17 @@
                                         value="{{ request('tanggal_akhir') }}"
                                         class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm text-slate-750 shadow-sm focus:outline-none focus:border-blue-500 transition">
                                 </div>
-                                                    {{-- EXPORT UTILITIES (Excel & PDF) --}}
-                    <div class="w-full md:w-auto flex gap-2 md:ml-auto">
-                        <a href="{{ route('divisi.laporan.excel', request()->input()) }}"
-                           class="flex-1 md:flex-initial text-center bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-bold text-sm shadow-sm transition">
-                           <i class="fa-solid fa-file-excel mr-1"></i> Excel
-                        </a>
-                        <a href="{{ route('divisi.laporan.pdf', request()->input()) }}"
-                           class="flex-1 md:flex-initial text-center bg-rose-600 hover:bg-rose-700 text-white px-4 py-3 rounded-xl font-bold text-sm shadow-sm transition">
-                           <i class="fa-solid fa-file-pdf mr-1"></i> PDF
-                        </a>
-                    </div>
+                                {{-- EXPORT UTILITIES (Excel & PDF) --}}
+                                <div class="w-full md:w-auto flex gap-2 md:ml-auto">
+                                    <a href="{{ route('divisi.laporan.excel', request()->input()) }}"
+                                        class="flex-1 md:flex-initial text-center bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-bold text-sm shadow-sm transition">
+                                            <i class="fa-solid fa-file-excel mr-1"></i> Excel
+                                    </a>
+                                    <a href="{{ route('divisi.laporan.pdf', request()->input()) }}"
+                                        class="flex-1 md:flex-initial text-center bg-rose-600 hover:bg-rose-700 text-white px-4 py-3 rounded-xl font-bold text-sm shadow-sm transition">
+                                            <i class="fa-solid fa-file-pdf mr-1"></i> PDF
+                                    </a>
+                                </div>
                     </form>
                 </div>
 

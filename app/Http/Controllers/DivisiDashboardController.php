@@ -19,73 +19,75 @@ class DivisiDashboardController extends Controller
         return Auth::user();
     }
 
-    public function index()
-    {
-        $user = Auth::user();
+public function index()
+{
+    $user = Auth::user();
 
-        $nama_user  = $user->nama;
-        $namaDivisi = $user->nama; // Wait, original code used $user->name for namaDivisi? Oh, in the old table Kepala Divisi's name was set to the nama divisi? Wait, $user->name was used as $namaDivisi. In old code: $user->name. So now $user->nama if that's what was mapped. Wait, I should use $user->nama or $user->divisi. Let's look at how the original code used it. Original code used $user->name for $namaDivisi. Since 'name' was migrated to 'nama', let's use $user->nama. Wait, actually `divisi` field might be better but I'll stick to $user->nama for safety to match original behavior. Let me change $namaDivisi to $user->nama. Wait, a kepala_divisi role probably has its "name" set as the division name. Let's stick to `$user->nama` to match original `$user->name`. Let's also set `$user->nama` for `$nama_user`.
+    $nama_user  = $user->nama;
+    $namaDivisi = $user->divisi;
+    $divisi     = $user->divisi;
 
-        // Actually, $user->name has been migrated to $user->nama.
-        $nama_user  = $user->nama;
-        $namaDivisi = $user->nama;
-        $divisi     = $namaDivisi;
+    $karyawanIds = User::where('divisi', $namaDivisi)
+        ->where('role', 'karyawan')
+        ->pluck('id');
 
-        // Ambil ID karyawan yang ada di divisi ini
-        $karyawanIds = User::where('divisi', $namaDivisi)->pluck('id');
+    $total_karyawan = $karyawanIds->count();
 
-        $total_karyawan = $karyawanIds->count();
-        $hadir = Absensi::whereIn('user_id', $karyawanIds)
-            ->whereIn('status', ['Hadir', 'Terlambat'])
+    $hadir = Absensi::whereIn('user_id', $karyawanIds)
+        ->whereIn('status', ['Hadir', 'Terlambat'])
+        ->whereDate('tanggal', Carbon::today())
+        ->count();
+
+    $terlambat = Absensi::whereIn('user_id', $karyawanIds)
+        ->where('status', 'Terlambat')
+        ->whereDate('tanggal', Carbon::today())
+        ->count();
+
+    $alpha = Absensi::whereIn('user_id', $karyawanIds)
+        ->whereIn('status', ['Alpha', 'Tidak Hadir'])
+        ->whereDate('tanggal', Carbon::today())
+        ->count();
+
+    $izin = Absensi::whereIn('user_id', $karyawanIds)
+        ->where('status', 'Izin')
+        ->whereDate('tanggal', Carbon::today())
+        ->count();
+
+    $sakit = Absensi::whereIn('user_id', $karyawanIds)
+        ->where('status', 'Sakit')
+        ->whereDate('tanggal', Carbon::today())
+        ->count();
+
+    $karyawanKepala = $this->getKaryawanKepala();
+
+    $absensiHariIni = null;
+    $aktivitas = collect();
+
+    if ($karyawanKepala) {
+        $absensiHariIni = Absensi::where('user_id', $karyawanKepala->id)
             ->whereDate('tanggal', Carbon::today())
-            ->count();
-        $terlambat = Absensi::whereIn('user_id', $karyawanIds)
-            ->where('status', 'Terlambat')
-            ->whereDate('tanggal', Carbon::today())
-            ->count();
-        $alpha = Absensi::whereIn('user_id', $karyawanIds)
-            ->whereIn('status', ['Alpha', 'Tidak Hadir'])
-            ->whereDate('tanggal', Carbon::today())
-            ->count();
-        $izin = Absensi::whereIn('user_id', $karyawanIds)
-            ->where('status', 'Izin')
-            ->whereDate('tanggal', Carbon::today())
-            ->count();
-        $sakit = Absensi::whereIn('user_id', $karyawanIds)
-            ->where('status', 'Sakit')
-            ->whereDate('tanggal', Carbon::today())
-            ->count();
+            ->first();
 
-        // Absensi kepala divisi hari ini
-        $karyawanKepala = $this->getKaryawanKepala();
-        $absensiHariIni = null;
-        $aktivitas = collect();
-
-        if ($karyawanKepala) {
-            $absensiHariIni = Absensi::where('user_id', $karyawanKepala->id)
-                ->whereDate('tanggal', Carbon::today())
-                ->first();
-
-            $aktivitas = Absensi::where('user_id', $karyawanKepala->id)
-                ->latest('tanggal')
-                ->take(10)
-                ->get();
-        }
-
-        return view('divisi.DashboardDivisi', compact(
-            'nama_user',
-            'divisi',
-            'total_karyawan',
-            'hadir',
-            'terlambat',
-            'alpha',
-            'izin',
-            'sakit',
-            'absensiHariIni',
-            'karyawanKepala',
-            'aktivitas'
-        ));
+        $aktivitas = Absensi::where('user_id', $karyawanKepala->id)
+            ->latest('tanggal')
+            ->take(10)
+            ->get();
     }
+
+    return view('divisi.DashboardDivisi', compact(
+        'nama_user',
+        'divisi',
+        'total_karyawan',
+        'hadir',
+        'terlambat',
+        'alpha',
+        'izin',
+        'sakit',
+        'absensiHariIni',
+        'karyawanKepala',
+        'aktivitas'
+    ));
+}
 
     public function absenMasuk(Request $request)
     {
@@ -205,12 +207,14 @@ class DivisiDashboardController extends Controller
     public function karyawan(Request $request)
     {
         $user = Auth::user();
-        $namaDivisi = $user->nama;
+
+        // Ambil divisi kepala divisi yang login
+        $namaDivisi = $user->divisi;
 
         $search = $request->search;
-        $status = $request->status;
 
         $karyawans = User::where('divisi', $namaDivisi)
+            ->where('role', 'karyawan') // opsional jika ada kolom role
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nip', 'like', "%{$search}%")
@@ -220,80 +224,79 @@ class DivisiDashboardController extends Controller
             })
             ->orderBy('nama')
             ->get();
+
         return view('divisi.DataKaryawanDivisi', compact('karyawans'));
     }
 
     public function riwayatAbsensi(Request $request)
-    {
-        $user = Auth::user();
-        $namaDivisi = $user->nama;
+{
+    $user = Auth::user();
 
-        // Ambil ID karyawan sesuai divisi yang login
-        $karyawanIds = User::where('divisi', $namaDivisi)
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $search = $request->search;
+    // Ambil divisi kepala divisi
+    $namaDivisi = $user->divisi;
 
-                $query->where(function ($q) use ($search) {
-                    $q->where('nip', 'like', "%{$search}%")
-                    ->orWhere('nama', 'like', "%{$search}%")
-                    ->orWhere('jabatan', 'like', "%{$search}%");
-                });
-            })
-            ->pluck('id');
+    $karyawanIds = User::where('divisi', $namaDivisi)
 
-        $absensi = Absensi::with('user')
-            ->whereIn('user_id', $karyawanIds)
+        ->when($request->filled('search'), function ($query) use ($request) {
+            $search = $request->search;
 
-            // Filter tanggal awal
-            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
-                $query->whereDate('tanggal', '>=', $request->tanggal_awal);
-            })
+            $query->where(function ($q) use ($search) {
+                $q->where('nip', 'like', "%{$search}%")
+                  ->orWhere('nama', 'like', "%{$search}%")
+                  ->orWhere('jabatan', 'like', "%{$search}%");
+            });
+        })
 
-            // Filter tanggal akhir
-            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
-                $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
-            })
+        ->pluck('id');
 
-            ->latest()
-            ->get();
+    $absensi = Absensi::with('user')
+        ->whereIn('user_id', $karyawanIds)
 
-        return view('divisi.RiwayatAbsensiDivisi', compact('absensi'));
-    }
+        ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+            $query->whereDate('tanggal', '>=', $request->tanggal_awal);
+        })
+
+        ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+            $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+        })
+
+        ->latest()
+        ->get();
+
+    return view('divisi.RiwayatAbsensiDivisi', compact('absensi'));
+}
 
     public function perizinan(Request $request)
-    {
-        $user = Auth::user();
-        $namaDivisi = $user->nama;
+{
+    $user = Auth::user();
+    $namaDivisi = $user->divisi;
 
-        $data = Izin::where('divisi', $namaDivisi)
+    $data = Izin::where('divisi', $namaDivisi)
 
-            // Pencarian
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $search = $request->search;
+        ->when($request->filled('search'), function ($query) use ($request) {
+            $search = $request->search;
 
-                $query->where(function ($q) use ($search) {
-                    $q->where('nip', 'like', "%{$search}%")
-                    ->orWhere('nama', 'like', "%{$search}%")
-                    ->orWhere('jabatan', 'like', "%{$search}%")
-                    ->orWhere('kategori', 'like', "%{$search}%");
-                });
-            })
+            $query->where(function ($q) use ($search) {
+                $q->where('nip', 'like', "%{$search}%")
+                  ->orWhere('nama', 'like', "%{$search}%")
+                  ->orWhere('jabatan', 'like', "%{$search}%")
+                  ->orWhere('kategori', 'like', "%{$search}%");
+            });
+        })
 
-            // Filter tanggal awal
-            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
-                $query->whereDate('tanggal_mulai', '>=', $request->tanggal_awal);
-            })
+        ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+            $query->whereDate('tanggal_mulai', '>=', $request->tanggal_awal);
+        })
 
-            // Filter tanggal akhir
-            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
-                $query->whereDate('tanggal_selesai', '<=', $request->tanggal_akhir);
-            })
+        ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+            $query->whereDate('tanggal_selesai', '<=', $request->tanggal_akhir);
+        })
 
-            ->latest()
-            ->get();
+        ->latest()
+        ->get();
 
-        return view('divisi.DivisiPerizinan', compact('data'));
-    }
+    return view('divisi.DivisiPerizinan', compact('data'));
+}
 
     public function setujui($id)
     {
@@ -361,43 +364,63 @@ class DivisiDashboardController extends Controller
     }
 
     public function laporan(Request $request)
-    {
-        $user = Auth::user();
-        $namaDivisi = $user->nama;
-        $karyawanIds = User::where('divisi', $namaDivisi)
+{
+    $user = Auth::user();
 
-            // Pencarian
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $search = $request->search;
-                $query->where(function ($q) use ($search) {
-                    $q->where('nip', 'like', "%{$search}%")
-                    ->orWhere('nama', 'like', "%{$search}%")
-                    ->orWhere('jabatan', 'like', "%{$search}%");
-                });
-            })
-            ->pluck('id');
-        $karyawans = User::where('divisi', $namaDivisi)->get();
-        $absensi = Absensi::with('user')
-            ->whereIn('user_id', $karyawanIds)
-            // Filter tanggal awal
-            ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
-                $query->whereDate('tanggal', '>=', $request->tanggal_awal);
-            })
-            // Filter tanggal akhir
-            ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
-                $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
-            })
-            ->orderBy('tanggal', 'desc')
-            ->get();
+    // Ambil divisi kepala divisi yang login
+    $namaDivisi = $user->divisi;
 
-        $izins = Izin::where('divisi', $namaDivisi)->get();
+    // Ambil ID karyawan sesuai divisi
+    $karyawanIds = User::where('divisi', $namaDivisi)
 
-        return view('divisi.DivisiLaporan', compact(
-            'karyawans',
-            'absensi',
-            'izins'
-        ));
-    }
+        ->when($request->filled('search'), function ($query) use ($request) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('nip', 'like', "%{$search}%")
+                  ->orWhere('nama', 'like', "%{$search}%")
+                  ->orWhere('jabatan', 'like', "%{$search}%");
+            });
+        })
+
+        ->pluck('id');
+
+    $karyawans = User::where('divisi', $namaDivisi)->get();
+
+    $absensi = Absensi::with('user')
+        ->whereIn('user_id', $karyawanIds)
+
+        // Filter bulan
+        ->when($request->filled('bulan'), function ($query) use ($request) {
+            $query->whereMonth('tanggal', $request->bulan);
+        })
+
+        // Filter tahun
+        ->when($request->filled('tahun'), function ($query) use ($request) {
+            $query->whereYear('tanggal', $request->tahun);
+        })
+
+        // Filter tanggal awal
+        ->when($request->filled('tanggal_awal'), function ($query) use ($request) {
+            $query->whereDate('tanggal', '>=', $request->tanggal_awal);
+        })
+
+        // Filter tanggal akhir
+        ->when($request->filled('tanggal_akhir'), function ($query) use ($request) {
+            $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+        })
+
+        ->orderBy('tanggal', 'desc')
+        ->get();
+
+    $izins = Izin::where('divisi', $namaDivisi)->get();
+
+    return view('divisi.DivisiLaporan', compact(
+        'karyawans',
+        'absensi',
+        'izins'
+    ));
+}
 
     public function exportExcel(Request $request)
     {
@@ -489,10 +512,10 @@ class DivisiDashboardController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        $pdf = Pdf::loadView('admin.laporan_pdf', compact('data'));
+        $pdf = Pdf::loadView('divisi.DivisiLaporanPdf', compact('data'));
         return $pdf->download("laporan_absensi_divisi_" . $namaDivisi . "_" . date('Ymd_His') . ".pdf");
     }
-public function profile()
+    public function profile()
     {
         // Mengambil data user yang sedang login (Kepala Divisi)
         $kepalaDivisi = auth()->user();
