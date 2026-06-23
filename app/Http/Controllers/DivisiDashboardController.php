@@ -8,6 +8,7 @@ use App\Models\Divisi;
 use App\Models\Izin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -490,5 +491,86 @@ class DivisiDashboardController extends Controller
 
         $pdf = Pdf::loadView('admin.laporan_pdf', compact('data'));
         return $pdf->download("laporan_absensi_divisi_" . $namaDivisi . "_" . date('Ymd_His') . ".pdf");
+    }
+public function profile()
+    {
+        // Mengambil data user yang sedang login (Kepala Divisi)
+        $kepalaDivisi = auth()->user();
+
+        if (!$kepalaDivisi) {
+            return redirect('/login')
+                ->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        // Mengarahkan ke file view blade Kepala Divisi Anda
+        return view('divisi.ProfileDivisi', compact('kepalaDivisi'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $kepalaDivisi = auth()->user();
+
+        if (!$kepalaDivisi) {
+            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $kepalaDivisiId = $kepalaDivisi->id;
+
+        $request->validate([
+            'nama'          => 'required|string|max:255',
+            'username'      => 'nullable|string|max:255|unique:users,username,' . $kepalaDivisiId,
+            'email'         => 'required|email|max:255|unique:users,email,' . $kepalaDivisiId,
+            'no_hp'         => 'nullable|string|max:20',
+            'tgl_lahir'     => 'nullable|date',
+            'jenis_kelamin' => 'nullable|string|max:20',
+            'alamat'        => 'nullable|string',
+        ], [
+            'nama.required'    => 'Nama Kepala Divisi wajib diisi.',
+            'email.required'   => 'Email wajib diisi.',
+            'email.email'      => 'Format email tidak valid.',
+            'email.unique'     => 'Email sudah digunakan oleh pengguna lain.',
+            'username.unique'  => 'Username sudah digunakan oleh pengguna lain.',
+        ]);
+
+        $kepalaDivisi->update([
+            'nama'          => $request->nama,
+            'username'      => $request->username,
+            'email'         => $request->email,
+            'no_hp'         => $request->no_hp,
+            'tgl_lahir'     => $request->tgl_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'alamat'        => $request->alamat,
+        ]);
+
+        return redirect()->back()->with('success', 'Profil Kepala Divisi berhasil diperbarui.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $kepalaDivisi = auth()->user();
+
+        if (!$kepalaDivisi) {
+            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $request->validate([
+            'password_lama' => 'required',
+            'password_baru' => 'required|min:6|confirmed',
+        ], [
+            'password_lama.required'   => 'Password lama wajib diisi.',
+            'password_baru.required'   => 'Password baru wajib diisi.',
+            'password_baru.min'        => 'Password baru minimal 6 karakter.',
+            'password_baru.confirmed'  => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        if (!Hash::check($request->password_lama, $kepalaDivisi->password)) {
+            return redirect()->back()->with('error', 'Password lama salah.');
+        }
+
+        $kepalaDivisi->update([
+            'password' => Hash::make($request->password_baru),
+        ]);
+
+        return redirect()->back()->with('success', 'Password berhasil diperbarui.');
     }
 }

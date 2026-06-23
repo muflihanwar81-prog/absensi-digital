@@ -150,6 +150,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/divisi/absensi/keluar', [DivisiDashboardController::class, 'absenKeluar'])
         ->name('divisi.absensi.keluar');
+
+    Route::get('/divisi/profile', [DivisiDashboardController::class, 'profile'])
+        ->name('divisi.profile');
+
+    Route::put('/divisi/profile', [DivisiDashboardController::class, 'updateProfile'])
+        ->name('divisi.profile.update');
+
+    Route::put('/divisi/profile/password', [DivisiDashboardController::class, 'updatePassword'])
+        ->name('divisi.profile.password');
+
 });
 
 // Karyawan routes — now uses standard 'auth' middleware instead of 'karyawan.auth'
