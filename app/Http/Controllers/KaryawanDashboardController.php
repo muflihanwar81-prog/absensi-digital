@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use App\Models\Izin;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
@@ -13,7 +14,7 @@ class KaryawanDashboardController extends Controller
 {
     public function index()
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')
@@ -54,7 +55,7 @@ class KaryawanDashboardController extends Controller
 
     public function absenMasuk(Request $request)
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')
@@ -98,7 +99,7 @@ class KaryawanDashboardController extends Controller
 
     public function absenPulang(Request $request)
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')
@@ -174,7 +175,7 @@ class KaryawanDashboardController extends Controller
 
     public function kehadiran(Request $request)
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')
@@ -216,7 +217,7 @@ class KaryawanDashboardController extends Controller
 
     public function riwayat(Request $request)
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')
@@ -232,7 +233,7 @@ class KaryawanDashboardController extends Controller
 
     public function profile()
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')
@@ -244,7 +245,7 @@ class KaryawanDashboardController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
@@ -283,7 +284,7 @@ class KaryawanDashboardController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $karyawan = auth()->user();
+        $karyawan = Auth::user();
 
         if (!$karyawan) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');

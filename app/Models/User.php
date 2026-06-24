@@ -30,9 +30,9 @@ use Illuminate\Notifications\Notifiable;
  * @property string      $role              Role akses
  * @property string      $status            Status: Aktif|Nonaktif
  * @property string|null $komentar_nonaktif Alasan nonaktif
- * @property time|null   $jam_masuk         Jam masuk kerja
- * @property time|null   $jam_keluar        Jam keluar kerja
- * @property date|null   $tgl_lahir         Tanggal lahir
+ * @property string|null $jam_masuk         Jam masuk kerja
+ * @property string|null $jam_keluar        Jam keluar kerja
+ * @property string|null $tgl_lahir         Tanggal lahir
  * @property string|null $jenis_kelamin     Jenis kelamin
  * @property string|null $alamat            Alamat
  * @property date|null   $tgl_bergabung     Tanggal mulai bekerja

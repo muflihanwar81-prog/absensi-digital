@@ -29,11 +29,14 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // Redirect berdasarkan role
-            return match ($user->role) {
-                'admin'                => redirect('/dashboard'),
-                'kepala_divisi'        => redirect('/divisi-dashboard'),
-                default                => redirect('/dashboard_karyawan'),
-            };
+            switch ($user->role) {
+                case 'admin':
+                    return redirect('/dashboard');
+                case 'kepala_divisi':
+                    return redirect('/divisi-dashboard');
+                default:
+                    return redirect('/dashboard_karyawan');
+            }
         }
 
         return back()->with('error', 'Email atau Password salah');

@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $karyawanId = auth()->id();
+        $karyawanId = Auth::id();
 
         if (!$karyawanId) {
             return redirect('/login');
@@ -42,7 +43,7 @@ class AbsensiController extends Controller
 
     public function exportPdf()
     {
-        $karyawanId = auth()->id();
+        $karyawanId = Auth::id();
 
         if (!$karyawanId) {
             return redirect('/login');

@@ -524,7 +524,7 @@ public function tolak(Request $request, $id)
     public function profile()
     {
         // Mengambil data user yang sedang login (Kepala Divisi)
-        $kepalaDivisi = auth()->user();
+        $kepalaDivisi = Auth::user();
 
         if (!$kepalaDivisi) {
             return redirect('/login')
@@ -537,7 +537,7 @@ public function tolak(Request $request, $id)
 
     public function updateProfile(Request $request)
     {
-        $kepalaDivisi = auth()->user();
+        $kepalaDivisi = Auth::user();
 
         if (!$kepalaDivisi) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
@@ -576,7 +576,7 @@ public function tolak(Request $request, $id)
 
     public function updatePassword(Request $request)
     {
-        $kepalaDivisi = auth()->user();
+        $kepalaDivisi = Auth::user();
 
         if (!$kepalaDivisi) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
