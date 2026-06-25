@@ -30,7 +30,7 @@
         @include('layouts.sidebar_karyawan')
 
         {{-- Main Content --}}
-        <main id="mainContent"
+        <div id="mainContent"
         class="ml-72 flex-1 transition-all duration-300">
 
             {{-- Header --}}
@@ -44,14 +44,11 @@
 
                     {{-- Title Section --}}
                     <div class="bg-slate-50 border-b border-slate-200/80 px-8 py-5 text-slate-800">
+                        <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">
+                            Riwayat Kehadiran Anda
+                        </h2>
                         <p class="uppercase tracking-wider text-xxs font-bold text-slate-400 mb-1">
                             Attendance Records
-                        </p>
-                        <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">
-                            Data Kehadiran Anda
-                        </h2>
-                        <p class="mt-1 text-slate-500 text-sm">
-                            Riwayat kehadiran dan status absensi karyawan.
                         </p>
                     </div>
 

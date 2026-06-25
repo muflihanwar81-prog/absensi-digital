@@ -54,7 +54,7 @@
                             ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 font-semibold'
                             : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100' }}">
                         <i class="fa-solid fa-calendar-check text-lg w-5 text-center"></i>
-                        <span class="menu-text font-medium text-sm">Data Kehadiran</span>
+                        <span class="menu-text font-medium text-sm">Riwayat Kehadiran</span>
                     </a>
                 </li>
 
@@ -88,23 +88,6 @@
 
     {{-- FOOTER PROFILE --}}
     <div class="p-4 border-t border-slate-800 bg-slate-900/60 backdrop-blur-sm">
-
-        {{-- USER INFO --}}
-        <a href="{{ url('/profile') }}" class="flex items-center gap-3 mb-4 px-2 hover:bg-slate-800/50 py-2 rounded-xl transition duration-200 group">
-            <div
-                class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-200 shrink-0">
-                {{ strtoupper(substr(session('karyawan_nama', 'Karyawan'), 0, 2)) }}
-            </div>
-
-            <div class="menu-text min-w-0">
-                <p class="font-bold text-slate-100 text-sm truncate group-hover:text-blue-400 transition-colors">
-                    {{ session('karyawan_nama', 'Karyawan') }}
-                </p>
-                <p class="text-xs text-slate-450 truncate">
-                    Karyawan Aktif
-                </p>
-            </div>
-        </a>
 
         {{-- LOGOUT --}}
         <form action="{{ route('logout') }}" method="POST">

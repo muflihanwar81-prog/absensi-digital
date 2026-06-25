@@ -75,9 +75,7 @@
 
                     {{-- HEADER CARD --}}
                     <div class="bg-slate-50 border-b border-slate-200/80 px-8 py-5 text-slate-800">
-                        <p class="uppercase tracking-wider text-xxs font-bold text-slate-400 mb-1">
-                            Permission Request
-                        </p>
+                        
                         <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">
                             Pengajuan Izin
                         </h2>
@@ -162,17 +160,25 @@
                                                     </span>
                                                 </td>
 
-                                                <td class="px-6 py-4 text-center">
-                                                    @if ($item->file_tambahan)
-                                                        <a
-                                                            href="{{ asset('storage/' . $item->file_tambahan) }}"
-                                                            target="_blank"
-                                                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/10 hover:bg-blue-100 transition">
-                                                            <i class="fa-solid fa-eye text-xs"></i>
-                                                        </a>
-                                                    @else
-                                                        <span class="text-slate-400 font-medium">-</span>
-                                                    @endif
+                                                <td class="px-4 py-4 text-center">
+                                                    <button
+                                                        type="button"
+                                                        onclick="openDetailModal(
+                                                            '{{ addslashes($item->nip) }}',
+                                                            '{{ addslashes($item->nama) }}',
+                                                            '{{ addslashes($item->divisi) }}',
+                                                            '{{ addslashes($item->jabatan) }}',
+                                                            '{{ addslashes($item->kategori) }}',
+                                                            '{{ $item->tanggal_mulai }}',
+                                                            '{{ $item->tanggal_selesai }}',
+                                                            '{{ $item->status }}',
+                                                            '{{ $item->file_tambahan ? asset('/storage/' . $item->file_tambahan) : '' }}', 
+                                                            '{{ addslashes(basename($item->file_tambahan ?? ''))}}',
+                                                        )"
+                                                        class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 font-semibold text-xs hover:bg-blue-100 transition">
+                                                        <i class="fa-solid fa-eye mr-1 text-xs"></i>
+                                                        Detail
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty

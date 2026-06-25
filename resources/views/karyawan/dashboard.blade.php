@@ -45,9 +45,6 @@
                 <div
                     class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:shadow-md transition-shadow duration-300">
                     <div>
-                        <p class="text-blue-600 font-semibold mb-2.5 uppercase tracking-wider text-xs">
-                            selamat datang kembali
-                        </p>
 
                         <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">
                             Selamat Datang Karyawan
