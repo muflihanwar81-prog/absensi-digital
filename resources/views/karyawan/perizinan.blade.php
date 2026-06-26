@@ -207,11 +207,8 @@
                 class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 text-slate-800 flex justify-between items-center">
                 <div>
                     <p class="text-xxs uppercase tracking-wider font-bold text-slate-400 mb-0.5">
-                        New Request
+                        Form Pengajuan Izin
                     </p>
-                    <h2 class="text-base font-bold text-slate-800 tracking-tight">
-                        Ajukan Izin
-                    </h2>
                 </div>
 
                 <button
@@ -231,7 +228,7 @@
 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">
-                        NIP
+                        Nik
                     </label>
                     <input
                         type="text"
@@ -289,7 +286,7 @@
                             <option value="Izin">Izin</option>
                             <option value="Cuti">Cuti</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xxs"></i>
+                        
                     </div>
                 </div>
 

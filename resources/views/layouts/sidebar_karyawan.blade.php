@@ -90,7 +90,7 @@
     <div class="p-4 border-t border-slate-800 bg-slate-900/60 backdrop-blur-sm">
 
         {{-- USER INFO --}}
-        <a href="{{ url('/profile') }}" class="flex items-center gap-3 mb-4 px-2 hover:bg-slate-800/50 py-2 rounded-xl transition duration-200 group">
+        <div class="flex items-center gap-3 mb-4 px-2 ">
             <div
                 class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-200 shrink-0">
                 {{ strtoupper(substr(auth()->user()->nama ?? 'Karyawan', 0, 2)) }}
@@ -104,7 +104,7 @@
                     Karyawan Aktif
                 </p>
             </div>
-        </a>
+        </div>
 
         {{-- LOGOUT --}}
         <form action="{{ route('logout') }}" method="POST">
