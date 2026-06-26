@@ -14,7 +14,7 @@ class AdminDataKaryawanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::where('role', '!=', 'admin');
 
         // Filter pencarian
         if ($request->filled('search')) {
@@ -59,7 +59,7 @@ class AdminDataKaryawanController extends Controller
         // jumlah karyawan per divisi
         $stats = [];
         foreach ($daftarDivisi as $divisi) {
-            $stats[$divisi] = User::where('divisi', $divisi)->count();
+            $stats[$divisi] = User::where('divisi', $divisi)->where('role', '!=', 'admin')->count();
         }
 
         return view('admin.karyawan', compact(

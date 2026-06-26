@@ -20,11 +20,11 @@ class AdminDashboardController extends Controller
         // Total divisi
         $totalDivisi = Divisi::count();
 
-        // Hanya karyawan dengan status Aktif
-        $totalKaryawan = User::where('status', 'Aktif')->count();
+        // Hanya karyawan dengan status Aktif (kecuali admin)
+        $totalKaryawan = User::where('status', 'Aktif')->where('role', '!=', 'admin')->count();
 
-        // ID semua karyawan aktif
-        $semuaKaryawanIds = User::where('status', 'Aktif')->pluck('id');
+        // ID semua karyawan aktif (kecuali admin)
+        $semuaKaryawanIds = User::where('status', 'Aktif')->where('role', '!=', 'admin')->pluck('id');
 
         // karyawan yg hadir
         $totalHadir = Absensi::whereDate('tanggal', $today)
@@ -95,8 +95,8 @@ class AdminDashboardController extends Controller
         $today    = Carbon::today()->toDateString();
         $divisiId = $request->query('divisi_id');
 
-        // Tentukan scope karyawan: per divisi atau semua
-        $karyawanQuery = User::where('status', 'Aktif');
+        // Tentukan scope karyawan: per divisi atau semua (kecuali admin)
+        $karyawanQuery = User::where('status', 'Aktif')->where('role', '!=', 'admin');
         if ($divisiId) {
             $divisi = Divisi::find($divisiId);
             if ($divisi) {

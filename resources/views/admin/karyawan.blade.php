@@ -286,7 +286,7 @@
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Username</label>
-                    <input type="text" name="username" placeholder="Username"
+                    <input type="text" name="username" placeholder="Username" required
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
@@ -300,7 +300,7 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Password</label>
                     <div class="relative">
-                        <input type="password" name="password" id="tambah_password" required placeholder="Mnimal 6 karakter"
+                        <input type="password" name="password" id="tambah_password" required minlength="6" placeholder="Minimal 6 karakter"
                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-10 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                         <button type="button" onclick="togglePassword('tambah_password', 'tambah_eye')"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -328,7 +328,7 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tanggal Bergabung</label>
                     <div class="relative">
-                        <input type="date" name="tgl_bergabung"
+                        <input type="date" name="tgl_bergabung" required
                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm text-slate-600">
                     </div>
                 </div>
@@ -350,7 +350,7 @@
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Email</label>
-                    <input type="email" name="email" 
+                    <input type="email" name="email" required
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
@@ -358,7 +358,7 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tanggal Lahir</label>
                     <div class="relative">
-                        <input type="date" name="tgl_lahir"
+                        <input type="date" name="tgl_lahir" required
                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm text-slate-600">
                     </div>
                 </div>
@@ -366,7 +366,7 @@
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nomor Handphone</label>
-                    <input type="text" name="no_hp" 
+                    <input type="text" name="no_hp" required
                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
                 </div>
 
@@ -374,7 +374,7 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Jenis Kelamin</label>
                     <div class="relative">
-                        <select name="jenis_kelamin"
+                        <select name="jenis_kelamin" required
                                 class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
                             <option value="">Pilih Jenis Kelamin</option>
                             <option value="Laki-laki">Laki-laki</option>
@@ -388,7 +388,7 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Hak Akses</label>
                     <div class="relative">
-                        <select name="role"
+                        <select name="role" required
                                 class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
                             <option value="">Pilih Role</option>
                             <option value="karyawan">karyawan</option>
@@ -401,7 +401,7 @@
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Alamat Lengkap</label>
-                    <textarea name="alamat" rows="2" placeholder="Tulis alamat rumah lengkap..."
+                    <textarea name="alamat" rows="2" placeholder="Tulis alamat rumah lengkap..." required
                               class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none resize-none transition shadow-sm"></textarea>
                 </div>
 
@@ -431,7 +431,7 @@
 
             
             <div class="mt-6">
-                <button type="submit"
+                <button type="button" onclick="submitTambahForm()"
                         class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition duration-200 shadow-sm shadow-blue-500/10 hover:shadow-blue-500/25">
                     Simpan
                 </button>
@@ -459,13 +459,21 @@
             @csrf
             @method('PUT')
 
+            {{-- Hidden inputs untuk field yang di-disable agar tetap terkirim --}}
+            <input type="hidden" id="edit_nip_hidden" name="nip">
+            <input type="hidden" id="edit_nama_hidden" name="nama">
+            <input type="hidden" id="edit_divisi_hidden" name="divisi">
+            <input type="hidden" id="edit_tgl_bergabung_hidden" name="tgl_bergabung">
+            <input type="hidden" id="edit_tgl_lahir_hidden" name="tgl_lahir">
+            <input type="hidden" id="edit_jenis_kelamin_hidden" name="jenis_kelamin">
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
 
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nik</label>
-                    <input type="text" id="edit_nip" name="nip" required
-                           class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
+                    <input type="text" id="edit_nip" name="nip" required disabled
+                           class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none transition-all duration-150 shadow-sm text-slate-400 cursor-not-allowed">
                 </div>
 
                 
@@ -478,8 +486,8 @@
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Nama Karyawan</label>
-                    <input type="text" id="edit_nama" name="nama" required
-                           class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm">
+                    <input type="text" id="edit_nama" name="nama" required disabled
+                           class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none transition-all duration-150 shadow-sm text-slate-400 cursor-not-allowed">
                 </div>
 
                 
@@ -499,8 +507,8 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Divisi</label>
                     <div class="relative">
-                        <select id="edit_divisi" name="divisi" required
-                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
+                        <select id="edit_divisi" name="divisi" required disabled
+                                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm outline-none appearance-none cursor-not-allowed transition shadow-sm text-slate-400">
                             <option value="">Pilih Divisi</option>
                             @foreach($daftarDivisi as $divisi)
                                 <option value="{{ $divisi }}">{{ $divisi }}</option>
@@ -513,8 +521,8 @@
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tgl, Bergabung</label>
-                    <input type="date" id="edit_tgl_bergabung" name="tgl_bergabung"
-                           class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm text-slate-650">
+                    <input type="date" id="edit_tgl_bergabung" name="tgl_bergabung" disabled
+                           class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none transition-all duration-150 shadow-sm text-slate-400 cursor-not-allowed">
                 </div>
 
                 
@@ -540,8 +548,8 @@
                 
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Tgl, Lahir</label>
-                    <input type="date" id="edit_tgl_lahir" name="tgl_lahir"
-                           class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-150 shadow-sm text-slate-650">
+                    <input type="date" id="edit_tgl_lahir" name="tgl_lahir" disabled
+                           class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none transition-all duration-150 shadow-sm text-slate-400 cursor-not-allowed">
                 </div>
 
                 
@@ -555,8 +563,8 @@
                 <div>
                     <label class="block mb-1.5 font-bold text-slate-500 text-xxs uppercase tracking-wider">Jenis Kelamin</label>
                     <div class="relative">
-                        <select id="edit_jenis_kelamin" name="jenis_kelamin"
-                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none cursor-pointer transition shadow-sm">
+                        <select id="edit_jenis_kelamin" name="jenis_kelamin" disabled
+                                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2 pr-8 text-sm outline-none appearance-none cursor-not-allowed transition shadow-sm text-slate-400">
                             <option value="">Pilih Jenis Kelamin</option>
                             <option value="Laki-laki">Laki-laki</option>
                             <option value="Perempuan">Perempuan</option>
@@ -751,6 +759,14 @@
         document.getElementById('edit_tgl_bergabung').value = tglBergabung || '';
         document.getElementById('edit_no_hp').value     = noHp      || '';
 
+        // Isi hidden inputs untuk field yang di-disable
+        document.getElementById('edit_nip_hidden').value            = nip          || '';
+        document.getElementById('edit_nama_hidden').value           = nama         || '';
+        document.getElementById('edit_tgl_bergabung_hidden').value  = tglBergabung || '';
+        document.getElementById('edit_tgl_lahir_hidden').value      = tglLahir     || '';
+        document.getElementById('edit_divisi_hidden').value         = divisi       || '';
+        document.getElementById('edit_jenis_kelamin_hidden').value  = jenisKelamin || '';
+
         
         const editDivisi = document.getElementById('edit_divisi');
         if (editDivisi) {
@@ -910,6 +926,109 @@
             document.getElementById('edit_komentar_nonaktif').value = '';
         }
     }
+
+    // ===== VALIDASI FORM TAMBAH KARYAWAN =====
+    function submitTambahForm() {
+        const form = document.getElementById('formTambah');
+        const fields = [
+            { name: 'nip',           label: 'NIK' },
+            { name: 'username',      label: 'Username' },
+            { name: 'nama',          label: 'Nama Karyawan' },
+            { name: 'password',      label: 'Password' },
+            { name: 'divisi',        label: 'Divisi' },
+            { name: 'tgl_bergabung', label: 'Tanggal Bergabung' },
+            { name: 'jabatan',       label: 'Jabatan' },
+            { name: 'email',         label: 'Email' },
+            { name: 'tgl_lahir',     label: 'Tanggal Lahir' },
+            { name: 'no_hp',         label: 'Nomor Handphone' },
+            { name: 'jenis_kelamin', label: 'Jenis Kelamin' },
+            { name: 'role',          label: 'Hak Akses' },
+            { name: 'alamat',        label: 'Alamat Lengkap' },
+        ];
+
+        // Reset semua error sebelumnya
+        fields.forEach(f => {
+            const el = form.querySelector('[name="' + f.name + '"]');
+            if (el) {
+                el.classList.remove('border-red-400', 'ring-2', 'ring-red-400/30');
+                el.classList.add('border-slate-200');
+                const errEl = el.parentElement.querySelector('.err-msg');
+                if (errEl) errEl.remove();
+            }
+        });
+
+        let hasError = false;
+        let firstError = null;
+
+        fields.forEach(f => {
+            const el = form.querySelector('[name="' + f.name + '"]');
+            if (!el) return;
+
+            const val = el.value.trim();
+            let errMsg = '';
+
+            if (!val) {
+                errMsg = f.label + ' wajib diisi';
+            } else if (f.name === 'password' && val.length < 6) {
+                errMsg = 'Password minimal 6 karakter';
+            }
+
+            if (errMsg) {
+                hasError = true;
+                el.classList.remove('border-slate-200');
+                el.classList.add('border-red-400', 'ring-2', 'ring-red-400/30');
+
+                const msg = document.createElement('p');
+                msg.className = 'err-msg text-xs text-red-500 mt-1 flex items-center gap-1';
+                msg.innerHTML = '<i class="fa-solid fa-circle-exclamation text-xs"></i> ' + errMsg;
+
+                // Insert after input / select / textarea
+                const parent = el.parentElement;
+                // cek apakah ada wrapper (div.relative)
+                if (parent.tagName === 'DIV' && parent.classList.contains('relative')) {
+                    parent.parentElement.appendChild(msg);
+                } else {
+                    parent.appendChild(msg);
+                }
+
+                if (!firstError) firstError = el;
+            }
+        });
+
+        if (hasError) {
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstError.focus();
+            }
+            return;
+        }
+
+        form.submit();
+    }
+
+    // Reset error styling saat user mulai mengisi field
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('formTambah');
+        if (!form) return;
+        form.querySelectorAll('input, select, textarea').forEach(el => {
+            el.addEventListener('input', function () {
+                this.classList.remove('border-red-400', 'ring-2', 'ring-red-400/30');
+                this.classList.add('border-slate-200');
+                const parent = this.parentElement;
+                const wrapper = parent.classList.contains('relative') ? parent.parentElement : parent;
+                const errEl = wrapper.querySelector('.err-msg');
+                if (errEl) errEl.remove();
+            });
+            el.addEventListener('change', function () {
+                this.classList.remove('border-red-400', 'ring-2', 'ring-red-400/30');
+                this.classList.add('border-slate-200');
+                const parent = this.parentElement;
+                const wrapper = parent.classList.contains('relative') ? parent.parentElement : parent;
+                const errEl = wrapper.querySelector('.err-msg');
+                if (errEl) errEl.remove();
+            });
+        });
+    });
 </script>
 
 

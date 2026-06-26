@@ -108,24 +108,27 @@ public function index()
             ->whereDate('tanggal', $today)
             ->first();
 
-        if (!$absensi) {
-            $jamSekarang = Carbon::now('Asia/Jakarta');
-            // Cek jam masuk divisi
-            $divisi = Divisi::where('nama_divisi', $karyawan->divisi)->first();
-            $status = 'Hadir';
-
-            if ($divisi && $divisi->jam_masuk) {
-                $jamMasukDivisi = Carbon::today('Asia/Jakarta')
-                    ->setTimeFromTimeString($divisi->jam_masuk);
-                $status = $jamSekarang->gt($jamMasukDivisi) ? 'Terlambat' : 'Hadir';
-            }
-            Absensi::create([
-                'user_id' => $karyawan->id,
-                'tanggal'     => $today,
-                'jam_masuk'   => $jamSekarang->format('H:i:s'),
-                'status'      => $status,
-            ]);
+        if ($absensi) {
+            return redirect()->back()->with('error', 'Anda sudah melakukan absen masuk hari ini.');
         }
+
+        $jamSekarang = Carbon::now('Asia/Jakarta');
+        // Cek jam masuk divisi
+        $divisi = Divisi::where('nama_divisi', $karyawan->divisi)->first();
+        $status = 'Hadir';
+
+        if ($divisi && $divisi->jam_masuk) {
+            $jamMasukDivisi = Carbon::today('Asia/Jakarta')
+                ->setTimeFromTimeString($divisi->jam_masuk);
+            $status = $jamSekarang->gt($jamMasukDivisi) ? 'Terlambat' : 'Hadir';
+        }
+        Absensi::create([
+            'user_id' => $karyawan->id,
+            'tanggal'     => $today,
+            'jam_masuk'   => $jamSekarang->format('H:i:s'),
+            'status'      => $status,
+        ]);
+
         return redirect()->back()
             ->with('success', 'Absensi masuk berhasil dicatat.');
     }
@@ -151,11 +154,17 @@ public function index()
             ->whereDate('tanggal', $today)
             ->first();
 
-        if ($absensi && !$absensi->jam_keluar) {
-            $absensi->update([
-                'jam_keluar' => Carbon::now('Asia/Jakarta')->format('H:i:s'),
-            ]);
+        if (!$absensi) {
+            return redirect()->back()->with('error', 'Anda belum melakukan absen masuk hari ini.');
         }
+
+        if ($absensi->jam_keluar) {
+            return redirect()->back()->with('error', 'Anda sudah melakukan absen pulang hari ini.');
+        }
+
+        $absensi->update([
+            'jam_keluar' => Carbon::now('Asia/Jakarta')->format('H:i:s'),
+        ]);
 
         return redirect()->back()
             ->with('success', 'Absensi pulang berhasil dicatat.');

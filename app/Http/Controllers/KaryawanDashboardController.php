@@ -76,22 +76,24 @@ class KaryawanDashboardController extends Controller
             ->whereDate('tanggal', $today)
             ->first();
 
-        if (!$absensi) {
-            $jamSekarang = Carbon::now('Asia/Jakarta');
-
-            $jamMasukDivisi = Carbon::today('Asia/Jakarta')
-                ->setTimeFromTimeString(optional($karyawan->divisiObj)->jam_masuk ?? '08:00:00');
-            $status = $jamSekarang->gt($jamMasukDivisi)
-                ? 'Terlambat'
-                : 'Hadir';
-
-            Absensi::create([
-                'user_id'     => $karyawanId,
-                'tanggal'     => $today,
-                'jam_masuk'   => $jamSekarang->format('H:i:s'),
-                'status'      => $status,
-            ]);
+        if ($absensi) {
+            return redirect()->back()->with('error', 'Anda sudah melakukan absen masuk hari ini.');
         }
+
+        $jamSekarang = Carbon::now('Asia/Jakarta');
+
+        $jamMasukDivisi = Carbon::today('Asia/Jakarta')
+            ->setTimeFromTimeString(optional($karyawan->divisiObj)->jam_masuk ?? '08:00:00');
+        $status = $jamSekarang->gt($jamMasukDivisi)
+            ? 'Terlambat'
+            : 'Hadir';
+
+        Absensi::create([
+            'user_id'     => $karyawanId,
+            'tanggal'     => $today,
+            'jam_masuk'   => $jamSekarang->format('H:i:s'),
+            'status'      => $status,
+        ]);
 
         return redirect()->back()
             ->with('success', 'Absensi masuk berhasil.');
@@ -120,11 +122,17 @@ class KaryawanDashboardController extends Controller
             ->whereDate('tanggal', $today)
             ->first();
 
-        if ($absensi && !$absensi->jam_keluar) {
-            $absensi->update([
-                'jam_keluar' => now()->setTimezone('Asia/Jakarta')->format('H:i:s'),
-            ]);
+        if (!$absensi) {
+            return redirect()->back()->with('error', 'Anda belum melakukan absen masuk hari ini.');
         }
+
+        if ($absensi->jam_keluar) {
+            return redirect()->back()->with('error', 'Anda sudah melakukan absen pulang hari ini.');
+        }
+
+        $absensi->update([
+            'jam_keluar' => now()->setTimezone('Asia/Jakarta')->format('H:i:s'),
+        ]);
 
         return redirect()->back()
             ->with('success', 'Absensi pulang berhasil.');

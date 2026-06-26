@@ -75,6 +75,8 @@ class DivisiKaryawanSeeder extends Seeder
             'role' => 'admin',
             'status' => 'Aktif',
             'jenis_kelamin' => $genderAdmin === 'male' ? 'Laki-laki' : 'Perempuan',
+            'no_hp' => $faker->phoneNumber,
+            'alamat' => $faker->address,
             'tgl_bergabung' => now()->format('Y-m-d'),
         ]);
 
@@ -104,6 +106,8 @@ class DivisiKaryawanSeeder extends Seeder
                 'role' => 'kepala_divisi',
                 'status' => 'Aktif',
                 'jenis_kelamin' => $genderKadiv === 'male' ? 'Laki-laki' : 'Perempuan',
+                'no_hp' => $faker->phoneNumber,
+                'alamat' => $faker->address,
                 'jam_masuk' => $jamMasuk,
                 'jam_keluar' => $jamKeluar,
                 'tgl_bergabung' => now()->format('Y-m-d'),
@@ -128,6 +132,8 @@ class DivisiKaryawanSeeder extends Seeder
                     'role' => 'karyawan',
                     'status' => 'Aktif',
                     'jenis_kelamin' => $genderKaryawan === 'male' ? 'Laki-laki' : 'Perempuan',
+                    'no_hp' => $faker->phoneNumber,
+                    'alamat' => $faker->address,
                     'jam_masuk' => $jamMasuk,
                     'jam_keluar' => $jamKeluar,
                     'tgl_bergabung' => now()->format('Y-m-d'),
