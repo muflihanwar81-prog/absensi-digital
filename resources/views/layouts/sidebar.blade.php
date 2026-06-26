@@ -1,5 +1,5 @@
 <aside id="sidebar"
-    class="w-72 bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen">
+    class="w-72 bg-slate-900 text-white flex flex-col justify-between shadow-xl border-r border-slate-800 transition-all duration-300 h-screen sticky top-0 z-50">
 
     {{-- HEADER --}}
     <div>

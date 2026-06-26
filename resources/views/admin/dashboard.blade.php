@@ -186,8 +186,8 @@
         .divisi-select {
             appearance: none;
             -webkit-appearance: none;
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
-            color: white;
+            background: linear-gradient(135deg, #353639, #303035);
+            color: black;
             border: none;
             padding: 10px 40px 10px 16px;
             border-radius: 12px;
@@ -201,8 +201,9 @@
         }
 
         .divisi-select:hover {
-            background: linear-gradient(135deg, #1d4ed8, #4338ca);
+            background: linear-gradient(135deg, #36383c, #2e2d31);
             box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15), 0 6px 16px rgba(37, 99, 235, 0.25);
+            color:white;
             transform: scale(1.02);
         }
 
@@ -314,9 +315,9 @@
                     <div id="date" class="mt-3 text-slate-400 text-sm font-medium"></div>
 
                     <div class="divisi-select-wrapper mt-4">
-                        <i class="fa-solid fa-filter text-blue-600 text-lg"></i>
+                        <i class="fa-solid fa-filter text-black-600 text-lg"></i>
                         <select id="divisiFilter" class="divisi-select">
-                            <option value="">Semua Divisi</option>
+                            <option value="" >Semua Divisi</option>
                             @foreach($divisiList as $divisi)
                             <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
                             @endforeach
@@ -329,7 +330,7 @@
                         <span class="filter-icon">
                             <i class="fa-solid fa-filter"></i>
                         </span>
-                        <span id="divisiBadgeText">Semua Divisi</span>
+                        <span id="divisiBadgeText">Divisi</span>
                     </div>
                 </div>
             </div>
