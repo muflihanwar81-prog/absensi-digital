@@ -34,7 +34,39 @@
         class="ml-72 flex-1 transition-all duration-300">
 
             {{-- Header --}}
-            @include('components.header')
+            <div class="bg-gradient-to-br from-gray-300 to-white-100 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+                <div class="flex items-center justify-between px-8 py-4">
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight text-slate-800">
+                            Data <span class="text-blue-500">Kehadiran</span>
+                        </h1>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-xs text-slate-400 font-medium">Selamat Datang</p>
+                            <p class="text-sm font-bold text-slate-800">
+                                {{ auth()->user()->nama ?? 'Karyawan' }}
+                            </p>
+                        </div>
+                        @php
+$nama = auth()->user()->nama ?? 'Karyawan';
+
+$namaParts = explode(' ', $nama);
+
+$initials = '';
+
+foreach ($namaParts as $part) {
+    $initials .= strtoupper(substr($part, 0, 1));
+}
+@endphp
+                       
+                        <a href="{{ url('/profile') }}" class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20 ring-2 ring-white/10">
+                            {{ $initials ?: 'K' }}
+                        </a>
+                    </div>
+                </div>
+            </div>
 
             {{-- Content --}}
             <div class="p-6">
@@ -43,7 +75,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
 
                     {{-- Title Section --}}
-                    <div class="bg-slate-50 border-b border-slate-200/80 px-8 py-5 text-slate-800">
+                    <div class="bg-gradient-to-br from-blue-100 to-indigo-100 border-b border-slate-200/80 px-8 py-5 text-slate-800">
                         <p class="uppercase tracking-wider text-xxs font-bold text-slate-400 mb-1">
                             Attendance Records
                         </p>

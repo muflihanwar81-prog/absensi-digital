@@ -1,4 +1,4 @@
-<div class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+<div class="bg-gray backdrop-blur-md border-b border-slate-200/80 shadow-sm">
     <div class="flex items-center justify-between px-8 py-4">
         <div>
             <h1 class="text-xl font-bold tracking-tight text-slate-800">
