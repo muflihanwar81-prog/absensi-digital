@@ -43,25 +43,40 @@
         class="ml-72 flex-1 transition-all duration-300">
 
             {{-- TOP HEADER --}}
-            @include('components.header')
+            <div class="bg-gradient-to-br from-gray-300 to-white-100 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+                <div class="flex items-center justify-between px-8 py-4">
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight text-slate-800">
+                            Data <span class="text-blue-500">Profil</span>
+                        </h1>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-xs text-slate-400 font-medium">Selamat Datang</p>
+                            <p class="text-sm font-bold text-slate-800">
+                                {{ auth()->user()->nama ?? 'Karyawan' }}
+                            </p>
+                        </div>
+                        @php
+                            $namaParts = explode(' ', $karyawan->nama);
+                            $initials = '';
+                            foreach (array_slice($namaParts, 0, 3) as $part) {
+                                $initials .= strtoupper(substr($part, 0, 1));
+                            }
+                        @endphp
+                        <a href="{{ url('/profile') }}" class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20 ring-2 ring-white/10">
+                            {{ $initials ?: 'K' }}
+                        </a>
+                    </div>
+                </div>
+            </div>
 
             {{-- CONTENT (MEMENUHI LAYAR) --}}
             <div class="p-6 w-full">
 
                 {{-- TITLE SECTION --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 mb-6 flex items-center justify-between hover:shadow-md transition-shadow duration-300">
-                    <div>
-                        <p class="text-blue-600 font-semibold mb-1 uppercase tracking-wider text-xs">
-                            Informasi Akun
-                        </p>
-                        <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">
-                            Data Profil Anda
-                        </h2>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
-                        <i class="fa-solid fa-user-gear text-lg"></i>
-                    </div>
-                </div>
+        
 
                 {{-- FLASH MESSAGES & VALIDATION ERRORS --}}
                 @if(session('success'))
@@ -88,7 +103,7 @@
                 @endif
 
                 {{-- PROFILE MAIN CARD --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6 text-center hover:shadow-md transition-shadow duration-300">
+                <div class="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6 text-center hover:shadow-md transition-shadow duration-300">
                     <div class="flex flex-col items-center">
                         {{-- Avatar --}}
                         @php
@@ -353,7 +368,6 @@
                                         <option value="Perempuan" {{ old('jenis_kelamin', $karyawan->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                     </select>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                                        <i class="fa-solid fa-chevron-down text-xs"></i>
                                     </div>
                                 </div>
                             </div>

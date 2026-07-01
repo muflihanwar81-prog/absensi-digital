@@ -171,7 +171,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard_karyawan', [KaryawanDashboardController::class, 'index'])
         ->name('karyawan.dashboard');
 
-    Route::get('/karyawan_absen', [AbsensiController::class, 'index'])
+    Route::get('/kehadiran', [AbsensiController::class, 'index'])
         ->name('karyawan.kehadiran');
 
     Route::post('/karyawan/absensi/masuk', [KaryawanDashboardController::class, 'absenMasuk'])

@@ -51,6 +51,7 @@ class KaryawanDashboardController extends Controller
             'izin',
             'aktivitas'
         ));
+    
     }
 
     public function absenMasuk(Request $request)
@@ -220,7 +221,7 @@ class KaryawanDashboardController extends Controller
             return $item;
         });
 
-        return view('karyawan.kehadiran', compact('absensis'));
+        return view('karyawan.kehadiran', compact('absensis', 'karyawan'));
     }
 
     public function riwayat(Request $request)
@@ -249,7 +250,9 @@ class KaryawanDashboardController extends Controller
         }
 
         return view('karyawan.profile', compact('karyawan'));
+
     }
+        
 
     public function updateProfile(Request $request)
     {
