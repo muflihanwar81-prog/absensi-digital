@@ -36,14 +36,41 @@
         class="ml-72 flex-1 transition-all duration-300">
 
             {{-- TOP HEADER --}}
-            @include('components.header')
+            <div class="bg-gradient-to-br from-gray-300 to-white-100 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+                <div class="flex items-center justify-between px-8 py-4">
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight text-slate-800">
+                            Dashboard <span class="text-blue-500">Karyawan</span>
+                        </h1>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-xs text-slate-400 font-medium">Selamat Datang</p>
+                            <p class="text-sm font-bold text-slate-800">
+                                {{ auth()->user()->nama ?? 'Karyawan' }}
+                            </p>
+                        </div>
+                        @php
+                            $namaParts = explode(' ', $karyawan->nama);
+                            $initials = '';
+                            foreach (array_slice($namaParts, 0, 3) as $part) {
+                                $initials .= strtoupper(substr($part, 0, 1));
+                            }
+                        @endphp
+                        <a href="{{ url('/profile') }}" class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20 ring-2 ring-white/10">
+                            {{ $initials ?: 'K' }}
+                        </a>
+                    </div>
+                </div>
+            </div>
 
             {{-- CONTENT --}}
             <div class="p-6">
 
                 {{-- WELCOME CARD --}}
                 <div
-                    class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:shadow-md transition-shadow duration-300">
+                    class="bg-gradient-to-br from-gray-300 to-white-100 rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:shadow-md transition-shadow duration-300">
                     <div>
                         <p class="text-blue-600 font-semibold mb-2.5 uppercase tracking-wider text-xs">
                             selamat datang kembali
@@ -70,10 +97,10 @@
                 </div>
 
                 {{-- STATISTICS --}}
-                <div class="grid grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+                <div class="grid grid-cols-4 xl:grid-cols-4 gap-6 mb-6">
 
                     {{-- HADIR --}}
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                    <div class="bg-gradient-to-br from-green-200 to-green-100 rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
                         <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Hadir
                         </p>
@@ -83,7 +110,7 @@
                     </div>
 
                     {{-- TERLAMBAT --}}
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                    <div class="bg-gradient-to-br from-amber-100 to-amber-100 rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
                         <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Terlambat
                         </p>
@@ -93,7 +120,7 @@
                     </div>
 
                     {{-- TIDAK HADIR --}}
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                    <div class="bg-gradient-to-br from-rose-200 to-rose-100 rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
                         <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Tidak Hadir
                         </p>
@@ -103,7 +130,7 @@
                     </div>
 
                     {{-- IZIN --}}
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
+                    <div class="bg-gradient-to-br from-blue-200 to-blue-100 rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 text-center">
                         <p class="text-xxs uppercase tracking-wider text-slate-400 font-bold mb-2">
                             Izin
                         </p>
@@ -115,15 +142,15 @@
                 </div>
 
                 {{-- PROFILE + CLOCK CARD --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6">
+                <div class="bg-gradient-to-br from-blue-100 to-white-100 rounded-2xl shadow-sm border border-slate-200/80 p-8 mb-6">
 
-                    <div class="flex flex-col xl:flex-row justify-between gap-8">
+                    <div class="flex flex-row xl:flex-row justify-between gap-8">
 
                         {{-- PROFILE --}}
                         <div class="flex items-center gap-5">
                             <div
                                 class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-50 to-indigo-600 flex items-center justify-center text-2xl font-extrabold text-white shadow-md ring-2 ring-white/10 shrink-0">
-                                {{ strtoupper(substr(auth()->user()->nama ?? 'Karyawan', 0, 3)) }}
+                                {{ $initials ?: 'K' }}
                             </div>
 
                             <div>
@@ -148,8 +175,8 @@
                             </p>
 
                             <div id="clock"
-                                class="text-5xl font-extrabold text-slate-850 leading-none tracking-tight font-mono">
-                                00 : 00
+                                class="text-3xl font-extrabold text-slate-850 leading-none tracking-tight font-mono">
+                                00 : 00 <span class="text-2xl font-extrabold text-slate-500 leading-none tracking-tight font-mono">: 07</span>
                             </div>
 
                             <div id="date"
@@ -188,7 +215,7 @@
                         <form action="{{ route('karyawan.absensi.pulang') }}" method="POST" class="absensi-form">
                             @csrf
                             <button type="submit"
-                                class="w-48 bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-semibold text-sm shadow-sm hover:bg-slate-50 transition-all">
+                                class="w-48 bg-gray-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-sm shadow-sm shadow-gray-500/10 hover:scale-[1.02] transition-all">
                                 Pulang
                             </button>
                         </form>
@@ -306,28 +333,31 @@
 
     {{-- CLOCK SCRIPT --}}
     <script>
-        function updateClock() {
-            const now = new Date();
+    function updateClock() {
+        const now = new Date();
 
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0'); // ambil detik
 
-            document.getElementById('clock').textContent = `${hours} : ${minutes}`;
+        // tampilkan jam dengan detik
+        document.getElementById('clock').textContent = `${hours} : ${minutes} : ${seconds}`;
 
-            const options = {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            };
+        const options = {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        };
 
-            document.getElementById('date').textContent =
-                now.toLocaleDateString('id-ID', options);
-        }
+        document.getElementById('date').textContent =
+            now.toLocaleDateString('id-ID', options);
+    }
 
-        updateClock();
-        setInterval(updateClock, 1000);
-    </script>
+    updateClock();
+    setInterval(updateClock, 1000); // update tiap 1 detik
+</script>
+
 
     {{-- GPS GEOLOCATION SCRIPT --}}
     <script>

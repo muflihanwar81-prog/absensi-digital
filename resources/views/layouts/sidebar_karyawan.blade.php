@@ -3,15 +3,13 @@
 
     {{-- HEADER --}}
     <div>
-        <div class="p-6 border-b border-slate-800">
+        <div class="p-6 pb-3 border-b border-slate-800">
             <div class="flex items-center justify-between">
                 <div id="sidebarTitle" class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">
-                        CS
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight text-white-800">
+                        CODIA-<span class="text-blue-500">SYNC</span> </h1>
                     </div>
-                    <h1 class="text-2xl font-bold tracking-tight text-white">
-                        CODIA-<span class="text-blue-500">SYNC</span>
-                    </h1>
                 </div>
 
                 <button onclick="toggleSidebarKaryawan()"
@@ -48,9 +46,9 @@
 
                 {{-- DATA KEHADIRAN --}}
                 <li>
-                    <a href="{{ url('/karyawan_absen') }}"
+                    <a href="{{ url('/kehadiran') }}"
                         class="flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200
-                        {{ request()->is('karyawan_absen')
+                        {{ request()->is('kehadiran')
                             ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 font-semibold'
                             : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100' }}">
                         <i class="fa-solid fa-calendar-check text-lg w-5 text-center"></i>
@@ -89,22 +87,30 @@
     {{-- FOOTER PROFILE --}}
     <div class="p-4 border-t border-slate-800 bg-slate-900/60 backdrop-blur-sm">
 
-        {{-- USER INFO --}}
-        <a href="{{ url('/profile') }}" class="flex items-center gap-3 mb-4 px-2 hover:bg-slate-800/50 py-2 rounded-xl transition duration-200 group">
-            <div
-                class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-200 shrink-0">
-                {{ strtoupper(substr(auth()->user()->nama ?? 'Karyawan', 0, 2)) }}
-            </div>
-
-            <div class="menu-text min-w-0">
-                <p class="font-bold text-slate-100 text-sm truncate group-hover:text-blue-400 transition-colors">
-                    {{ auth()->user()->nama ?? 'Karyawan' }}
-                </p>
-                <p class="text-xs text-slate-450 truncate">
-                    Karyawan Aktif
-                </p>
-            </div>
-        </a>
+                    {{-- USER INFO --}}
+                    <div class="flex items-center gap-3 mb-4 px-2 ">
+                        @php
+                        $nama = auth()->user()->nama ?? 'Karyawan';
+                        $namaParts = explode(' ', $nama);
+                        $initials = '';
+                        foreach ($namaParts as $part) {
+                            $initials .= strtoupper(substr($part, 0, 1));
+                        }
+                        @endphp
+                        <a href="{{ url('/profile') }}" class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20 ring-2 ring-white/10">
+                        {{ $initials ?: 'K' }}
+                        </a>
+                        
+                        <div class="menu-text min-w-0">
+                            <p class="font-bold text-slate-100 text-sm truncate group-hover:text-blue-400 transition-colors">
+                                {{ auth()->user()->nama ?? 'Karyawan' }} |
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                                {{ $karyawan->status ?? 'Aktif' }}
+                                </span>
+                            </p>
+                            
+                        </div>
+                    </div>
 
         {{-- LOGOUT --}}
         <form action="{{ route('logout') }}" method="POST">

@@ -37,7 +37,11 @@ class IzinController extends Controller
             'kategori' => 'required|string|max:255',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'file_tambahan' => 'nullable|file|mimes:pdf,docx,jpg,jpeg,png|max:10240',
+            'file_tambahan' => 'nullable|file|mimes:pdf,docx,jpg,jpeg,png|max:5120',
+
+        ],  [
+            'file_tambahan.max' => 'Ukuran file tidak boleh lebih dari 5 MB.',
+            'file_tambahan.mimes' => 'Format file harus pdf, docx, jpeg, jpg, atau png.',
         ]);
 
         $namaFile = null;

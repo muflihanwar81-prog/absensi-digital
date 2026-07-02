@@ -1,4 +1,4 @@
-<div class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+<div class="bg-gray backdrop-blur-md border-b border-slate-200/80 shadow-sm">
     <div class="flex items-center justify-between px-8 py-4">
         <div>
             <h1 class="text-xl font-bold tracking-tight text-slate-800">
@@ -14,9 +14,9 @@
                 </p>
             </div>
 
-            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20 ring-2 ring-white/10">
+            <a href="{{ url('/profile') }}" class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-500/20 ring-2 ring-white/10">
                 {{ strtoupper(substr(auth()->user()->nama ?? 'Karyawan', 0, 1)) }}
-            </div>
+            </a>
         </div>
     </div>
 </div>
