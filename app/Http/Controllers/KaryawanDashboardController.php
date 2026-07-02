@@ -84,6 +84,14 @@ class KaryawanDashboardController extends Controller
 
         $jamMasukDivisi = Carbon::today('Asia/Jakarta')
             ->setTimeFromTimeString(optional($karyawan->divisiObj)->jam_masuk ?? '08:00:00');
+            
+        $jamKeluarDivisi = Carbon::today('Asia/Jakarta')
+            ->setTimeFromTimeString(optional($karyawan->divisiObj)->jam_keluar ?? '17:00:00');
+
+        if ($jamSekarang->gte($jamKeluarDivisi)) {
+            return redirect()->back()->with('error', 'Waktu absen masuk sudah ditutup karena sudah melewati jam pulang divisi Anda (' . $jamKeluarDivisi->format('H:i') . ').');
+        }
+
         $status = $jamSekarang->gt($jamMasukDivisi)
             ? 'Terlambat'
             : 'Hadir';
@@ -128,6 +136,14 @@ class KaryawanDashboardController extends Controller
 
         if ($absensi->jam_keluar) {
             return redirect()->back()->with('error', 'Anda sudah melakukan absen pulang hari ini.');
+        }
+
+        $jamSekarang = Carbon::now('Asia/Jakarta');
+        $jamKeluarDivisi = Carbon::today('Asia/Jakarta')
+            ->setTimeFromTimeString(optional($karyawan->divisiObj)->jam_keluar ?? '17:00:00');
+
+        if ($jamSekarang->lt($jamKeluarDivisi)) {
+            return redirect()->back()->with('error', 'Belum waktunya absen pulang. Jam pulang divisi Anda adalah pukul ' . $jamKeluarDivisi->format('H:i') . '.');
         }
 
         $absensi->update([

@@ -14,17 +14,14 @@ class AbsensiSeeder extends Seeder
      */
     public function run(): void
     {
-        // Bersihkan data absensi sebelumnya agar tidak duplikat
-        Absensi::truncate();
-
-        // Ambil semua karyawan, kecualikan kepala divisi dan admin
-        $karyawans = User::where('role', 'karyawan')->get();
+        // Ambil semua karyawan dan kepala divisi
+        $users = User::whereIn('role', ['karyawan', 'kepala_divisi'])->get();
         
         // Buat absen untuk 7 hari ke belakang sampai hari ini
         $startDate = Carbon::now()->subDays(7);
         $endDate = Carbon::now();
 
-        foreach ($karyawans as $karyawan) {
+        foreach ($users as $user) {
             // Looping per hari
             for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
                 
@@ -57,13 +54,17 @@ class AbsensiSeeder extends Seeder
                     $jamKeluar = Carbon::createFromTime(17, 0, 0)->addMinutes(rand(0, 30))->format('H:i:s');
                 }
                 
-                Absensi::create([
-                    'user_id' => $karyawan->id,
-                    'tanggal' => $date->format('Y-m-d'),
-                    'jam_masuk' => $jamMasuk,
-                    'jam_keluar' => $jamKeluar,
-                    'status' => $status
-                ]);
+                Absensi::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'tanggal' => $date->format('Y-m-d'),
+                    ],
+                    [
+                        'jam_masuk' => $jamMasuk,
+                        'jam_keluar' => $jamKeluar,
+                        'status' => $status
+                    ]
+                );
             }
         }
     }

@@ -40,6 +40,20 @@
 
         <div class="p-6">
             
+            @if(session('success'))
+            <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-xl mb-6 shadow-sm flex items-center gap-3">
+                <i class="fa-solid fa-check-circle"></i>
+                <p class="font-medium text-sm">{{ session('success') }}</p>
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="bg-rose-50 border border-rose-200 text-rose-700 px-6 py-4 rounded-xl mb-6 shadow-sm flex items-center gap-3">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p class="font-medium text-sm">{{ session('error') }}</p>
+            </div>
+            @endif
+
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 mb-6 overflow-hidden animate-card delay-100">
                 <div class="bg-slate-50 border-b border-slate-200/80 px-6 py-4 text-slate-800">
                     <h3 class="font-extrabold text-base flex items-center gap-2">📍 Peta Lokasi Absensi Kantor Pusat</h3>
@@ -89,15 +103,22 @@
                                         <button type="button"
                                             onclick="openModalEditDivisi('{{ $item->id }}', '{{ addslashes($item->nama_divisi) }}', '{{ $item->jam_masuk }}', '{{ $item->jam_keluar }}')"
                                             class="bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs hover:bg-amber-100 transition">Edit</button>
+                                        @if($item->users_count > 0)
+                                        <button type="button" onclick="alert('Divisi tidak dapat dihapus karena masih digunakan oleh {{ $item->users_count }} karyawan.')"
+                                            class="bg-slate-100 text-slate-400 ring-1 ring-inset ring-slate-200 px-3.5 py-1.5 rounded-xl font-semibold text-xs cursor-not-allowed" title="Masih ada karyawan di divisi ini">
+                                            Hapus
+                                        </button>
+                                        @else
                                         <form action="{{ route('admin.keloladivisi.destroy', $item->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin ingin menghapus divisi ini?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs">
+                                                class="bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20 px-3.5 py-1.5 rounded-xl font-semibold text-xs hover:bg-rose-100 transition">
                                                 Hapus
                                             </button>
                                         </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
